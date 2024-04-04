@@ -18,8 +18,8 @@ public class Bomb extends Field {
     public boolean canPlaceBomb() {
         return false;
     }
-    public Bomb(int radius, int detonateTime) {
-        super();
+    public Bomb(int x, int y, int radius, int detonateTime) {
+        super(x, y);
         this.radius = radius;
         this.detonateTime = detonateTime;
     }

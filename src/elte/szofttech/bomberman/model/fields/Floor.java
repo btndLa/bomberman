@@ -7,8 +7,8 @@ import java.awt.Graphics;
 public class Floor extends Field{
 
 
-    public Floor(){
-      super();
+    public Floor(int x, int y){
+      super(x, y);
     }
 
     @Override

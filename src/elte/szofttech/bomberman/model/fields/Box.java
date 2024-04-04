@@ -5,8 +5,8 @@ import java.awt.Graphics;
 
 public class Box extends Field{
 
-    public Box(){
-      super();
+    public Box(int x, int y){
+      super(x, y);
     }
     @Override
     public boolean isDestructible() {

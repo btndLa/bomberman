@@ -50,7 +50,6 @@ public class GameEngine extends JPanel {
       
     }
     public void EventHandle(KeyEvent event){}
-    public void PaintComponent(){}
     public void Update(){}
     public void EndGame(){}
     public void DetonateBomb(Bomb bomb){}
@@ -76,19 +75,19 @@ public class GameEngine extends JPanel {
                 char ch = line.charAt(i);
                 switch (ch) {
                   case 'B':
-                    Box box = new Box();
+                    Box box = new Box(x, y);
                     board[row][col] = box;
                     box.draw(g, x, y);
                     break;
 
                     case 'W':
-                    Wall wall = new Wall();
+                    Wall wall = new Wall(x, y);
                     board[row][col] = wall;
                     wall.draw(g, x, y);
                     break;
 
                     case 'F':
-                    Floor floor = new Floor();
+                    Floor floor = new Floor(x, y);
                     board[row][col] = floor;
                     floor.draw(g, x, y);
                     break;

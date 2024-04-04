@@ -5,8 +5,8 @@ import java.awt.Graphics;
 public class Wall extends Field{
 
 
-    public Wall(){
-      super();
+    public Wall(int x, int y){
+      super(x, y);
     }
     @Override
     public boolean isDestructible() {
