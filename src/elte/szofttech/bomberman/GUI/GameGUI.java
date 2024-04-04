@@ -35,5 +35,6 @@ public class GameGUI {
         //frame.getContentPane().add(gameArea.getTimerLabel(), BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
+        frame.getContentPane().add(gameArea);
 }
 }

@@ -1,6 +1,15 @@
 package elte.szofttech.bomberman.model.fields;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
+
 public class Floor extends Field{
+
+
+    public Floor(){
+      super();
+    }
 
     @Override
     public boolean isDestructible() {
@@ -11,4 +20,8 @@ public class Floor extends Field{
     public boolean canPlaceBomb() {
         return true;
     }
+    public void draw(Graphics g, int x, int y) {
+      g.setColor(Color.GREEN);
+      g.fillRect(x, y,this.tileSize, this.tileSize);      
+  }
 }
