@@ -8,12 +8,13 @@ public class Player extends Entity {
     private int down;
     private int left;
     private int right;
+    private int bombButton;
     private int bombRadius;
     private GameEngine engine;
     private int bombCapacity;
     private int placedBombs;
 
-    public Player(int x, int y, int up, int down, int left, int right, GameEngine engine) {
+    public Player(int x, int y, int up, int down, int left, int right, int bombButton, GameEngine engine) {
         super(x, y);
         this.up = up;
         this.down = down;

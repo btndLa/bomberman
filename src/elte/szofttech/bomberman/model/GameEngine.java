@@ -44,8 +44,8 @@ public class GameEngine extends JPanel {
     public void SwitchScene(){}
     public void StartGame(){
       List<Player> players = new ArrayList<Player>();
-      players.add(new Player(1, 2, 38, 40, 37, 39, this));
-      players.add(new Player(10, 20, 87, 83, 67, 68, this));
+      players.add(new Player(1, 2, 38, 40, 37, 39, 81, this));
+      players.add(new Player(10, 20, 87, 83, 67, 68, 96, this));
 
       
     }
