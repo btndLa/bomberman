@@ -7,7 +7,8 @@ public class Wall extends Field{
 
     public Wall(int x, int y){
       super(x, y);
-      this.setColor(Color.GRAY);
+      this.defaultColor = Color.GRAY;
+      this.setColor(defaultColor);
     }
     @Override
     public boolean isDestructible() {

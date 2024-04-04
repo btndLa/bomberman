@@ -28,6 +28,7 @@ public class Bomb extends Field {
     public Bomb(int x, int y, int radius, int detonateTime) {
         super(x,y);
         this.setColor(Color.BLACK);
+        this.defaultColor = Color.BLACK;
         this.tileSize = 75;
         this.x = x;
         this.y = y;

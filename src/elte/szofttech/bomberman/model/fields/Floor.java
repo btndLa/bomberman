@@ -9,7 +9,8 @@ public class Floor extends Field{
   public Floor(int x, int y){
       super(x, y);
       this.setWalkable(true);
-      this.setColor(Color.GREEN);
+      this.defaultColor = Color.GREEN;
+      this.setColor(defaultColor);
       
     }
 

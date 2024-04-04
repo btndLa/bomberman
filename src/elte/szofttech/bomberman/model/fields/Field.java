@@ -8,6 +8,7 @@ public abstract class Field {
     protected int tileSize;
     private int x;
     private int y;
+    protected Color defaultColor;
     protected Color color;
 
     public int getTileSize(){
@@ -15,6 +16,7 @@ public abstract class Field {
     }
     public int getX(){return x;}
     public int getY(){return y;}
+    public Color getDefaultColor(){return this.defaultColor;}
     public void setColor(Color color){this.color = color;}
 
     public Field(int x, int y) {
