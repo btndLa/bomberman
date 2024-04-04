@@ -18,13 +18,14 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.Graphics;
-
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
 
 
-public class GameEngine extends JPanel {
+public class GameEngine extends JPanel implements KeyListener{
     private List<Player> players;
     private List<Monster> monsters;
     private Field[][] board;
@@ -35,6 +36,8 @@ public class GameEngine extends JPanel {
 
     public GameEngine(){
       super();
+      setFocusable(true);
+      addKeyListener(this);
       board = new Field[13][13];
       tileSize = 75;
       bombRadius = 2;
@@ -48,13 +51,23 @@ public class GameEngine extends JPanel {
       players = new ArrayList<Player>();
       loadLevel();
       players.add(new Player(1, 2, 38, 40, 37, 39, 81, this));
-      players.add(new Player(10, 2, 87, 83, 67, 68, 96, this));
+      players.add(new Player(10, 2, 87, 83, 65, 68, 96, this));
     }
     public Field[][] getBoard(){
       return this.board;
     }
     public int getTileSize(){return tileSize;}
-    public void EventHandle(KeyEvent event){}
+    public void keyPressed(KeyEvent e) {
+      System.out.println("pressed");
+      for (Player player : players) {
+        player.move(e);
+      }
+      repaint();
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {}
+    @Override
+    public void keyTyped(KeyEvent e) {}
     public void Update(){}
     public void EndGame(){}
     public void DetonateBomb(Bomb bomb){}
@@ -107,18 +120,14 @@ public class GameEngine extends JPanel {
     public void paintComponent(Graphics g){
       super.paintComponent(g);
       int y = 0;
-      int row = 0;
       for(int i = 0; i < board.length; i++) {
         int x = 0;
-        int col = 0;
         for (int z = 0; z < board[0].length; z++) {
           Field f = board[i][z];
                 f.draw(g, x, y);
                 x+=tileSize;
-                col+=1;
             }
             y+=tileSize;
-            row+=1;
         }
         if (this.players != null) {
           for (Player player : players) {

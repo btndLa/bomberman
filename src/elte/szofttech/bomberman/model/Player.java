@@ -36,34 +36,37 @@ public class Player extends Entity {
     }
 
     public void move(KeyEvent key){
-        int keyAsInt = key.getKeyCode();
-        if(keyAsInt == this.up){
-            if(this.y + 1 < engine.getBoard().length && engine.getBoard()[this.x][this.y+1].isWalkable()){
-                this.y += 1;
-            }
-        }
-        else if(keyAsInt == this.down){
-            if(this.y - 1 >= 0 && engine.getBoard()[this.x][this.y-1].isWalkable()){
-                this.y -= 1;
-            }
-        }
-        else if(keyAsInt == this.left){
-            if(this.x - 1 >= 0 && engine.getBoard()[this.x-1][this.y].isWalkable()){
-                this.x -= 1;
-            }
-        }
-        else if(keyAsInt == this.right){
-            if(this.x + 1 < engine.getBoard().length && engine.getBoard()[this.x +1][this.y].isWalkable()){
-                this.x += 1;
-            }
-        }
-        else if (keyAsInt == this.bombButton){
-            if(engine.getBoard()[this.x][this.y].canPlaceBomb()){
-                engine.DetonateBomb(new Bomb(this.x, this.y, this.bombRadius, 3));
-            }
-        }
-        engine.getBoard()[this.x][this.y].setWalkable(false);
-    }
+      int currentX = this.x;
+      int currentY = this.y;
+      int keyAsInt = key.getKeyCode();
+      if(keyAsInt == this.up){
+          if(this.y - 1 >= 0 && engine.getBoard()[this.y - 1][this.x].isWalkable()){
+              this.y -= 1;
+          }
+      }
+      else if(keyAsInt == this.down){
+          if(this.y + 1 < engine.getBoard().length && engine.getBoard()[this.y + 1][this.x].isWalkable()){
+              this.y += 1;
+          }
+      }
+      else if(keyAsInt == this.left){
+          if(this.x - 1 >= 0 && engine.getBoard()[this.y][this.x - 1].isWalkable()){
+              this.x -= 1;
+          }
+      }
+      else if(keyAsInt == this.right){
+          if(this.x + 1 < engine.getBoard()[0].length && engine.getBoard()[this.y][this.x + 1].isWalkable()){
+              this.x += 1;
+          }
+      }
+      else if (keyAsInt == this.bombButton){
+          if(engine.getBoard()[this.y][this.x].canPlaceBomb()){
+              engine.DetonateBomb(new Bomb(this.x, this.y, this.bombRadius, 3));
+          }
+      }
+      if(currentX != this.x || currentY != this.y) engine.getBoard()[currentY][currentX].setWalkable(true);
+      engine.getBoard()[this.y][this.x].setWalkable(false);
+  }
 
     @Override
     public void onExplosion() {

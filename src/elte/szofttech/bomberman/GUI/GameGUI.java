@@ -22,7 +22,6 @@ public class GameGUI {
         frame = new JFrame("Bomberman");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameArea = new GameEngine();
-        frame.getContentPane().add(gameArea);
         
         //750*750
         frame.setPreferredSize(new Dimension(1000, 1000));
@@ -32,9 +31,9 @@ public class GameGUI {
         frame.setJMenuBar(menuBar);
         JMenu gameMenu = new JMenu("Game");
         menuBar.add(gameMenu); 
+        frame.getContentPane().add(gameArea);
         //frame.getContentPane().add(gameArea.getTimerLabel(), BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
-        frame.getContentPane().add(gameArea);
 }
 }
