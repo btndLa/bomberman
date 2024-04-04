@@ -41,6 +41,7 @@ public class GameEngine extends JPanel implements KeyListener{
     private int bombDetonation;
     private int tileSize;
     private Timer timer;
+    private ArrayList<Bomb> bombs;
 
     public GameEngine(){
       super();
@@ -56,7 +57,7 @@ public class GameEngine extends JPanel implements KeyListener{
     }
 
     private void setupTimer() {
-      timer = new Timer(1000, new ActionListener() { // 1000 milliseconds = 1 second
+      timer = new Timer(1000, new ActionListener() { 
         @Override
         public void actionPerformed(ActionEvent e) {
           for (Monster monster : monsters) {
@@ -65,7 +66,7 @@ public class GameEngine extends JPanel implements KeyListener{
           repaint();
         }
     });
-    timer.start(); // Start the timer
+    timer.start(); 
 
     }
 
@@ -74,11 +75,12 @@ public class GameEngine extends JPanel implements KeyListener{
     public void StartGame(){
       players = new ArrayList<Player>();
       loadLevel();
-      players.add(new Player(1, 2, 38, 40, 37, 39, 81, this));
-      players.add(new Player(10, 2, 87, 83, 65, 68, 96, this));
+      players.add(new Player(1, 2, 38, 40, 37, 39, 96, this));
+      players.add(new Player(10, 2, 87, 83, 65, 68, 81, this));
       monsters = new ArrayList<Monster>();
       monsters.add(new BasicMonster(3, 4, 1, this));
       monsters.add(new BasicMonster(5, 11, 1, this));
+      bombs = new ArrayList<Bomb>();
     }
     public Field[][] getBoard(){
       return this.board;
@@ -96,11 +98,6 @@ public class GameEngine extends JPanel implements KeyListener{
     public void keyTyped(KeyEvent e) {}
     public void Update(){}
     public void EndGame(){}
-    public void DetonateBomb(Bomb bomb){}
-    public Component getTimerLabel() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTimerLabel'");
-    }
 
     private void loadLevel(){
       try (BufferedReader reader = new BufferedReader(new FileReader("zmb/src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
@@ -142,6 +139,44 @@ public class GameEngine extends JPanel implements KeyListener{
           e.printStackTrace();
       }
     }
+
+    public void DetonateBomb(Bomb bomb){
+      bombs.add(bomb);
+      Timer detonationTimer = new Timer(bomb.getDetonation()*1000, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          explosion(bomb.getX(), bomb.getY(), bomb);
+            bombs.remove(bomb);
+            repaint();
+        }
+    });
+    detonationTimer.setRepeats(false);
+    detonationTimer.start();
+    }
+
+    private void explosion(int x, int y,Bomb bomb){
+      ArrayList<Field> fields = new ArrayList<>();
+      spreadExplosionUp(board[y-1][x],bomb.getRadius());
+      fields.add(board[y+1][x]);
+      fields.add(board[y][x-1]);
+      fields.add(board[y][x+1]);
+      
+      fields.add(board[y][x]);
+    }
+    
+    private ArrayList<Field> spreadExplosionUp(Field field, int radius){
+      ArrayList<Field> fields = new ArrayList<>();
+      for (int i = 0; i < radius; i++) {
+        if (board[field.getY()+i][getX()].isDestructible()){
+          fields.add(board[field.getY()+i][getX()]);
+        }else{
+          return fields;
+        }
+      }
+      return fields;
+    }
+    
+
     @Override
     public void paintComponent(Graphics g){
       super.paintComponent(g);
@@ -163,6 +198,11 @@ public class GameEngine extends JPanel implements KeyListener{
         if (this.monsters != null) {
           for (Monster monster : monsters) {
             monster.draw(g);
+          }
+        }
+        if (this.bombs != null) {
+          for (Bomb bomb : bombs) {
+            bomb.draw(g, bomb.getX(), bomb.getY());
           }
         }
       

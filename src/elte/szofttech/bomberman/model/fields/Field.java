@@ -11,9 +11,11 @@ public abstract class Field {
     public int getTileSize(){
       return tileSize;
     }
+    public int getX(){return x;}
+    public int getY(){return y;}
 
     public Field(int x, int y) {
-      tileSize = 75;
+      this.tileSize = 75;
       this.x = x;
       this.y = y;
     }
