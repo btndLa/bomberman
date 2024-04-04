@@ -25,7 +25,7 @@ public class GameGUI {
         frame.getContentPane().add(gameArea);
         
         //750*750
-        frame.setPreferredSize(new Dimension(766, 829));
+        frame.setPreferredSize(new Dimension(1000, 1000));
         frame.setResizable(false);
         frame.pack();
         JMenuBar menuBar = new JMenuBar();
