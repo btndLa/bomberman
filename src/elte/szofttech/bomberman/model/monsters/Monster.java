@@ -1,5 +1,7 @@
 package elte.szofttech.bomberman.model.monsters;
 
+import java.awt.Graphics;
+
 import elte.szofttech.bomberman.GUI.GameGUI;
 import elte.szofttech.bomberman.model.Entity;
 import elte.szofttech.bomberman.model.GameEngine;
@@ -13,6 +15,9 @@ public abstract class Monster extends Entity {
         this.speed = speed;
         this.engine = engine;
     }
-    public abstract void move(int direction);
+    public abstract void move();
+    public abstract void draw(Graphics g);   
+    public abstract int getSpeed();
+  
 }
 

@@ -6,15 +6,21 @@ import elte.szofttech.bomberman.model.fields.Box;
 import elte.szofttech.bomberman.model.fields.Field;
 import elte.szofttech.bomberman.model.fields.Floor;
 import elte.szofttech.bomberman.model.fields.Wall;
+import elte.szofttech.bomberman.model.monsters.BasicMonster;
 import elte.szofttech.bomberman.model.monsters.Monster;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
+import javax.swing.Timer;
+import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.Graphics;
@@ -28,14 +34,18 @@ import javax.swing.JPanel;
 public class GameEngine extends JPanel implements KeyListener{
     private List<Player> players;
     private List<Monster> monsters;
+    private boolean isGameOver;
     private Field[][] board;
     private GameGUI gameGUI;
     private int bombRadius;
     private int bombDetonation;
     private int tileSize;
+    private Timer timer;
 
     public GameEngine(){
       super();
+      isGameOver = false;
+      setupTimer();
       setFocusable(true);
       addKeyListener(this);
       board = new Field[13][13];
@@ -45,6 +55,20 @@ public class GameEngine extends JPanel implements KeyListener{
       this.StartGame();
     }
 
+    private void setupTimer() {
+      timer = new Timer(1000, new ActionListener() { // 1000 milliseconds = 1 second
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          for (Monster monster : monsters) {
+            monster.move();
+          }
+          repaint();
+        }
+    });
+    timer.start(); // Start the timer
+
+    }
+
     public void StartCharSelect(){}
     public void SwitchScene(){}
     public void StartGame(){
@@ -52,13 +76,15 @@ public class GameEngine extends JPanel implements KeyListener{
       loadLevel();
       players.add(new Player(1, 2, 38, 40, 37, 39, 81, this));
       players.add(new Player(10, 2, 87, 83, 65, 68, 96, this));
+      monsters = new ArrayList<Monster>();
+      monsters.add(new BasicMonster(3, 4, 1, this));
+      monsters.add(new BasicMonster(5, 11, 1, this));
     }
     public Field[][] getBoard(){
       return this.board;
     }
     public int getTileSize(){return tileSize;}
     public void keyPressed(KeyEvent e) {
-      System.out.println("pressed");
       for (Player player : players) {
         player.move(e);
       }
@@ -132,6 +158,11 @@ public class GameEngine extends JPanel implements KeyListener{
         if (this.players != null) {
           for (Player player : players) {
             player.draw(g);
+          }
+        }
+        if (this.monsters != null) {
+          for (Monster monster : monsters) {
+            monster.draw(g);
           }
         }
       
