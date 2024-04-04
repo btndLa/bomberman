@@ -31,26 +31,29 @@ public class GameEngine extends JPanel {
     private GameGUI gameGUI;
     private int bombRadius;
     private int bombDetonation;
+    private int tileSize;
 
     public GameEngine(){
       super();
+      board = new Field[13][13];
+      tileSize = 75;
       bombRadius = 2;
       bombDetonation = 3;
-      this.repaint();
-      board = new Field[13][13];
+      this.StartGame();
     }
 
     public void StartCharSelect(){}
     public void SwitchScene(){}
     public void StartGame(){
-      List<Player> players = new ArrayList<Player>();
+      players = new ArrayList<Player>();
+      loadLevel();
       players.add(new Player(1, 2, 38, 40, 37, 39, 81, this));
-      players.add(new Player(10, 20, 87, 83, 67, 68, 96, this));
-
+      players.add(new Player(10, 2, 87, 83, 67, 68, 96, this));
     }
     public Field[][] getBoard(){
       return this.board;
     }
+    public int getTileSize(){return tileSize;}
     public void EventHandle(KeyEvent event){}
     public void Update(){}
     public void EndGame(){}
@@ -60,12 +63,8 @@ public class GameEngine extends JPanel {
         throw new UnsupportedOperationException("Unimplemented method 'getTimerLabel'");
     }
 
-    @Override
-    public void paintComponent(Graphics g){
-      int tileSize = 75; //multiple tilesizes
-      super.paintComponent(g);
+    private void loadLevel(){
       try (BufferedReader reader = new BufferedReader(new FileReader("zmb/src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
-        System.out.println("HELLO");
         String line;
         int y = 0;
         int row = 0;
@@ -79,32 +78,53 @@ public class GameEngine extends JPanel {
                   case 'B':
                     Box box = new Box(x, y);
                     board[row][col] = box;
-                    box.draw(g, x, y);
                     break;
 
                     case 'W':
                     Wall wall = new Wall(x, y);
                     board[row][col] = wall;
-                    wall.draw(g, x, y);
                     break;
 
                     case 'F':
                     Floor floor = new Floor(x, y);
                     board[row][col] = floor;
-                    floor.draw(g, x, y);
                     break;
 
                   default:
                     break;
-                }
+                  }
+                  x+=tileSize;
+                  col+=1;
+              }
+              y+=tileSize;
+              row+=1;
+          }
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+    }
+    @Override
+    public void paintComponent(Graphics g){
+      super.paintComponent(g);
+      int y = 0;
+      int row = 0;
+      for(int i = 0; i < board.length; i++) {
+        int x = 0;
+        int col = 0;
+        for (int z = 0; z < board[0].length; z++) {
+          Field f = board[i][z];
+                f.draw(g, x, y);
                 x+=tileSize;
                 col+=1;
             }
             y+=tileSize;
             row+=1;
         }
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+        if (this.players != null) {
+          for (Player player : players) {
+            player.draw(g);
+          }
+        }
+      
     }
 }

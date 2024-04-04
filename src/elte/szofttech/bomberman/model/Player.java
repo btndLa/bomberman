@@ -3,6 +3,8 @@ package elte.szofttech.bomberman.model;
 import elte.szofttech.bomberman.model.fields.Bomb;
 import elte.szofttech.bomberman.model.monsters.Monster;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 public class Player extends Entity {
@@ -74,5 +76,10 @@ public class Player extends Entity {
             this.isAlive = false;
         }
     }
+    public void draw(Graphics g) {
+      int ts = engine.getTileSize();
+      g.setColor(Color.RED);
+      g.fillRect(x * ts, y * ts,ts,ts);      
+  }
 
 }
