@@ -11,14 +11,14 @@ public class Player extends Entity {
     private int down;
     private int left;
     private int right;
-    private int bomb;
+    private int bombButton;
     private int bombRadius;
     private GameEngine engine;
     private int bombCapacity;
     private int placedBombs;
     public boolean isAlive;
 
-    public Player(int x, int y, int up, int down, int left, int right, int bomb, GameEngine engine) {
+    public Player(int x, int y, int up, int down, int left, int right, int bombButton, GameEngine engine) {
         super(x, y);
         this.up = up;
         this.down = down;
@@ -75,4 +75,5 @@ public class Player extends Entity {
         }
     }
 
+    public void move(KeyEvent key){}
 }
