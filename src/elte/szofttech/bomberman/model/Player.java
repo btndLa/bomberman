@@ -36,22 +36,22 @@ public class Player extends Entity {
         int keyAsInt = key.getKeyCode();
         System.out.println(keyAsInt);
         if(keyAsInt == this.up){
-            if(this.y + 1 < engine.getBoard().length && engine.getBoard()[this.x][this.y+1].Walkable){
+            if(this.y + 1 < engine.getBoard().length && engine.getBoard()[this.x][this.y+1].isWalkable()){
                 this.y += 1;
             }
         }
         else if(keyAsInt == this.down){
-            if(this.y - 1 >= 0 && engine.getBoard()[this.x][this.y-1].Walkable){
+            if(this.y - 1 >= 0 && engine.getBoard()[this.x][this.y-1].isWalkable()){
                 this.y -= 1;
             }
         }
         else if(keyAsInt == this.left){
-            if(this.x - 1 >= 0 && engine.getBoard()[this.x-1][this.y].Walkable){
+            if(this.x - 1 >= 0 && engine.getBoard()[this.x-1][this.y].isWalkable()){
                 this.x -= 1;
             }
         }
         else if(keyAsInt == this.right){
-            if(this.x + 1 < engine.getBoard().length && engine.getBoard()[this.x +1][this.y].Walkable){
+            if(this.x + 1 < engine.getBoard().length && engine.getBoard()[this.x +1][this.y].isWalkable()){
                 this.x += 1;
             }
         }
@@ -60,7 +60,7 @@ public class Player extends Entity {
                 engine.DetonateBomb(new Bomb(this.x, this.y, this.bombRadius, 3));
             }
         }
-        engine.getBoard()[this.x][this.y].Walkable = false;
+        engine.getBoard()[this.x][this.y].setWalkable(false);
     }
 
     @Override
