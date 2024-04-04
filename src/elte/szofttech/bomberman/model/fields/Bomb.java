@@ -27,16 +27,16 @@ public class Bomb extends Field {
     }
     public Bomb(int x, int y, int radius, int detonateTime) {
         super(x,y);
-          this.tileSize = 75;
-          this.x = x;
-          this.y = y;
-        System.out.println(y+"x");
+        this.setColor(Color.BLACK);
+        this.tileSize = 75;
+        this.x = x;
+        this.y = y;
         this.radius = radius;
         this.detonateTime = detonateTime;
     }
     @Override
     public void draw(Graphics g, int x, int y) {
-      g.setColor(Color.BLACK);
+      g.setColor(color);
       g.fillRect(this.x*this.tileSize, this.y*this.tileSize,this.tileSize, this.tileSize);      
   }
 }

@@ -9,6 +9,7 @@ import elte.szofttech.bomberman.model.fields.Wall;
 import elte.szofttech.bomberman.model.monsters.BasicMonster;
 import elte.szofttech.bomberman.model.monsters.Monster;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -155,20 +156,29 @@ public class GameEngine extends JPanel implements KeyListener{
     }
 
     private void explosion(int x, int y,Bomb bomb){
-      ArrayList<Field> fields = new ArrayList<>();
-      spreadExplosionUp(board[y-1][x],bomb.getRadius());
-      fields.add(board[y+1][x]);
-      fields.add(board[y][x-1]);
-      fields.add(board[y][x+1]);
       
+      ArrayList<Field> fields = new ArrayList<>();
+      fields.addAll(spreadExplosionUp(board[y-1][x],bomb.getRadius()));
+      // fields.add(board[y+1][x]);
+      // fields.add(board[y][x-1]);
+      // fields.add(board[y][x+1]);
+      //
       fields.add(board[y][x]);
+      ArrayList<Field> explosionFields = new ArrayList<>();
+      explosionFields.addAll(fields);
+      for (Field field : explosionFields) {
+        field.setColor(Color.ORANGE);
+        field.draw(getGraphics(), field.getX(), field.getY());
+      }
+
     }
     
     private ArrayList<Field> spreadExplosionUp(Field field, int radius){
       ArrayList<Field> fields = new ArrayList<>();
       for (int i = 0; i < radius; i++) {
-        if (board[field.getY()+i][getX()].isDestructible()){
-          fields.add(board[field.getY()+i][getX()]);
+        if (board[field.getY()/this.tileSize-i][getX()/this.tileSize].isDestructible()){
+          System.out.println(field.getY()/this.tileSize-i);
+          fields.add(board[field.getY()/this.tileSize-i][getX()/this.tileSize]);
         }else{
           return fields;
         }

@@ -9,6 +9,7 @@ public class Floor extends Field{
   public Floor(int x, int y){
       super(x, y);
       this.setWalkable(true);
+      this.setColor(Color.GREEN);
       
     }
 
@@ -22,7 +23,7 @@ public class Floor extends Field{
         return true;
     }
     public void draw(Graphics g, int x, int y) {
-      g.setColor(Color.GREEN);
+      g.setColor(color);
       g.fillRect(x, y,this.tileSize, this.tileSize);      
   }
 }
