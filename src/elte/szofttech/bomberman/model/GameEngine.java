@@ -267,7 +267,7 @@ private ArrayList<Field> spreadExplosionRight(Field field, int radius) {
     int startX = field.getX() / this.tileSize;
     int maxX = board[0].length;
 
-    for (int i = 0; i < radius; i++) {
+    for (int i = 0; i < radius -1; i++) {
         int newX = startX + i;
         if (newX >= maxX) break;
         Field newField = board[startY][newX];
