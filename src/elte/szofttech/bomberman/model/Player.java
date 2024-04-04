@@ -30,11 +30,11 @@ public class Player extends Entity {
         this.bombRadius = 3;
         this.placedBombs = 0;
         this.isAlive = true;
+        engine.getBoard()[this.x][this.y].setWalkable(false);
     }
 
     public void move(KeyEvent key){
         int keyAsInt = key.getKeyCode();
-        System.out.println(keyAsInt);
         if(keyAsInt == this.up){
             if(this.y + 1 < engine.getBoard().length && engine.getBoard()[this.x][this.y+1].isWalkable()){
                 this.y += 1;

@@ -7,6 +7,7 @@ import java.util.Random;
 public class BasicMonster extends Monster {
     public BasicMonster(int x, int y, int speed, GameEngine engine) {
         super(x, y, speed, engine);
+        engine.getBoard()[this.x][this.y].setWalkable(false);
     }
 
     /**
@@ -18,46 +19,37 @@ public class BasicMonster extends Monster {
      */
     @Override
     public void move(int direction) {
-        int randomDirection;
-        do{
-            randomDirection = (new Random()).nextInt(1,5);
-        }while (randomDirection == direction);
         switch (direction) {
             case 1 -> {
-                if (this.y + 1 < engine.getBoard().length && engine.getBoard()[this.x][this.y].Walkable) {
+                if (this.y + 1 < engine.getBoard().length && engine.getBoard()[this.x][this.y+1].isWalkable()) {
+                    engine.getBoard()[this.x][this.y].setWalkable(true);
                     this.y++;
                 }
-                else{
-                    this.move(randomDirection);
-                }
+
             }
             case 2 -> {
-                if (this.y - 1 >= 0 && engine.getBoard()[this.x][this.y].Walkable) {
+                if (this.y - 1 >= 0 && engine.getBoard()[this.x][this.y-1].isWalkable()) {
+                    engine.getBoard()[this.x][this.y].setWalkable(true);
                     this.y--;
                 }
-                else{
-                    this.move(randomDirection);
-                }
+
             }
             case 3 -> {
-                if (this.x - 1 >= 0 && engine.getBoard()[this.x][this.y].Walkable) {
+                if (this.x - 1 >= 0 && engine.getBoard()[this.x-1][this.y].isWalkable()) {
+                    engine.getBoard()[this.x][this.y].setWalkable(true);
                     this.x--;
                 }
-                else{
-                    this.move(randomDirection);
-                }
+
             }
             case 4 -> {
-                if (this.x + 1 < engine.getBoard().length && engine.getBoard()[this.x][this.y].Walkable) {
+                if (this.x + 1 < engine.getBoard().length && engine.getBoard()[this.x+1][this.y].isWalkable()) {
+                    engine.getBoard()[this.x][this.y].setWalkable(true);
                     this.x++;
                 }
-                else{
-                    this.move(randomDirection);
-                }
             }
-            default -> this.move(randomDirection);
+            default -> engine.getBoard()[this.x][this.y].setWalkable(false);
         }
-        engine.getBoard()[this.x][this.y].Walkable = false;
+        engine.getBoard()[this.x][this.y].setWalkable(false);
     }
 
 
