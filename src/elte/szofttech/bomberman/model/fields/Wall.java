@@ -7,6 +7,8 @@ public class Wall extends Field{
 
     public Wall(int x, int y){
       super(x, y);
+      this.defaultColor = Color.GRAY;
+      this.setColor(defaultColor);
     }
     @Override
     public boolean isDestructible() {
@@ -18,7 +20,7 @@ public class Wall extends Field{
         return false;
     }
     public void draw(Graphics g, int x, int y) {
-      g.setColor(Color.GRAY);
+      g.setColor(color);
       g.fillRect(x, y,this.tileSize, this.tileSize);      
   }
 }

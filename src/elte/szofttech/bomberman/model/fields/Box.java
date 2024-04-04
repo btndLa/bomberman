@@ -7,6 +7,8 @@ public class Box extends Field{
 
     public Box(int x, int y){
       super(x, y);
+      this.defaultColor = new Color(222, 184, 135);
+      this.setColor(defaultColor);
     }
     @Override
     public boolean isDestructible() {
@@ -18,7 +20,7 @@ public class Box extends Field{
         return false;
     }
     public void draw(Graphics g, int x, int y) {
-      g.setColor(new Color(222, 184, 135));
+      g.setColor(color);
       g.fillRect(x, y,this.tileSize, this.tileSize);      
   }
 }

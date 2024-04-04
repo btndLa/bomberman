@@ -1,19 +1,26 @@
 package elte.szofttech.bomberman.model.fields;
 
 import java.awt.Graphics;
+import java.awt.Color;
 
 public abstract class Field {
     private boolean Walkable;
     protected int tileSize;
     private int x;
     private int y;
+    protected Color defaultColor;
+    protected Color color;
 
     public int getTileSize(){
       return tileSize;
     }
+    public int getX(){return x;}
+    public int getY(){return y;}
+    public Color getDefaultColor(){return this.defaultColor;}
+    public void setColor(Color color){this.color = color;}
 
     public Field(int x, int y) {
-      tileSize = 75;
+      this.tileSize = 75;
       this.x = x;
       this.y = y;
     }
