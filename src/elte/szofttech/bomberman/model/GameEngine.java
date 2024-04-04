@@ -5,10 +5,13 @@ import elte.szofttech.bomberman.model.fields.Bomb;
 import elte.szofttech.bomberman.model.fields.Field;
 import elte.szofttech.bomberman.model.monsters.Monster;
 
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-public class GameEngine {
+import javax.swing.JPanel;
+
+public class GameEngine extends JPanel {
     private List<Player> players;
     private List<Monster> monsters;
     private Field[][] board;
@@ -22,4 +25,8 @@ public class GameEngine {
     public void Update(){}
     public void EndGame(){}
     public void DetonateBomb(Bomb bomb){}
+    public Component getTimerLabel() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTimerLabel'");
+    }
 }
