@@ -24,7 +24,7 @@ public class Player extends Entity {
         this.down = down;
         this.left = left;
         this.right = right;
-        this.bomb = bomb;
+        this.bombButton = bombButton;
         this.engine = engine;
         this.bombCapacity = 1;
         this.bombRadius = 3;
@@ -55,7 +55,7 @@ public class Player extends Entity {
                 this.x += 1;
             }
         }
-        else if (keyAsInt == this.bomb){
+        else if (keyAsInt == this.bombButton){
             if(engine.getBoard()[this.x][this.y].canPlaceBomb()){
                 engine.DetonateBomb(new Bomb(this.x, this.y, this.bombRadius, 3));
             }
@@ -75,5 +75,4 @@ public class Player extends Entity {
         }
     }
 
-    public void move(KeyEvent key){}
 }

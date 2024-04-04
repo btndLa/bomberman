@@ -21,4 +21,6 @@ public abstract class Field {
     };
     public abstract boolean isDestructible();
     public abstract boolean canPlaceBomb();
+    public void setWalkable(boolean w){this.Walkable = w;}
+    public boolean isWalkable(){return this.Walkable;}
 }

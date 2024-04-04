@@ -5,13 +5,11 @@ import java.awt.Graphics;
 
 
 public class Floor extends Field{
-    public Floor(){
-        this.setWalkable(true);
-    }
-
-
-    public Floor(int x, int y){
+ 
+  public Floor(int x, int y){
       super(x, y);
+      this.setWalkable(true);
+      
     }
 
     @Override

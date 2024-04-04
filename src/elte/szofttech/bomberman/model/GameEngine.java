@@ -47,7 +47,9 @@ public class GameEngine extends JPanel {
       players.add(new Player(1, 2, 38, 40, 37, 39, 81, this));
       players.add(new Player(10, 20, 87, 83, 67, 68, 96, this));
 
-      
+    }
+    public Field[][] getBoard(){
+      return this.board;
     }
     public void EventHandle(KeyEvent event){}
     public void Update(){}
