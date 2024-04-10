@@ -6,6 +6,6 @@ public class BombRangeBonus extends PowerUp{
 
     @Override
     public void apply(Player player) {
-
+        player.bonusRangeApply();
     }
 }
