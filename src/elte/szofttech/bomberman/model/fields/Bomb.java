@@ -38,6 +38,6 @@ public class Bomb extends Field {
     @Override
     public void draw(Graphics g, int x, int y) {
       g.setColor(color);
-      g.fillRect(this.x*this.tileSize, this.y*this.tileSize,this.tileSize, this.tileSize);      
+      g.fillRect(x, y,this.tileSize, this.tileSize);      
   }
 }

@@ -35,7 +35,14 @@ public class Player extends Entity {
         engine.getBoard()[this.y][this.x].setWalkable(false);
     }
 
+    public int getX(){return x;}
+    public int getY(){return y;}
+    public int getbombCapacity(){return bombCapacity;}
+    public int getPlacedBombs(){return placedBombs;}
+    public void setPlacedBombs(int n){this.placedBombs = n;}
+
     public void move(KeyEvent key){
+      if (!this.isAlive) {return;}
       int currentX = this.x;
       int currentY = this.y;
       int keyAsInt = key.getKeyCode();
@@ -61,12 +68,14 @@ public class Player extends Entity {
       }
       else if (keyAsInt == this.bombButton){
           if(engine.getBoard()[this.y][this.x].canPlaceBomb()){
-              engine.DetonateBomb(new Bomb(currentX, currentY, this.bombRadius, 3));
+              engine.DetonateBomb(new Bomb(currentX*engine.getTileSize(), currentY*engine.getTileSize(), this.bombRadius, 3),this);
           }
       }
       if(currentX != this.x || currentY != this.y) engine.getBoard()[currentY][currentX].setWalkable(true);
       engine.getBoard()[this.y][this.x].setWalkable(false);
   }
+
+  public void die(){this.isAlive = false;}
 
     @Override
     public void onExplosion() {

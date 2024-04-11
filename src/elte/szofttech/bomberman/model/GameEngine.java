@@ -19,11 +19,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 import javax.swing.Timer;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -106,7 +108,6 @@ public class GameEngine extends JPanel implements KeyListener{
         int y = 0;
         int row = 0;
         while ((line = reader.readLine()) != null) {
-            System.out.println("Line: " + line);
             int x = 0;
             int col = 0;
             for (int i = 0; i < line.length(); i++) {
@@ -141,150 +142,108 @@ public class GameEngine extends JPanel implements KeyListener{
       }
     }
 
-    public void DetonateBomb(Bomb bomb){
+    public void DetonateBomb(Bomb bomb, Player p){
+      System.out.println(board[bomb.getY()/tileSize][bomb.getX()/tileSize]);
+      if(p.getPlacedBombs()>= p.getbombCapacity()){return; }
       bombs.add(bomb);
+      repaint();
+      p.setPlacedBombs(p.getPlacedBombs()+1);
+      board[bomb.getY()/tileSize][bomb.getX()/tileSize] = bomb;
       Timer detonationTimer = new Timer(bomb.getDetonation()*1000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          explosion(bomb.getX(), bomb.getY(), bomb);
-            bombs.remove(bomb);
-            repaint();
+          bombs.remove(bomb);
+          p.setPlacedBombs(p.getPlacedBombs()-1);
+          board[bomb.getY()/tileSize][bomb.getX()/tileSize] = new Floor(bomb.getX(),bomb.getY());
+          explosion(bomb.getX()/tileSize, bomb.getY()/tileSize, bomb);
         }
-    });
-    detonationTimer.setRepeats(false);
-    detonationTimer.start();
+      });
+      detonationTimer.setRepeats(false);
+      detonationTimer.start();
     }
 
     private void explosion(int x, int y, Bomb bomb) {
-      ArrayList<Field> fields = new ArrayList<>();
-      fields.addAll(spreadExplosionUp(board[y - 1][x], bomb.getRadius()));
-      fields.addAll(spreadExplosionDown(board[y + 1][x], bomb.getRadius()));
-      fields.addAll(spreadExplosionLeft(board[y][x - 1], bomb.getRadius()));
-      fields.addAll(spreadExplosionRight(board[y][x + 1], bomb.getRadius()));
+      Queue<Field> fields = new LinkedList<>();
       fields.add(board[y][x]);
-  
-      // Set explosion color and draw
-      for (Field field : fields) {
-          field.setColor(Color.ORANGE);
-          field.draw(getGraphics(), field.getX(), field.getY());
-      }
-  
-      Timer removalTimer = new Timer(500, new ActionListener() {
+      explosionEffect(fields.remove());
+      boolean[] directions = {true, true, true, true}; // Up, Down, Left, Right
+      Timer explosionTimer = new Timer(200, new ActionListener() {
+          int counter = 0;
           @Override
           public void actionPerformed(ActionEvent e) {
-              // Replace Box objects with Floor objects and update the board
-              for (Field field : fields) {
-                  if (field instanceof Box) {
-                      int tempX = field.getX();
-                      int tempY = field.getY();
-                      Field newFloor = new Floor(tempX, tempY);
-                      int row = tempY / tileSize;
-                      int col = tempX / tileSize;
-                      board[row][col] = newFloor;
+              if (counter >= bomb.getRadius()) {
+                  ((Timer) e.getSource()).stop();
+                  return;
+              }
+              if (y - counter >= 0 && directions[0] && board[y - counter][x].isDestructible()) {
+                  fields.add(board[y - counter][x]);
+                  if (board[y - counter][x] instanceof Box) {
+                      directions[0] = false;
                   }
+              } else {
+                  directions[0] = false;
               }
-  
-              // Reset color of all fields
-              for (Field field : fields) {
-                  field.setColor(field.getDefaultColor());
-                  field.draw(getGraphics(), field.getX(), field.getY());
-                  repaint();
+              if (y + counter < board.length && directions[1] && board[y + counter][x].isDestructible()) {
+                  fields.add(board[y + counter][x]);
+                  if (board[y + counter][x] instanceof Box) {
+                      directions[1] = false;
+                  }
+              } else {
+                  directions[1] = false;
               }
+              if (x - counter >= 0 && directions[2] && board[y][x - counter].isDestructible()) {
+                  fields.add(board[y][x - counter]);
+                  if (board[y][x - counter] instanceof Box) {
+                      directions[2] = false;
+                  }
+              } else {
+                  directions[2] = false;
+              }
+              if (x + counter < board[0].length && directions[3] && board[y][x + counter].isDestructible()) {
+                  fields.add(board[y][x + counter]);
+                  if (board[y][x + counter] instanceof Box) {
+                      directions[3] = false;
+                  }
+              } else {
+                  directions[3] = false;
+              }
+              
+              while (!fields.isEmpty()) {
+                  explosionEffect(fields.remove());
+              }
+              
+              counter++;
           }
       });
-  
-      removalTimer.setRepeats(false); // Only run once
-      removalTimer.start();
+      
+      explosionTimer.start();
   }
   
   
-    
-    private ArrayList<Field> spreadExplosionUp(Field field, int radius) {
-      ArrayList<Field> fields = new ArrayList<>();
-      int startY = field.getY() / this.tileSize;
-      int startX = field.getX() / this.tileSize;
-      for (int i = 0; i < radius-1; i++) {
-          int newY = startY - i;
-          if (newY < 0) break;
-          Field newField = board[newY][startX];
-          if (newField.isDestructible()) {
-              fields.add(newField);
-              if (newField instanceof Box) {
-                return fields;
+  
+    private void explosionEffect(Field field) {
+      field.setColor(Color.ORANGE);
+      field.draw(getGraphics(), field.getX(), field.getY());
+      Timer explosionTimer = new Timer(500, new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            if (field instanceof Box /*&& field.hasPowerUP()*/) {
+              board[field.getY()/tileSize][field.getX()/tileSize] = new Floor(field.getX(), field.getY());
+              repaint();
+            }
+              field.setColor(field.getDefaultColor());
+              field.draw(getGraphics(), field.getX(), field.getY());
+            for (Player player : players) {
+              if(player.getX() == field.getX()/tileSize && player.getY() == field.getY()/tileSize){
               }
-          } else {
-              break; 
+            }
           }
-      }
-      return fields;
+      });
+      explosionTimer.setRepeats(false); 
+      explosionTimer.start(); 
   }
-  private ArrayList<Field> spreadExplosionDown(Field field, int radius) {
-    ArrayList<Field> fields = new ArrayList<>();
-    int startY = field.getY() / this.tileSize;
-    int startX = field.getX() / this.tileSize;
-    int maxY = board.length;
-
-    for (int i = 0; i < radius - 1; i++) {
-        int newY = startY + i;
-        if (newY >= maxY) break;
-        Field newField = board[newY][startX];
-        if (newField.isDestructible()) {
-            fields.add(newField);
-            if (newField instanceof Box) {
-              return fields;
-            }
-        } else {
-            break;
-        }
-    }
-    return fields;
-}
-
-private ArrayList<Field> spreadExplosionLeft(Field field, int radius) {
-    ArrayList<Field> fields = new ArrayList<>();
-    int startY = field.getY() / this.tileSize;
-    int startX = field.getX() / this.tileSize;
-
-    for (int i = 0; i < radius - 1; i++) {
-        int newX = startX - i;
-        if (newX < 0) break;
-        Field newField = board[startY][newX];
-        if (newField.isDestructible()) {
-            fields.add(newField);
-            if (newField instanceof Box) {
-              return fields;
-            }
-        } else {
-            break;
-        }
-    }
-    return fields;
-}
-
-private ArrayList<Field> spreadExplosionRight(Field field, int radius) {
-    ArrayList<Field> fields = new ArrayList<>();
-    int startY = field.getY() / this.tileSize;
-    int startX = field.getX() / this.tileSize;
-    int maxX = board[0].length;
-
-    for (int i = 0; i < radius -1; i++) {
-        int newX = startX + i;
-        if (newX >= maxX) break;
-        Field newField = board[startY][newX];
-        if (newField.isDestructible()) {
-            fields.add(newField);
-            if (newField instanceof Box) {
-              return fields;
-            }
-        } else {
-            break;
-        }
-    }
-    return fields;
-}
-
   
-  
+
     
 
     @Override
