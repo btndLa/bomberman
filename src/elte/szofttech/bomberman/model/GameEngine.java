@@ -19,11 +19,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 import javax.swing.Timer;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -141,22 +143,31 @@ public class GameEngine extends JPanel implements KeyListener{
       }
     }
 
-    public void DetonateBomb(Bomb bomb){
+    public void DetonateBomb(Bomb bomb, Player p){
+      if(p.getPlacedBombs()>= p.getbombCapacity()){return; }
       bombs.add(bomb);
+      p.setPlacedBombs(p.getPlacedBombs()+1);
+      Field originalField = board[bomb.getY()][bomb.getX()]; 
+      board[bomb.getY()][bomb.getX()] = bomb;
       Timer detonationTimer = new Timer(bomb.getDetonation()*1000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          explosion(bomb.getX(), bomb.getY(), bomb);
-            bombs.remove(bomb);
-            repaint();
+          //explosion(bomb.getX(), bomb.getY(), bomb);
         }
-    });
-    detonationTimer.setRepeats(false);
-    detonationTimer.start();
+      });
+      detonationTimer.setRepeats(false);
+      detonationTimer.start();
+      bombs.remove(bomb);
+      p.setPlacedBombs(p.getPlacedBombs()-1);
+      board[bomb.getY()][bomb.getX()] = originalField;
+      repaint();
     }
 
     private void explosion(int x, int y, Bomb bomb) {
-      ArrayList<Field> fields = new ArrayList<>();
+      Queue<Field> fields = new LinkedList<>();
+      for (int i = 0; i < board.length; i++) {
+        
+      }
       fields.addAll(spreadExplosionUp(board[y - 1][x], bomb.getRadius()));
       fields.addAll(spreadExplosionDown(board[y + 1][x], bomb.getRadius()));
       fields.addAll(spreadExplosionLeft(board[y][x - 1], bomb.getRadius()));
