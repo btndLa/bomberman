@@ -146,33 +146,36 @@ public class GameEngine extends JPanel implements KeyListener{
     public void DetonateBomb(Bomb bomb, Player p){
       if(p.getPlacedBombs()>= p.getbombCapacity()){return; }
       bombs.add(bomb);
+      repaint();
       p.setPlacedBombs(p.getPlacedBombs()+1);
       Field originalField = board[bomb.getY()][bomb.getX()]; 
       board[bomb.getY()][bomb.getX()] = bomb;
       Timer detonationTimer = new Timer(bomb.getDetonation()*1000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          //explosion(bomb.getX(), bomb.getY(), bomb);
+          explosion(bomb.getX(), bomb.getY(), bomb);
+          bombs.remove(bomb);
+          p.setPlacedBombs(p.getPlacedBombs()-1);
+          board[bomb.getY()][bomb.getX()] = originalField;
         }
       });
       detonationTimer.setRepeats(false);
       detonationTimer.start();
-      bombs.remove(bomb);
-      p.setPlacedBombs(p.getPlacedBombs()-1);
-      board[bomb.getY()][bomb.getX()] = originalField;
+      
       repaint();
     }
 
     private void explosion(int x, int y, Bomb bomb) {
       Queue<Field> fields = new LinkedList<>();
-      for (int i = 0; i < board.length; i++) {
+      fields.add(board[y][x]);
+      explosionEffect(fields.remove());
+      for (int i = 1; i <= bomb.getRadius(); i++) {
         
       }
       fields.addAll(spreadExplosionUp(board[y - 1][x], bomb.getRadius()));
       fields.addAll(spreadExplosionDown(board[y + 1][x], bomb.getRadius()));
       fields.addAll(spreadExplosionLeft(board[y][x - 1], bomb.getRadius()));
       fields.addAll(spreadExplosionRight(board[y][x + 1], bomb.getRadius()));
-      fields.add(board[y][x]);
   
       // Set explosion color and draw
       for (Field field : fields) {
@@ -209,7 +212,21 @@ public class GameEngine extends JPanel implements KeyListener{
   }
   
   
-    
+    private void explosionEffect(Field field){
+      field.setColor(Color.ORANGE);
+      field.draw(getGraphics(), field.getX(), field.getY());
+      try {
+        TimeUnit.MILLISECONDS.sleep(500);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      field.setColor(field.getDefaultColor());
+      field.draw(getGraphics(), field.getX(), field.getY());
+      if (field instanceof Box) {
+        //drop powerup
+      }
+
+    }
     private ArrayList<Field> spreadExplosionUp(Field field, int radius) {
       ArrayList<Field> fields = new ArrayList<>();
       int startY = field.getY() / this.tileSize;
