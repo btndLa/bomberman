@@ -25,6 +25,7 @@ import javax.swing.Timer;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -238,11 +239,12 @@ public class GameEngine extends JPanel implements KeyListener{
                 player.die();
               }
             }
-            for (Monster monster : monsters) {
-              if(monster.getX() == field.getX()/tileSize && monster.getY() == field.getY()/tileSize){
-                monsters.remove(monster);
-                monster = null;
-              }
+            Iterator<Monster> monsterIterator = monsters.iterator();
+            while (monsterIterator.hasNext()) {
+              Monster monster = monsterIterator.next();
+              if (monster.getX() == field.getX() / tileSize && monster.getY() == field.getY() / tileSize) {
+                monsterIterator.remove(); // Remove the monster from the list
+                }
             }
           }
       });
