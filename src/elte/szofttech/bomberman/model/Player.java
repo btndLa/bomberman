@@ -63,7 +63,7 @@ public class Player extends Entity {
       }
       else if(keyAsInt == this.right){
           if(this.x + 1 < engine.getBoard()[0].length && engine.getBoard()[this.y][this.x + 1].isWalkable()){
-              this.x += 1;
+            this.x += 1;
           }
       }
       else if (keyAsInt == this.bombButton){
@@ -71,7 +71,7 @@ public class Player extends Entity {
               engine.DetonateBomb(new Bomb(currentX*engine.getTileSize(), currentY*engine.getTileSize(), this.bombRadius, 3),this);
           }
       }
-      if(currentX != this.x || currentY != this.y) engine.getBoard()[currentY][currentX].setWalkable(true);
+      if((currentX != this.x || currentY != this.y) && !(engine.getBoard()[currentY][currentX] instanceof Bomb) ) engine.getBoard()[currentY][currentX].setWalkable(true);
       engine.getBoard()[this.y][this.x].setWalkable(false);
   }
 
