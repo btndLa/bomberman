@@ -166,46 +166,59 @@ public class GameEngine extends JPanel implements KeyListener{
       Queue<Field> fields = new LinkedList<>();
       fields.add(board[y][x]);
       explosionEffect(fields.remove());
-      boolean up = true;
-      boolean down = true;
-      boolean left = true;
-      boolean right = true;
-      for (int i = 1; i <= bomb.getRadius(); i++) {
-        try {
-          TimeUnit.MILLISECONDS.sleep(200);
-        }catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-        if (y-i>=0 && up && board[y-i][x].isDestructible()){
-          fields.add(board[y-i][x]);
-          if (board[y-i][x] instanceof Box) {
-            up = false;
+      boolean[] directions = {true, true, true, true}; // Up, Down, Left, Right
+      Timer explosionTimer = new Timer(200, new ActionListener() {
+          int counter = 0;
+          @Override
+          public void actionPerformed(ActionEvent e) {
+              if (counter >= bomb.getRadius()) {
+                  ((Timer) e.getSource()).stop();
+                  return;
+              }
+              if (y - counter >= 0 && directions[0] && board[y - counter][x].isDestructible()) {
+                  fields.add(board[y - counter][x]);
+                  if (board[y - counter][x] instanceof Box) {
+                      directions[0] = false;
+                  }
+              } else {
+                  directions[0] = false;
+              }
+              if (y + counter < board.length && directions[1] && board[y + counter][x].isDestructible()) {
+                  fields.add(board[y + counter][x]);
+                  if (board[y + counter][x] instanceof Box) {
+                      directions[1] = false;
+                  }
+              } else {
+                  directions[1] = false;
+              }
+              if (x - counter >= 0 && directions[2] && board[y][x - counter].isDestructible()) {
+                  fields.add(board[y][x - counter]);
+                  if (board[y][x - counter] instanceof Box) {
+                      directions[2] = false;
+                  }
+              } else {
+                  directions[2] = false;
+              }
+              if (x + counter < board[0].length && directions[3] && board[y][x + counter].isDestructible()) {
+                  fields.add(board[y][x + counter]);
+                  if (board[y][x + counter] instanceof Box) {
+                      directions[3] = false;
+                  }
+              } else {
+                  directions[3] = false;
+              }
+              
+              while (!fields.isEmpty()) {
+                  explosionEffect(fields.remove());
+              }
+              
+              counter++;
           }
-        }else{up = false;}
-        if (y+i<board.length &&down && board[y+i][x].isDestructible()){
-          fields.add(board[y+i][x]);
-          if (board[y+i][x] instanceof Box) {
-            down = false;
-          }
-        }else{down = false;}
-        if (x+i<board.length &&right && board[y][x+i].isDestructible()){
-          fields.add(board[y][x+i]);
-          if (board[y][x+i] instanceof Box) {
-            right = false;
-          }
-        }else{right = false;}
-        if (x-i>=0 && left && board[y][x-i].isDestructible()){
-          fields.add(board[y][x-i]);
-          if (board[y][x-i] instanceof Box) {
-            left = false;
-          }
-        }else{left = false;}
-
-        while (!fields.isEmpty()) {
-          explosionEffect(fields.remove());
-        }
-      }
-    }
+      });
+      
+      explosionTimer.start();
+  }
+  
   
   
     private void explosionEffect(Field field) {
