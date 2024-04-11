@@ -143,12 +143,12 @@ public class GameEngine extends JPanel implements KeyListener{
     }
 
     public void DetonateBomb(Bomb bomb, Player p){
-      System.out.println(board[bomb.getY()/tileSize][bomb.getX()/tileSize]);
       if(p.getPlacedBombs()>= p.getbombCapacity()){return; }
       bombs.add(bomb);
       repaint();
       p.setPlacedBombs(p.getPlacedBombs()+1);
       board[bomb.getY()/tileSize][bomb.getX()/tileSize] = bomb;
+      
       Timer detonationTimer = new Timer(bomb.getDetonation()*1000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -235,6 +235,13 @@ public class GameEngine extends JPanel implements KeyListener{
               field.draw(getGraphics(), field.getX(), field.getY());
             for (Player player : players) {
               if(player.getX() == field.getX()/tileSize && player.getY() == field.getY()/tileSize){
+                player.die();
+              }
+            }
+            for (Monster monster : monsters) {
+              if(monster.getX() == field.getX()/tileSize && monster.getY() == field.getY()/tileSize){
+                monsters.remove(monster);
+                monster = null;
               }
             }
           }

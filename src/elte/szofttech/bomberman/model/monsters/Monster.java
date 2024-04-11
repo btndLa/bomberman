@@ -15,6 +15,9 @@ public abstract class Monster extends Entity {
         this.speed = speed;
         this.engine = engine;
     }
+
+    public int getX(){ return x; }
+    public int getY(){ return y; }
     public abstract void move();
     public abstract void draw(Graphics g);   
     public abstract int getSpeed();

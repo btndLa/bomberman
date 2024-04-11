@@ -25,6 +25,7 @@ public class Bomb extends Field {
     public boolean canPlaceBomb() {
         return false;
     }
+    
     public Bomb(int x, int y, int radius, int detonateTime) {
         super(x,y);
         this.setColor(Color.BLACK);
@@ -34,6 +35,7 @@ public class Bomb extends Field {
         this.y = y;
         this.radius = radius;
         this.detonateTime = detonateTime;
+        this.setWalkable(false);
     }
     @Override
     public void draw(Graphics g, int x, int y) {
