@@ -34,7 +34,7 @@ class PlayerTest {
     @Test
     public void moveTestToOccupiedField(){
         BasicMonster monster = new BasicMonster(0,0,1, engine);
-        monster.move(4);
+        monster.move();
         player.move(new KeyEvent((new JPanel()),KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_RIGHT));
         assertEquals(0, player.x);
     }
