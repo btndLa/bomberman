@@ -1,5 +1,6 @@
 package elte.szofttech.bomberman.model;
 
+// Parent class for all entities
 public abstract class Entity {
     protected int x;
     protected int y;
