@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
+// Represents the basic monster, going into random directions
 public class BasicMonster extends Monster {
     public BasicMonster(int x, int y, int speed, GameEngine engine) {
         super(x, y, speed, engine);

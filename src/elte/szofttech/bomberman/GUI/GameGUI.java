@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 
 import elte.szofttech.bomberman.model.GameEngine;
 
+// Responsible for graphical user inteface and main window
 public class GameGUI {
 
     private JFrame frame;
@@ -24,16 +25,17 @@ public class GameGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameArea = new GameEngine();
         
-        //750*750
+        // Set frame dimensions and other properties
         frame.setPreferredSize(new Dimension(WINDOW_SIZE, WINDOW_SIZE));
         frame.setResizable(false);
         frame.pack();
+        // Add menu bar
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
         JMenu gameMenu = new JMenu("Game");
         menuBar.add(gameMenu); 
+        // Add game area to frame
         frame.getContentPane().add(gameArea);
-        //frame.getContentPane().add(gameArea.getTimerLabel(), BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
 }

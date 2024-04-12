@@ -3,28 +3,24 @@ package elte.szofttech.bomberman.model.fields;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import elte.szofttech.bomberman.model.fields.Field;
-
+// Represents the bomb field of the game
 public class Bomb extends Field {
     private int radius;
     private int detonateTime;
     private int x;
     private int y;
 
+    // Getters
     public int getX(){return x;}
     public int getY(){return y;}
     public int getDetonation(){return detonateTime;}
     public int getRadius(){return radius;}
 
     @Override
-    public boolean isDestructible() {
-        return false;
-    }
+    public boolean isDestructible() { return false;}
 
     @Override
-    public boolean canPlaceBomb() {
-        return false;
-    }
+    public boolean canPlaceBomb() { return false; }
     
     public Bomb(int x, int y, int radius, int detonateTime, int tileSize) {
         super(x,y, tileSize);
@@ -36,6 +32,7 @@ public class Bomb extends Field {
         this.detonateTime = detonateTime;
         this.setWalkable(false);
     }
+
     @Override
     public void draw(Graphics g, int x, int y) {
       g.setColor(color);

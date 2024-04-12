@@ -28,7 +28,9 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
 
-
+/* Enginge of the game. Responsible for simulation of gameplay,
+ * handling explsions and moving entities.
+*/
 public class GameEngine extends JPanel implements KeyListener{
     private List<Player> players;
     private List<Monster> monsters;
@@ -52,6 +54,11 @@ public class GameEngine extends JPanel implements KeyListener{
       this.StartGame();
     }
 
+    // Getters
+    public Field[][] getBoard(){ return this.board;}
+    public int getTILE_SIZE(){ return TILE_SIZE;}
+
+    // Timer loop resoinsible for moving monsters
     private void setupTimer() {
       timer = new Timer(1000, new ActionListener() { 
         @Override
@@ -62,26 +69,10 @@ public class GameEngine extends JPanel implements KeyListener{
           repaint();
         }
     });
-    timer.start(); 
-
+      timer.start(); 
     }
 
-    public void StartCharSelect(){}
-    public void SwitchScene(){}
-    public void StartGame(){
-      players = new ArrayList<Player>();
-      loadLevel();
-      players.add(new Player(1, 2, 38, 40, 37, 39, 96, this));
-      players.add(new Player(10, 2, 87, 83, 65, 68, 81, this));
-      monsters = new ArrayList<Monster>();
-      monsters.add(new BasicMonster(3, 4, 1, this));
-      monsters.add(new BasicMonster(5, 11, 1, this));
-      bombs = new ArrayList<Bomb>();
-    }
-    public Field[][] getBoard(){
-      return this.board;
-    }
-    public int getTILE_SIZE(){return TILE_SIZE;}
+    // Player movement listener
     public void keyPressed(KeyEvent e) {
       for (Player player : players) {
         player.move(e);
@@ -92,9 +83,25 @@ public class GameEngine extends JPanel implements KeyListener{
     public void keyReleased(KeyEvent e) {}
     @Override
     public void keyTyped(KeyEvent e) {}
+
+    
+    
+    public void StartCharSelect(){}
+    public void SwitchScene(){}    
     public void Update(){}
     public void EndGame(){}
-
+    // Set up board and entities
+    public void StartGame(){
+      players = new ArrayList<Player>();
+      loadLevel();
+      players.add(new Player(1, 2, 38, 40, 37, 39, 96, this));
+      players.add(new Player(10, 2, 87, 83, 65, 68, 81, this));
+      monsters = new ArrayList<Monster>();
+      monsters.add(new BasicMonster(3, 4, 1, this));
+      monsters.add(new BasicMonster(5, 11, 1, this));
+      bombs = new ArrayList<Bomb>();
+    }
+    // Setup board fields
     private void loadLevel(){
       try (BufferedReader reader = new BufferedReader(new FileReader("zmb/src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
         String line;
@@ -135,6 +142,7 @@ public class GameEngine extends JPanel implements KeyListener{
       }
     }
 
+    // Handle placement and detonation of bomb
     public void DetonateBomb(Bomb bomb, Player p){
       if(p.getPlacedBombs()>= p.getbombCapacity()){return; }
       bombs.add(bomb);
@@ -154,7 +162,7 @@ public class GameEngine extends JPanel implements KeyListener{
       detonationTimer.setRepeats(false);
       detonationTimer.start();
     }
-
+    // Spread explosion in all directions and apply explosion effect
     private void explosion(int x, int y, Bomb bomb) {
       Queue<Field> fields = new LinkedList<>();
       fields.add(board[y][x]);
@@ -164,117 +172,104 @@ public class GameEngine extends JPanel implements KeyListener{
           int counter = 0;
           @Override
           public void actionPerformed(ActionEvent e) {
-              if (counter > bomb.getRadius()) {
-                  ((Timer) e.getSource()).stop();
-                  return;
-              }
-              if (y - counter >= 0 && directions[0] && board[y - counter][x].isDestructible()) {
-                  fields.add(board[y - counter][x]);
-                  if (board[y - counter][x] instanceof Box) {
-                      directions[0] = false;
-                  }
-              } else {
-                  directions[0] = false;
-              }
-              if (y + counter < board.length && directions[1] && board[y + counter][x].isDestructible()) {
-                  fields.add(board[y + counter][x]);
-                  if (board[y + counter][x] instanceof Box) {
-                      directions[1] = false;
-                  }
-              } else {
-                  directions[1] = false;
-              }
-              if (x - counter >= 0 && directions[2] && board[y][x - counter].isDestructible()) {
-                  fields.add(board[y][x - counter]);
-                  if (board[y][x - counter] instanceof Box) {
-                      directions[2] = false;
-                  }
-              } else {
+            if (counter > bomb.getRadius()) {
+              ((Timer) e.getSource()).stop();
+              return;
+            }
+            if (y - counter >= 0 && directions[0] && board[y - counter][x].isDestructible()) {
+              fields.add(board[y - counter][x]);
+              if (board[y - counter][x] instanceof Box) {
+                directions[0] = false;
+                }
+            } else { directions[0] = false;}
+            if (y + counter < board.length && directions[1] && board[y + counter][x].isDestructible()) {
+              fields.add(board[y + counter][x]);
+              if (board[y + counter][x] instanceof Box) {
+                directions[1] = false;
+                }
+            } else { directions[1] = false;}
+            if (x - counter >= 0 && directions[2] && board[y][x - counter].isDestructible()) {
+              fields.add(board[y][x - counter]);
+              if (board[y][x - counter] instanceof Box) {
                   directions[2] = false;
-              }
-              if (x + counter < board[0].length && directions[3] && board[y][x + counter].isDestructible()) {
-                  fields.add(board[y][x + counter]);
-                  if (board[y][x + counter] instanceof Box) {
-                      directions[3] = false;
-                  }
-              } else {
+                }
+            } else {directions[2] = false;}
+            if (x + counter < board[0].length && directions[3] && board[y][x + counter].isDestructible()) {
+              fields.add(board[y][x + counter]);
+              if (board[y][x + counter] instanceof Box) {
                   directions[3] = false;
-              }
-              
-              while (!fields.isEmpty()) {
-                  explosionEffect(fields.remove());
-              }
-              
-              counter++;
+                }
+            } else {directions[3] = false;}
+            
+            while (!fields.isEmpty()) {
+                explosionEffect(fields.remove());
+            }
+            counter++;
           }
       });
-      
       explosionTimer.start();
   }
   
   
-  
+    // Visual explosion effect and, blwing up objects
     private void explosionEffect(Field field) {
       field.setColor(Color.ORANGE);
       field.draw(getGraphics(), field.getX(), field.getY());
       Timer explosionTimer = new Timer(500, new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            if (field instanceof Box /*&& field.hasPowerUP()*/) {
-              board[field.getY()/TILE_SIZE][field.getX()/TILE_SIZE] = new Floor(field.getX(), field.getY(), TILE_SIZE);
-              repaint();
-            }
-              field.setColor(field.getDefaultColor());
-              field.draw(getGraphics(), field.getX(), field.getY());
-            for (Player player : players) {
-              if(player.getX() == field.getX()/TILE_SIZE && player.getY() == field.getY()/TILE_SIZE){
-                player.die();
-              }
-            }
-            Iterator<Monster> monsterIterator = monsters.iterator();
-            while (monsterIterator.hasNext()) {
-              Monster monster = monsterIterator.next();
-              if (monster.getX() == field.getX() / TILE_SIZE && monster.getY() == field.getY() / TILE_SIZE) {
-                monsterIterator.remove(); // Remove the monster from the list
-                }
-            }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          if (field instanceof Box /*&& field.hasPowerUP()*/) {
+            board[field.getY()/TILE_SIZE][field.getX()/TILE_SIZE] = new Floor(field.getX(), field.getY(), TILE_SIZE);
+            repaint();
           }
-      });
-      explosionTimer.setRepeats(false); 
-      explosionTimer.start(); 
-  }
-  
-
-    
-
-    @Override
-    public void paintComponent(Graphics g){
-      super.paintComponent(g);
-      int y = 0;
-      for(int i = 0; i < board.length; i++) {
-        int x = 0;
-        for (int z = 0; z < board[0].length; z++) {
-          Field f = board[i][z];
-                f.draw(g, x, y);
-                x+=TILE_SIZE;
-            }
-            y+=TILE_SIZE;
-        }
-        if (this.players != null) {
+            field.setColor(field.getDefaultColor());
+            field.draw(getGraphics(), field.getX(), field.getY());
           for (Player player : players) {
-            player.draw(g);
+            if(player.getX() == field.getX()/TILE_SIZE && player.getY() == field.getY()/TILE_SIZE){
+              player.die();
+            }
+          }
+          Iterator<Monster> monsterIterator = monsters.iterator();
+          while (monsterIterator.hasNext()) {
+            Monster monster = monsterIterator.next();
+            if (monster.getX() == field.getX() / TILE_SIZE && monster.getY() == field.getY() / TILE_SIZE) {
+              monsterIterator.remove(); // Remove the monster from the list
+              }
           }
         }
-        if (this.monsters != null) {
-          for (Monster monster : monsters) {
-            monster.draw(g);
-          }
+    });
+    explosionTimer.setRepeats(false); 
+    explosionTimer.start(); 
+  }  
+
+
+  @Override
+  public void paintComponent(Graphics g){
+    super.paintComponent(g);
+    int y = 0;
+    for(int i = 0; i < board.length; i++) {
+      int x = 0;
+      for (int z = 0; z < board[0].length; z++) {
+        Field f = board[i][z];
+          f.draw(g, x, y);
+          x+=TILE_SIZE;
         }
-        if (this.bombs != null) {
-          for (Bomb bomb : bombs) {
-            bomb.draw(g, bomb.getX(), bomb.getY());
-          }
+        y+=TILE_SIZE;
+      }
+      if (this.players != null) {
+        for (Player player : players) {
+          player.draw(g);
         }
-      
-    }
+      }
+      if (this.monsters != null) {
+        for (Monster monster : monsters) {
+          monster.draw(g);
+        }
+      }
+      if (this.bombs != null) {
+        for (Bomb bomb : bombs) {
+          bomb.draw(g, bomb.getX(), bomb.getY());
+        }
+      }
+  }
 }
