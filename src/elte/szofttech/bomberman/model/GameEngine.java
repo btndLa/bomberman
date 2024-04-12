@@ -143,7 +143,7 @@ public class GameEngine extends JPanel implements KeyListener{
     }
 
     // Handle placement and detonation of bomb
-    public void DetonateBomb(Bomb bomb, Player p){
+    public void detonateBomb(Bomb bomb, Player p){
       if(p.getPlacedBombs()>= p.getbombCapacity()){return; }
       bombs.add(bomb);
       repaint();
@@ -221,6 +221,9 @@ public class GameEngine extends JPanel implements KeyListener{
           if (field instanceof Box /*&& field.hasPowerUP()*/) {
             board[field.getY()/TILE_SIZE][field.getX()/TILE_SIZE] = new Floor(field.getX(), field.getY(), TILE_SIZE);
             repaint();
+          }
+          if (field instanceof Bomb){
+            
           }
             field.setColor(field.getDefaultColor());
             field.draw(getGraphics(), field.getX(), field.getY());
