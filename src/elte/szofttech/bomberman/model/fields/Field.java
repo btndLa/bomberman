@@ -19,8 +19,8 @@ public abstract class Field {
     public Color getDefaultColor(){return this.defaultColor;}
     public void setColor(Color color){this.color = color;}
 
-    public Field(int x, int y) {
-      this.tileSize = 75;
+    public Field(int x, int y, int tileSize) {
+      this.tileSize = tileSize;
       this.x = x;
       this.y = y;
     }

@@ -6,8 +6,8 @@ import java.awt.Graphics;
 
 public class Floor extends Field{
  
-  public Floor(int x, int y){
-      super(x, y);
+  public Floor(int x, int y, int tileSize){
+      super(x, y, tileSize);
       this.setWalkable(true);
       this.defaultColor = Color.GREEN;
       this.setColor(defaultColor);

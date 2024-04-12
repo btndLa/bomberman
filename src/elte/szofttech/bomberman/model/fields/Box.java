@@ -5,8 +5,8 @@ import java.awt.Graphics;
 
 public class Box extends Field{
 
-    public Box(int x, int y){
-      super(x, y);
+    public Box(int x, int y, int tileSize){
+      super(x, y, tileSize);
       this.defaultColor = new Color(222, 184, 135);
       this.setColor(defaultColor);
     }

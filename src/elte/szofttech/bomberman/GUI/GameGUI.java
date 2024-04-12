@@ -17,6 +17,7 @@ public class GameGUI {
 
     private JFrame frame;
     private GameEngine gameArea;
+    private static final int WINDOW_SIZE = 1000;
 
     public GameGUI() {
         frame = new JFrame("Bomberman");
@@ -24,7 +25,7 @@ public class GameGUI {
         gameArea = new GameEngine();
         
         //750*750
-        frame.setPreferredSize(new Dimension(1000, 1000));
+        frame.setPreferredSize(new Dimension(WINDOW_SIZE, WINDOW_SIZE));
         frame.setResizable(false);
         frame.pack();
         JMenuBar menuBar = new JMenuBar();
