@@ -172,7 +172,7 @@ public class GameEngine extends JPanel implements KeyListener{
           int counter = 0;
           @Override
           public void actionPerformed(ActionEvent e) {
-              if (counter >= bomb.getRadius()) {
+              if (counter > bomb.getRadius()) {
                   ((Timer) e.getSource()).stop();
                   return;
               }
