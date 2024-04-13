@@ -144,21 +144,26 @@ public class GameEngine extends JPanel implements KeyListener{
 
     // Handle placement and detonation of bomb
     public void detonateBomb(Bomb bomb, Player p){
-      if(p.getPlacedBombs()>= p.getbombCapacity()){return; }
+      int delay;
+      delay = p == null ? 0 : bomb.getDetonation()*1000; // If player is null, the bomb is blown up by another bomb
+      if(p != null){
+        if(p.getPlacedBombs()>= p.getbombCapacity()){return; }
+        p.setPlacedBombs(p.getPlacedBombs()+1);
+      } 
       bombs.add(bomb);
       repaint();
-      p.setPlacedBombs(p.getPlacedBombs()+1);
       board[bomb.getY()/TILE_SIZE][bomb.getX()/TILE_SIZE] = bomb;
       
-      Timer detonationTimer = new Timer(bomb.getDetonation()*1000, new ActionListener() {
+      Timer detonationTimer = new Timer(delay, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
           bombs.remove(bomb);
-          p.setPlacedBombs(p.getPlacedBombs()-1);
+          if(p!= null) p.setPlacedBombs(p.getPlacedBombs()-1);
           board[bomb.getY()/TILE_SIZE][bomb.getX()/TILE_SIZE] = new Floor(bomb.getX(),bomb.getY(), TILE_SIZE);
           explosion(bomb.getX()/TILE_SIZE, bomb.getY()/TILE_SIZE, bomb);
         }
       });
+      bomb.setTimer(detonationTimer);
       detonationTimer.setRepeats(false);
       detonationTimer.start();
     }
@@ -166,7 +171,7 @@ public class GameEngine extends JPanel implements KeyListener{
     private void explosion(int x, int y, Bomb bomb) {
       Queue<Field> fields = new LinkedList<>();
       fields.add(board[y][x]);
-      explosionEffect(fields.remove());
+      explosionEffect(fields.remove(), bomb);
       boolean[] directions = {true, true, true, true}; // Up, Down, Left, Right
       Timer explosionTimer = new Timer(200, new ActionListener() {
           int counter = 0;
@@ -202,7 +207,7 @@ public class GameEngine extends JPanel implements KeyListener{
             } else {directions[3] = false;}
             
             while (!fields.isEmpty()) {
-                explosionEffect(fields.remove());
+                explosionEffect(fields.remove(), bomb);
             }
             counter++;
           }
@@ -212,7 +217,7 @@ public class GameEngine extends JPanel implements KeyListener{
   
   
     // Visual explosion effect and, blwing up objects
-    private void explosionEffect(Field field) {
+    private void explosionEffect(Field field, Bomb bomb) {
       field.setColor(Color.ORANGE);
       field.draw(getGraphics(), field.getX(), field.getY());
       Timer explosionTimer = new Timer(500, new ActionListener() {
@@ -222,8 +227,8 @@ public class GameEngine extends JPanel implements KeyListener{
             board[field.getY()/TILE_SIZE][field.getX()/TILE_SIZE] = new Floor(field.getX(), field.getY(), TILE_SIZE);
             repaint();
           }
-          if (field instanceof Bomb){
-            
+          if (field instanceof Bomb && (Bomb)field != bomb){
+            ((Bomb)field).restartTimer();
           }
             field.setColor(field.getDefaultColor());
             field.draw(getGraphics(), field.getX(), field.getY());

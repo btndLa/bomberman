@@ -28,7 +28,7 @@ public class Player extends Entity {
         this.right = right;
         this.bombButton = bombButton;
         this.engine = engine;
-        this.bombCapacity = 1;
+        this.bombCapacity = 2;
         this.bombRadius = 3;
         this.placedBombs = 0;
         this.isAlive = true;
