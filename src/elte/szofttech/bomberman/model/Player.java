@@ -28,7 +28,7 @@ public class Player extends Entity {
         this.right = right;
         this.bombButton = bombButton;
         this.engine = engine;
-        this.bombCapacity = 1;
+        this.bombCapacity = 2;
         this.bombRadius = 3;
         this.placedBombs = 0;
         this.isAlive = true;
@@ -68,7 +68,7 @@ public class Player extends Entity {
       }
       else if (keyAsInt == this.bombButton){
           if(engine.getBoard()[this.y][this.x].canPlaceBomb()){
-              engine.DetonateBomb(new Bomb(currentX*engine.getTILE_SIZE(), currentY*engine.getTILE_SIZE(), this.bombRadius, 3, engine.getTILE_SIZE()),this);
+              engine.detonateBomb(new Bomb(currentX*engine.getTILE_SIZE(), currentY*engine.getTILE_SIZE(), this.bombRadius, 3, engine.getTILE_SIZE()),this);
           }
       }
       if((currentX != this.x || currentY != this.y) && !(engine.getBoard()[currentY][currentX] instanceof Bomb) ) engine.getBoard()[currentY][currentX].setWalkable(true);
