@@ -10,8 +10,15 @@ import elte.szofttech.bomberman.model.GameEngine;
 public abstract class Monster extends Entity {
     protected int speed;
     protected GameEngine engine;
+    protected int direction;
 
-    // Getters
+    public Monster(int x, int y, int speed, GameEngine engine,int direction) {
+        super(x,y);
+        this.speed = speed;
+        this.engine = engine;
+        this.direction = direction;
+    }
+
     public int getX(){ return x; }
     public int getY(){ return y; }
     public abstract void move();

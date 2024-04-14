@@ -8,14 +8,15 @@ import java.util.Random;
 
 // Represents the basic monster, going into random directions
 public class BasicMonster extends Monster {
-    public BasicMonster(int x, int y, int speed, GameEngine engine) {
-        super(x, y, speed, engine);
+
+    public BasicMonster(int x, int y, int speed, GameEngine engine, int direction) {
+        super(x, y, speed, engine,direction);
         engine.getBoard()[this.y][this.x].setWalkable(false);
     }
     public int getSpeed(){return this.speed;}
 
     /**
-     *Choose a random number between 1 and 4 and moves according to that number
+     *Move the monster based on it's direction
      * 1 -> up
      * 2 -> down
      * 3 -> left
@@ -25,29 +26,36 @@ public class BasicMonster extends Monster {
     public void move() {
         int currentX = this.x;
         int currentY = this.y;
+        boolean moved = false;
         while (currentX == this.x && currentY==this.y) {
-          int direction = new Random().nextInt(4) + 1;
-          switch (direction) {
+          switch (this.direction) {
             case 1:
               if (this.y - 1 >= 0 && engine.getBoard()[this.y - 1][this.x].isWalkable()) {
                this.y--;
+               moved = true;
               }
               break;
             case 2:
               if (this.y + 1 < engine.getBoard().length && engine.getBoard()[this.y + 1][this.x].isWalkable()) {
                this.y++;
+               moved = true;
               }
               break;
             case 3:
               if (this.x - 1 >= 0 && engine.getBoard()[this.y][this.x - 1].isWalkable()) {
                 this.x--;
+                moved = true;
               }
               break;
             case 4:
               if (this.x + 1 < engine.getBoard().length && engine.getBoard()[this.y][this.x + 1].isWalkable()) {
                 this.x++;
+                moved = true;
               }
               break;
+            }
+            if(!moved) {
+              this.direction = (new Random()).nextInt(1,5);
             }
           }
         engine.getBoard()[currentY][currentX].setWalkable(true);

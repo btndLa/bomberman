@@ -72,7 +72,22 @@ public class GameEngine extends JPanel implements KeyListener{
       timer.start(); 
     }
 
-    // Player movement listener
+    public void StartCharSelect(){}
+    public void SwitchScene(){}
+    public void StartGame(){
+      players = new ArrayList<Player>();
+      loadLevel();
+      players.add(new Player(1, 2, 38, 40, 37, 39, 96, this));
+      players.add(new Player(10, 2, 87, 83, 65, 68, 81, this));
+      monsters = new ArrayList<Monster>();
+      monsters.add(new BasicMonster(3, 4, 1, this,1));
+      monsters.add(new BasicMonster(5, 11, 1, this,1));
+      bombs = new ArrayList<Bomb>();
+    }
+    public Field[][] getBoard(){
+      return this.board;
+    }
+    public int getTileSize(){return tileSize;}
     public void keyPressed(KeyEvent e) {
       for (Player player : players) {
         player.move(e);
