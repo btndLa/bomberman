@@ -28,7 +28,7 @@ public class Player extends Entity {
         this.right = right;
         this.bombButton = bombButton;
         this.engine = engine;
-        this.bombCapacity = 2;
+        this.bombCapacity = 1;
         this.bombRadius = 3;
         this.placedBombs = 0;
         this.isAlive = true;
@@ -73,6 +73,7 @@ public class Player extends Entity {
       }
       if((currentX != this.x || currentY != this.y) && !(engine.getBoard()[currentY][currentX] instanceof Bomb) ) engine.getBoard()[currentY][currentX].setWalkable(true);
       engine.getBoard()[this.y][this.x].setWalkable(false);
+      System.out.println(engine.getBoard()[this.y - 1][this.x]);
   }
 
   public void die(){this.isAlive = false;}

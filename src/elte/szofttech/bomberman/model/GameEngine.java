@@ -241,6 +241,7 @@ public class GameEngine extends JPanel implements KeyListener{
           while (monsterIterator.hasNext()) {
             Monster monster = monsterIterator.next();
             if (monster.getX() == field.getX() / TILE_SIZE && monster.getY() == field.getY() / TILE_SIZE) {
+              field.setWalkable(true);
               monsterIterator.remove(); // Remove the monster from the list
               }
           }
