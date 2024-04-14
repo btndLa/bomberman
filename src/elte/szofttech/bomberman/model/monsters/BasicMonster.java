@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
+// Represents the basic monster, going into random directions
 public class BasicMonster extends Monster {
 
     public BasicMonster(int x, int y, int speed, GameEngine engine, int direction) {
@@ -63,7 +64,7 @@ public class BasicMonster extends Monster {
     
 
     public void draw(Graphics g) {
-      int ts = engine.getTileSize();
+      int ts = engine.getTILE_SIZE();
       g.setColor(Color.ORANGE);
       g.fillRect(x * ts, y * ts,ts,ts);      
   }

@@ -68,11 +68,12 @@ public class Player extends Entity {
       }
       else if (keyAsInt == this.bombButton){
           if(engine.getBoard()[this.y][this.x].canPlaceBomb()){
-              engine.DetonateBomb(new Bomb(currentX*engine.getTileSize(), currentY*engine.getTileSize(), this.bombRadius, 3),this);
+              engine.detonateBomb(new Bomb(currentX*engine.getTILE_SIZE(), currentY*engine.getTILE_SIZE(), this.bombRadius, 3, engine.getTILE_SIZE()),this);
           }
       }
       if((currentX != this.x || currentY != this.y) && !(engine.getBoard()[currentY][currentX] instanceof Bomb) ) engine.getBoard()[currentY][currentX].setWalkable(true);
       engine.getBoard()[this.y][this.x].setWalkable(false);
+      System.out.println(engine.getBoard()[this.y - 1][this.x]);
   }
 
   public void die(){this.isAlive = false;}
@@ -89,7 +90,7 @@ public class Player extends Entity {
         }
     }
     public void draw(Graphics g) {
-      int ts = engine.getTileSize();
+      int ts = engine.getTILE_SIZE();
       g.setColor(Color.RED);
       g.fillRect(x * ts, y * ts,ts,ts);      
   }

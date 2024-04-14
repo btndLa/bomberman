@@ -1,7 +1,5 @@
 package elte.szofttech.bomberman.model;
 
-import java.util.Scanner;
-
 import elte.szofttech.bomberman.GUI.GameGUI;
 
 public class Main {
