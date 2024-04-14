@@ -25,7 +25,8 @@ public class GameGUI {
     public GameGUI() {
         frame = new JFrame("Bomberman");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        engine = new GameEngine(WINDOW_WIDTH);
+        engine = new GameEngine(WINDOW_WIDTH, 3);
+        
         // Set frame dimensions and other properties
         frame.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGTH));
         frame.setResizable(false);

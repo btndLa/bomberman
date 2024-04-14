@@ -33,6 +33,11 @@ import javax.swing.JPanel;
 */
 public class GameEngine extends JPanel implements KeyListener{
     private List<Player> players;
+    private int[][] playerPos;
+    private int playerNum;
+    private static final int[][] PLAYER_CONTROLS = {{87, 83, 65, 68, 81},
+                                                    {38, 40, 37, 39, 96},                                                  
+                                                    {73, 75, 74, 76, 80}};
     private List<Monster> monsters;
     private boolean isGameOver;
     private Field[][] board;
@@ -45,10 +50,12 @@ public class GameEngine extends JPanel implements KeyListener{
     private Timer timer;
     private ArrayList<Bomb> bombs;
 
-    public GameEngine(int width){
+    public GameEngine(int width, int playerNum){
       super();
       this.boardWidth = width;
       this.tileSize = width/BOARD_SIZE;
+      this.playerNum = playerNum;
+      this.playerPos = new int[playerNum][2];
       isGameOver = false;
       setupTimer();
       setFocusable(true);
@@ -93,8 +100,10 @@ public class GameEngine extends JPanel implements KeyListener{
     public void StartGame(){
       players = new ArrayList<Player>();
       loadLevel();
-      players.add(new Player(1, 2, 38, 40, 37, 39, 96, this));
-      players.add(new Player(10, 2, 87, 83, 65, 68, 81, this));
+      for (int i = 0; i < playerNum; i++) {
+        players.add(new Player(playerPos[i][0], playerPos[i][1], PLAYER_CONTROLS[i][0], PLAYER_CONTROLS[i][1],
+        PLAYER_CONTROLS[i][2], PLAYER_CONTROLS[i][3], PLAYER_CONTROLS[i][4], this));
+      }
       monsters = new ArrayList<Monster>();
       monsters.add(new BasicMonster(3, 4, 1, this,1));
       monsters.add(new BasicMonster(5, 11, 1, this,1));
@@ -107,6 +116,11 @@ public class GameEngine extends JPanel implements KeyListener{
         String line;
         int y = 0;
         int row = 0;
+        line = reader.readLine();
+        String[] positions = line.split(" ");
+        for (int i = 0; i < playerNum; i++) {
+          playerPos[i] = new int[] {Integer.parseInt(positions[i*2]), Integer.parseInt(positions[i*2+1])};
+        }
         while ((line = reader.readLine()) != null) {
             int x = 0;
             int col = 0;
