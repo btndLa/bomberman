@@ -73,7 +73,6 @@ public class Player extends Entity {
       }
       if((currentX != this.x || currentY != this.y) && !(engine.getBoard()[currentY][currentX] instanceof Bomb) ) engine.getBoard()[currentY][currentX].setWalkable(true);
       engine.getBoard()[this.y][this.x].setWalkable(false);
-      System.out.println(engine.getBoard()[this.y - 1][this.x]);
   }
 
   public void die(){this.isAlive = false;}
