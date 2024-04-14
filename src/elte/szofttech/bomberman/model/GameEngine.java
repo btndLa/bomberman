@@ -36,16 +36,19 @@ public class GameEngine extends JPanel implements KeyListener{
     private List<Monster> monsters;
     private boolean isGameOver;
     private Field[][] board;
+    private int boardWidth;
     private static final int BOARD_SIZE = 13;
-    private static final int TILE_SIZE = 75;
+    private int tileSize;
     private GameGUI gameGUI;
     private int bombRadius;
     private int bombDetonation;
     private Timer timer;
     private ArrayList<Bomb> bombs;
 
-    public GameEngine(){
+    public GameEngine(int width){
       super();
+      this.boardWidth = width;
+      this.tileSize = width/BOARD_SIZE;
       isGameOver = false;
       setupTimer();
       setFocusable(true);
@@ -56,7 +59,7 @@ public class GameEngine extends JPanel implements KeyListener{
 
     // Getters
     public Field[][] getBoard(){ return this.board;}
-    public int getTILE_SIZE(){ return TILE_SIZE;}
+    public int getTILE_SIZE(){ return tileSize;}
 
     // Timer loop resoinsible for moving monsters
     private void setupTimer() {
@@ -111,27 +114,27 @@ public class GameEngine extends JPanel implements KeyListener{
                 char ch = line.charAt(i);
                 switch (ch) {
                   case 'B':
-                    Box box = new Box(x, y, TILE_SIZE);
+                    Box box = new Box(x, y, tileSize);
                     board[row][col] = box;
                     break;
 
                     case 'W':
-                    Wall wall = new Wall(x, y, TILE_SIZE);
+                    Wall wall = new Wall(x, y, tileSize);
                     board[row][col] = wall;
                     break;
 
                     case 'F':
-                    Floor floor = new Floor(x, y, TILE_SIZE);
+                    Floor floor = new Floor(x, y, tileSize);
                     board[row][col] = floor;
                     break;
 
                   default:
                     break;
                   }
-                  x+=TILE_SIZE;
+                  x+=tileSize;
                   col+=1;
               }
-              y+=TILE_SIZE;
+              y+=tileSize;
               row+=1;
           }
       } catch (IOException e) {
@@ -149,15 +152,15 @@ public class GameEngine extends JPanel implements KeyListener{
       } 
       bombs.add(bomb);
       repaint();
-      board[bomb.getY()/TILE_SIZE][bomb.getX()/TILE_SIZE] = bomb;
+      board[bomb.getY()/tileSize][bomb.getX()/tileSize] = bomb;
       
       Timer detonationTimer = new Timer(delay, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
           bombs.remove(bomb);
           if(p!= null) p.setPlacedBombs(p.getPlacedBombs()-1);
-          board[bomb.getY()/TILE_SIZE][bomb.getX()/TILE_SIZE] = new Floor(bomb.getX(),bomb.getY(), TILE_SIZE);
-          explosion(bomb.getX()/TILE_SIZE, bomb.getY()/TILE_SIZE, bomb);
+          board[bomb.getY()/tileSize][bomb.getX()/tileSize] = new Floor(bomb.getX(),bomb.getY(), tileSize);
+          explosion(bomb.getX()/tileSize, bomb.getY()/tileSize, bomb);
         }
       });
       bomb.setTimer(detonationTimer);
@@ -221,7 +224,7 @@ public class GameEngine extends JPanel implements KeyListener{
         @Override
         public void actionPerformed(ActionEvent e) {
           if (field instanceof Box /*&& field.hasPowerUP()*/) {
-            board[field.getY()/TILE_SIZE][field.getX()/TILE_SIZE] = new Floor(field.getX(), field.getY(), TILE_SIZE);
+            board[field.getY()/tileSize][field.getX()/tileSize] = new Floor(field.getX(), field.getY(), tileSize);
             repaint();
           }
           if (field instanceof Bomb && (Bomb)field != bomb){
@@ -230,14 +233,14 @@ public class GameEngine extends JPanel implements KeyListener{
             field.setColor(field.getDefaultColor());
             field.draw(getGraphics(), field.getX(), field.getY());
           for (Player player : players) {
-            if(player.getX() == field.getX()/TILE_SIZE && player.getY() == field.getY()/TILE_SIZE){
+            if(player.getX() == field.getX()/tileSize && player.getY() == field.getY()/tileSize){
               player.die();
             }
           }
           Iterator<Monster> monsterIterator = monsters.iterator();
           while (monsterIterator.hasNext()) {
             Monster monster = monsterIterator.next();
-            if (monster.getX() == field.getX() / TILE_SIZE && monster.getY() == field.getY() / TILE_SIZE) {
+            if (monster.getX() == field.getX() / tileSize && monster.getY() == field.getY() / tileSize) {
               field.setWalkable(true);
               monsterIterator.remove(); // Remove the monster from the list
               }
@@ -258,9 +261,9 @@ public class GameEngine extends JPanel implements KeyListener{
       for (int z = 0; z < board[0].length; z++) {
         Field f = board[i][z];
           f.draw(g, x, y);
-          x+=TILE_SIZE;
+          x+=tileSize;
         }
-        y+=TILE_SIZE;
+        y+=tileSize;
       }
       if (this.players != null) {
         for (Player player : players) {

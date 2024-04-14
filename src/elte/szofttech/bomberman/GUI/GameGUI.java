@@ -17,16 +17,17 @@ import elte.szofttech.bomberman.model.GameEngine;
 public class GameGUI {
 
     private JFrame frame;
-    private GameEngine gameArea;
-    private static final int WINDOW_SIZE = 1000;
+    private Scene gamePanel;
+    private GameEngine engine;
+    private static final int WINDOW_WIDTH = 900;
+    private static final int WINDOW_HEIGTH = 1000;
 
     public GameGUI() {
         frame = new JFrame("Bomberman");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameArea = new GameEngine();
-        
+        engine = new GameEngine(WINDOW_WIDTH);
         // Set frame dimensions and other properties
-        frame.setPreferredSize(new Dimension(WINDOW_SIZE, WINDOW_SIZE));
+        frame.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGTH));
         frame.setResizable(false);
         frame.pack();
         // Add menu bar
@@ -34,8 +35,10 @@ public class GameGUI {
         frame.setJMenuBar(menuBar);
         JMenu gameMenu = new JMenu("Game");
         menuBar.add(gameMenu); 
-        // Add game area to frame
-        frame.getContentPane().add(gameArea);
+
+        gamePanel = new GamePanel(WINDOW_WIDTH, WINDOW_HEIGTH, engine);
+        frame.getContentPane().add(gamePanel);
+        //frame.getContentPane().add(gameArea);
         frame.pack();
         frame.setVisible(true);
 }
