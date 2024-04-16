@@ -52,11 +52,12 @@ public class GameEngine extends JPanel implements KeyListener{
       this.playerNum = playerNum;
       this.playerPos = new int[playerNum][2];
       isGameOver = false;
-      setupTimer();
+      //setupTimer();
       setFocusable(true);
       addKeyListener(this);
       board = new Field[BOARD_SIZE][BOARD_SIZE];
-      this.StartCharSelect();
+      //this.StartCharSelect();
+        // StartGame();
     }
 
     // Getters
@@ -91,14 +92,13 @@ public class GameEngine extends JPanel implements KeyListener{
 
 
     public void StartCharSelect(){
+        /*
         JPanel playerOnePanel = new JPanel();
         playerOnePanel.setBackground(Color.blue);
 
-        this.removeAll();
-
         JPanel playerTwoPanel = new JPanel();
         playerTwoPanel.setBackground(Color.red);
-
+*/
         JButton startBTN = new JButton("Start");
         startBTN.addActionListener((new ActionListener() {
             @Override
@@ -112,7 +112,7 @@ public class GameEngine extends JPanel implements KeyListener{
     }
     public void StartGame(){
       players = new ArrayList<Player>();
-      loadLevel();
+     // loadLevel();
       for (int i = 0; i < playerNum; i++) {
         players.add(new Player(playerPos[i][0], playerPos[i][1], PLAYER_CONTROLS[i][0], PLAYER_CONTROLS[i][1],
         PLAYER_CONTROLS[i][2], PLAYER_CONTROLS[i][3], PLAYER_CONTROLS[i][4], this));
@@ -125,7 +125,7 @@ public class GameEngine extends JPanel implements KeyListener{
 
     // Setup board fields
     private void loadLevel(){
-      try (BufferedReader reader = new BufferedReader(new FileReader("zmb/src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
+      try (BufferedReader reader = new BufferedReader(new FileReader("src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
         String line;
         int y = 0;
         int row = 0;
