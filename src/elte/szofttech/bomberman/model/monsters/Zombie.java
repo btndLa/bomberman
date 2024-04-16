@@ -1,8 +1,12 @@
 package elte.szofttech.bomberman.model.monsters;
 
+import elte.szofttech.bomberman.model.GameEngine;
+
+import java.awt.*;
+
 public class Zombie extends Monster {
-    public Zombie(int x, int y, int speed) {
-        super(x, y, speed);
+    public Zombie(int x, int y, GameEngine engine, int direction) {
+        super(x, y, engine, direction);
     }
 
     @Override
@@ -10,5 +14,8 @@ public class Zombie extends Monster {
 
     }
 
+    @Override
+    public void draw(Graphics g) {
 
+    }
 }

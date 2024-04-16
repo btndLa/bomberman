@@ -5,8 +5,8 @@ import elte.szofttech.bomberman.model.Player;
 
 public abstract class PowerUp extends Field {
 
-  public PowerUp(int x, int y){
-    super(x, y);
+  public PowerUp(int x, int y, int tilesize){
+    super(x, y, tilesize);
   }
 
     @Override

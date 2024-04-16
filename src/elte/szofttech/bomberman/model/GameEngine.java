@@ -18,14 +18,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Queue;
-import javax.swing.Timer;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.awt.Graphics;
 import java.awt.event.KeyListener;
-
-import javax.swing.JPanel;
 
 
 /* Enginge of the game. Responsible for simulation of gameplay,
@@ -58,7 +56,7 @@ public class GameEngine extends JPanel implements KeyListener{
       setFocusable(true);
       addKeyListener(this);
       board = new Field[BOARD_SIZE][BOARD_SIZE];
-      this.StartGame();
+      this.StartCharSelect();
     }
 
     // Getters
@@ -92,8 +90,26 @@ public class GameEngine extends JPanel implements KeyListener{
     public void keyTyped(KeyEvent e) {}
 
 
-    public void StartCharSelect(){}
-    public void SwitchScene(){}
+    public void StartCharSelect(){
+        JPanel playerOnePanel = new JPanel();
+        playerOnePanel.setBackground(Color.blue);
+
+        this.removeAll();
+
+        JPanel playerTwoPanel = new JPanel();
+        playerTwoPanel.setBackground(Color.red);
+
+        JButton startBTN = new JButton("Start");
+        startBTN.addActionListener((new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwitchScene();
+            }
+        }));
+    }
+    public void SwitchScene(){
+        this.setBackground(Color.magenta);
+    }
     public void StartGame(){
       players = new ArrayList<Player>();
       loadLevel();
@@ -102,8 +118,8 @@ public class GameEngine extends JPanel implements KeyListener{
         PLAYER_CONTROLS[i][2], PLAYER_CONTROLS[i][3], PLAYER_CONTROLS[i][4], this));
       }
       monsters = new ArrayList<Monster>();
-      monsters.add(new BasicMonster(3, 4, 1, this,1));
-      monsters.add(new BasicMonster(5, 11, 1, this,1));
+      monsters.add(new BasicMonster(3, 4,  this,1));
+      monsters.add(new BasicMonster(5, 11, this,1));
       bombs = new ArrayList<Bomb>();
     }
 

@@ -12,9 +12,9 @@ public abstract class Monster extends Entity {
     protected GameEngine engine;
     protected int direction;
 
-    public Monster(int x, int y, int speed, GameEngine engine,int direction) {
+    public Monster(int x, int y, GameEngine engine,int direction) {
         super(x,y);
-        this.speed = speed;
+        this.speed = 1;
         this.engine = engine;
         this.direction = direction;
     }
@@ -23,12 +23,6 @@ public abstract class Monster extends Entity {
     public int getY(){ return y; }
     public abstract void move();
     public abstract void draw(Graphics g);   
-    public abstract int getSpeed();
-
-    public Monster(int x, int y, int speed, GameEngine engine) {
-        super(x,y);
-        this.speed = speed;
-        this.engine = engine;
-    } 
+    public int getSpeed(){return speed;};
 }
 
