@@ -47,17 +47,20 @@ public class GameEngine extends JPanel implements KeyListener{
     private Timer timer;
     private ArrayList<Bomb> bombs;
 
+    private State currentState;
+
     public GameEngine(int playerNum){
       super();
       this.playerNum = playerNum;
       this.playerPos = new int[playerNum][2];
+      this.currentState = State.CHARSELECT;
       isGameOver = false;
       //setupTimer();
       setFocusable(true);
       addKeyListener(this);
       board = new Field[BOARD_SIZE][BOARD_SIZE];
       //this.StartCharSelect();
-        // StartGame();
+        StartGame();
     }
 
     // Getters
@@ -112,7 +115,7 @@ public class GameEngine extends JPanel implements KeyListener{
     }
     public void StartGame(){
       players = new ArrayList<Player>();
-     // loadLevel();
+      loadLevel();
       for (int i = 0; i < playerNum; i++) {
         players.add(new Player(playerPos[i][0], playerPos[i][1], PLAYER_CONTROLS[i][0], PLAYER_CONTROLS[i][1],
         PLAYER_CONTROLS[i][2], PLAYER_CONTROLS[i][3], PLAYER_CONTROLS[i][4], this));
@@ -282,30 +285,39 @@ public class GameEngine extends JPanel implements KeyListener{
   @Override
   public void paintComponent(Graphics g){
     super.paintComponent(g);
-    int y = 0;
-    for(int i = 0; i < board.length; i++) {
-      int x = 0;
-      for (int z = 0; z < board[0].length; z++) {
-        Field f = board[i][z];
-          f.draw(g, x, y);
-          x+=TILE_SIZE;
+    switch(currentState){
+        case CHARSELECT -> System.out.println("Char select");
+        case GAME -> {
+            int y = 0;
+            for(int i = 0; i < board.length; i++) {
+                int x = 0;
+                for (int z = 0; z < board[0].length; z++) {
+                    Field f = board[i][z];
+                    f.draw(g, x, y);
+                    x+=TILE_SIZE;
+                }
+                y+=TILE_SIZE;
+            }
+            if (this.players != null) {
+                for (Player player : players) {
+                    player.draw(g);
+                }
+            }
+            if (this.monsters != null) {
+                for (Monster monster : monsters) {
+                    monster.draw(g);
+                }
+            }
+            if (this.bombs != null) {
+                for (Bomb bomb : bombs) {
+                    bomb.draw(g, bomb.getX(), bomb.getY());
+                }
+            }
         }
-        y+=TILE_SIZE;
-      }
-      if (this.players != null) {
-        for (Player player : players) {
-          player.draw(g);
-        }
-      }
-      if (this.monsters != null) {
-        for (Monster monster : monsters) {
-          monster.draw(g);
-        }
-      }
-      if (this.bombs != null) {
-        for (Bomb bomb : bombs) {
-          bomb.draw(g, bomb.getX(), bomb.getY());
-        }
-      }
+    }
   }
+
+  private enum State{
+        CHARSELECT,GAME;
+    }
 }
