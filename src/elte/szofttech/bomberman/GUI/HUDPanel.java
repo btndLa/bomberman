@@ -2,8 +2,10 @@ package elte.szofttech.bomberman.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 
@@ -11,6 +13,7 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import elte.szofttech.bomberman.model.GameEngine;
@@ -30,6 +33,8 @@ public class HUDPanel extends Scene {
     
     // Time Label
     timeLabel = new JLabel("00:00");
+    timeLabel.setFont(new Font("Serif", Font.PLAIN, 50));
+    timeLabel.setHorizontalAlignment(JLabel.CENTER);
     add(timeLabel, BorderLayout.WEST);
     timeLabel.setPreferredSize(new Dimension(width/4, heigth));
 

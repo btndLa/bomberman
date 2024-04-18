@@ -1,6 +1,7 @@
 package elte.szofttech.bomberman.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +39,7 @@ public class GameGUI {
         menuBar.add(gameMenu); 
 
         gamePanel = new GamePanel(WINDOW_WIDTH, WINDOW_HEIGTH, engine);
+        gamePanel.setBackground(Color.WHITE);
         frame.getContentPane().add(gamePanel);
         //frame.getContentPane().add(gameArea);
         frame.pack();

@@ -1,6 +1,7 @@
 package elte.szofttech.bomberman.model;
 
 import elte.szofttech.bomberman.GUI.GameGUI;
+import elte.szofttech.bomberman.GUI.HUDPanel;
 import elte.szofttech.bomberman.model.fields.Bomb;
 import elte.szofttech.bomberman.model.fields.Box;
 import elte.szofttech.bomberman.model.fields.Field;
@@ -16,6 +17,8 @@ import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Queue;
 import javax.swing.Timer;
@@ -49,30 +52,37 @@ public class GameEngine extends JPanel implements KeyListener{
     private int bombDetonation;
     private Timer timer;
     private ArrayList<Bomb> bombs;
+    private HUDPanel hud;
+    private int timeElapsed;
 
     public GameEngine(int width, int playerNum){
       super();
+      this.hud = null;
       this.boardWidth = width;
       this.tileSize = width/BOARD_SIZE;
       this.playerNum = playerNum;
       this.playerPos = new int[playerNum][2];
       isGameOver = false;
-      setupTimer();
       setFocusable(true);
       addKeyListener(this);
       board = new Field[BOARD_SIZE][BOARD_SIZE];
+      timeElapsed = 0;
       this.StartGame();
     }
 
     // Getters
     public Field[][] getBoard(){ return this.board;}
     public int getTILE_SIZE(){ return tileSize;}
-
+    public void setHUD(HUDPanel hud){ this.hud = hud;}
     // Timer loop resoinsible for moving monsters
     private void setupTimer() {
       timer = new Timer(1000, new ActionListener() { 
         @Override
         public void actionPerformed(ActionEvent e) {
+          timeElapsed+=1;
+          int minutes = timeElapsed / 60;
+          int seconds = timeElapsed % 60;
+          hud.updateTime(String.format("%02d:%02d", minutes, seconds));
           for (Monster monster : monsters) {
             monster.move();
           }
@@ -98,6 +108,7 @@ public class GameEngine extends JPanel implements KeyListener{
     public void StartCharSelect(){}
     public void SwitchScene(){}
     public void StartGame(){
+      setupTimer();
       players = new ArrayList<Player>();
       loadLevel();
       for (int i = 0; i < playerNum; i++) {

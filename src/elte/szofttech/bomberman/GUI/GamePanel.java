@@ -13,8 +13,9 @@ public class GamePanel extends Scene {
     super(width, heigth, engine);
     setPreferredSize(new Dimension(width, heigth));
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-    add(new HUDPanel(width, heigth-width, engine));
-    add(Box.createRigidArea(new Dimension(0,5)));
+    HUDPanel hud = new HUDPanel(width, heigth-width, engine);
+    add(hud);
+    engine.setHUD(hud);
     engine.setPreferredSize(new Dimension(width,width));
     add(engine);
   }
