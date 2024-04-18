@@ -8,6 +8,10 @@ import elte.szofttech.bomberman.model.fields.Floor;
 import elte.szofttech.bomberman.model.fields.Wall;
 import elte.szofttech.bomberman.model.monsters.BasicMonster;
 import elte.szofttech.bomberman.model.monsters.Monster;
+import elte.szofttech.bomberman.model.powerups.PowerUp;
+import elte.szofttech.bomberman.model.powerups.BombDetonator;
+import elte.szofttech.bomberman.model.powerups.BombRangeBonus;
+import elte.szofttech.bomberman.model.powerups.BonusBomb;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,7 +22,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Queue;
-import javax.swing.*;
+import java.util.Random;
+
+import javax.swing.Timer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -220,7 +226,8 @@ public class GameEngine extends JPanel implements KeyListener{
 
     // Setup board fields
     private void loadLevel(){
-      try (BufferedReader reader = new BufferedReader(new FileReader("src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
+       Random random = new Random();
+      try (BufferedReader reader = new BufferedReader(new FileReader("zmb/src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
         String line;
         int y = 0;
         int row = 0;
@@ -235,9 +242,12 @@ public class GameEngine extends JPanel implements KeyListener{
             for (int i = 0; i < line.length(); i++) {
                 char ch = line.charAt(i);
                 switch (ch) {
-                  case 'B':
+                    case 'B':
+                    boolean isPowerUp = random.nextInt(2) == 1; // Véletlenszám generálása (0 vagy 1)
                     Box box = new Box(x, y, TILE_SIZE);
+                    box.setPowerUp(isPowerUp);
                     board[row][col] = box;
+                    System.out.println(isPowerUp);
                     break;
 
                     case 'W':
@@ -280,7 +290,12 @@ public class GameEngine extends JPanel implements KeyListener{
         @Override
         public void actionPerformed(ActionEvent e) {
           bombs.remove(bomb);
-          if(p!= null) p.setPlacedBombs(p.getPlacedBombs()-1);
+          if(p!= null) {
+            p.getBombsOnGround().remove(bomb);
+            System.out.println("Bombák:" + p.bombsOnGround.toString());
+            p.setPlacedBombs(p.getPlacedBombs()-1);
+            System.out.println("BombCount" + p.getPlacedBombs());
+          }
           board[bomb.getY()/TILE_SIZE][bomb.getX()/TILE_SIZE] = new Floor(bomb.getX(),bomb.getY(), TILE_SIZE);
           explosion(bomb.getX()/TILE_SIZE, bomb.getY()/TILE_SIZE, bomb);
         }
@@ -340,15 +355,34 @@ public class GameEngine extends JPanel implements KeyListener{
   
     // Visual explosion effect and, blwing up objects
     private void explosionEffect(Field field, Bomb bomb) {
+      Random random = new Random();
+      int randomNumber = random.nextInt(3);
       field.setColor(Color.ORANGE);
       field.draw(getGraphics(), field.getX(), field.getY());
       Timer explosionTimer = new Timer(500, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          if (field instanceof Box /*&& field.hasPowerUP()*/) {
-            board[field.getY()/TILE_SIZE][field.getX()/TILE_SIZE] = new Floor(field.getX(), field.getY(), TILE_SIZE);
+        if (field instanceof Box) {
+            Box box = (Box) field;
+            if (box.isPowerUp == true) { 
+              switch (randomNumber) {
+                case 0:
+                board[field.getY() / TILE_SIZE][field.getX() / TILE_SIZE] = new BombRangeBonus(field.getX(), field.getY(), TILE_SIZE);
+                    break;
+                case 1:
+                board[field.getY() / TILE_SIZE][field.getX() / TILE_SIZE] = new BonusBomb(field.getX(), field.getY(), TILE_SIZE);
+                    break;
+                case 2:
+                board[field.getY() / TILE_SIZE][field.getX() / TILE_SIZE] = new BombDetonator(field.getX(), field.getY(), TILE_SIZE);
+                    break;
+                default:
+                    break;
+            }
+            } else { 
+                board[field.getY() / TILE_SIZE][field.getX() / TILE_SIZE] = new Floor(field.getX(), field.getY(), TILE_SIZE);
+            }
             repaint();
-          }
+        }
           if (field instanceof Bomb && (Bomb)field != bomb){
             ((Bomb)field).restartTimer();
           }
@@ -413,3 +447,4 @@ public class GameEngine extends JPanel implements KeyListener{
         CHARSELECT,GAME;
     }
 }
+
