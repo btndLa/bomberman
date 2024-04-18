@@ -9,8 +9,8 @@ import java.util.Random;
 // Represents the basic monster, going into random directions
 public class BasicMonster extends Monster {
 
-    public BasicMonster(int x, int y, int speed, GameEngine engine, int direction) {
-        super(x, y, speed, engine,direction);
+    public BasicMonster(int x, int y, GameEngine engine, int direction) {
+        super(x, y, engine,direction);
         engine.getBoard()[this.y][this.x].setWalkable(false);
     }
     public int getSpeed(){return this.speed;}
@@ -64,7 +64,7 @@ public class BasicMonster extends Monster {
     
 
     public void draw(Graphics g) {
-      int ts = engine.getTILE_SIZE();
+      int ts = engine.gettileSize();
       g.setColor(Color.ORANGE);
       g.fillRect(x * ts, y * ts,ts,ts);      
   }

@@ -9,8 +9,12 @@ import elte.szofttech.bomberman.model.fields.Floor;
 import elte.szofttech.bomberman.model.fields.Wall;
 import elte.szofttech.bomberman.model.monsters.BasicMonster;
 import elte.szofttech.bomberman.model.monsters.Monster;
+import elte.szofttech.bomberman.model.powerups.PowerUp;
+import elte.szofttech.bomberman.model.powerups.BombDetonator;
+import elte.szofttech.bomberman.model.powerups.BombRangeBonus;
+import elte.szofttech.bomberman.model.powerups.BonusBomb;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -21,14 +25,18 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Queue;
+import java.util.Random;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextPane;
 import javax.swing.Timer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.awt.Graphics;
 import java.awt.event.KeyListener;
-
-import javax.swing.JPanel;
 
 
 /* Enginge of the game. Responsible for simulation of gameplay,
@@ -42,9 +50,11 @@ public class GameEngine extends JPanel implements KeyListener{
                                                     {38, 40, 37, 39, 96},                                                  
                                                     {73, 75, 74, 76, 80}};
     private List<Monster> monsters;
+    private int monstNum;
     private boolean isGameOver;
     private Field[][] board;
     private int boardWidth;
+    private State currentState;
     private static final int BOARD_SIZE = 13;
     private int tileSize;
     private GameGUI gameGUI;
@@ -61,18 +71,21 @@ public class GameEngine extends JPanel implements KeyListener{
       this.boardWidth = width;
       this.tileSize = width/BOARD_SIZE;
       this.playerNum = playerNum;
+
       this.playerPos = new int[playerNum][2];
+      this.currentState = State.CHARSELECT;
       isGameOver = false;
+    //  setupTimer();
       setFocusable(true);
       addKeyListener(this);
       board = new Field[BOARD_SIZE][BOARD_SIZE];
-      timeElapsed = 0;
-      this.StartGame();
+      this.StartCharSelect();
+      //  StartGame();
     }
 
     // Getters
     public Field[][] getBoard(){ return this.board;}
-    public int getTILE_SIZE(){ return tileSize;}
+    public int gettileSize(){ return tileSize;}
     public void setHUD(HUDPanel hud){ this.hud = hud;}
     // Timer loop resoinsible for moving monsters
     private void setupTimer() {
@@ -89,7 +102,7 @@ public class GameEngine extends JPanel implements KeyListener{
           repaint();
         }
     });
-      timer.start(); 
+    timer.start(); 
     }
 
     // Player movement listener
@@ -105,10 +118,112 @@ public class GameEngine extends JPanel implements KeyListener{
     public void keyTyped(KeyEvent e) {}
 
 
-    public void StartCharSelect(){}
-    public void SwitchScene(){}
+    public void StartCharSelect(){
+        this.setLayout(new GridLayout(2,2));
+        JPanel playerOnePanel = new JPanel();
+        playerOnePanel.setSize(this.getWidth() / 2, this.getHeight());
+        playerOnePanel.setBackground(Color.green);
+        ButtonGroup playerGroup = new ButtonGroup();
+        //Declared as an array because of accessibility from action listeners
+        final int[] players = {0};
+        final boolean[] playerChoosed = {false};
+        final boolean[] monsterChoosed = {false};
+
+        JRadioButton twoplayerBTN = new JRadioButton("2");
+        twoplayerBTN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                players[0] = 2;
+                playerChoosed[0] = true;
+            }
+        });
+
+        JRadioButton threeplayerBTN = new JRadioButton("3");
+        threeplayerBTN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                players[0] = 3;
+                playerChoosed[0] = true;
+            }
+        });
+
+        playerGroup.add(twoplayerBTN);
+        playerGroup.add(threeplayerBTN);
+
+        JTextPane text = new JTextPane();
+        text.setText("Players");
+        text.setEnabled(false);
+        playerOnePanel.add(twoplayerBTN);
+        playerOnePanel.add(threeplayerBTN);
+        playerOnePanel.add(text);
+        this.add(playerOnePanel);
+
+        JPanel playerTwoPanel = new JPanel();
+        playerTwoPanel.setBackground(Color.green);
+        playerTwoPanel.setSize(this.getWidth() / 2, this.getHeight());
+
+        ButtonGroup monsterGroup = new ButtonGroup();
+        JRadioButton twomonsterBTN = new JRadioButton("2");
+        //Declared as an array because of accessibility from action listeners
+        final int[] monsterNumber = {0};
+        twomonsterBTN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                monsterNumber[0] = 2;
+                monsterChoosed[0] = true;
+            }
+        });
+
+        JRadioButton threemonsterBTN = new JRadioButton("3");
+        threemonsterBTN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                monsterNumber[0] = 3;
+                monsterChoosed[0] = true;
+            }
+        });
+
+        monsterGroup.add(twomonsterBTN);
+        monsterGroup.add(threemonsterBTN);
+
+        JTextPane monstertext = new JTextPane();
+        monstertext.setText("Monster");
+        monstertext.setEnabled(false);
+
+        playerTwoPanel.add(twomonsterBTN);
+        playerTwoPanel.add(threemonsterBTN);
+        playerTwoPanel.add(monstertext);
+        this.add(playerTwoPanel);
+
+        JPanel startPanel = new JPanel();
+        startPanel.setSize(this.getWidth(), this.getHeight()/3);
+
+        JButton startBTN = new JButton("Start");
+        startBTN.setSize(50,30);
+        startBTN.addActionListener((new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(playerChoosed[0] && monsterChoosed[0]){
+                    playerNum = players[0];
+                    monstNum = monsterNumber[0];
+                    loadLevel();
+                    setupTimer();
+                    SwitchScene();
+                }
+            }
+        }));
+        startPanel.add(startBTN);
+        this.add(startPanel);
+    }
+    public void SwitchScene(){
+        this.removeAll();
+        this.currentState = State.values()[(this.currentState.ordinal() + 1) % State.values().length];
+        if(this.currentState == State.GAME){
+            StartGame();
+        }
+        repaint();
+    }
     public void StartGame(){
-      setupTimer();
       players = new ArrayList<Player>();
       loadLevel();
       for (int i = 0; i < playerNum; i++) {
@@ -116,13 +231,19 @@ public class GameEngine extends JPanel implements KeyListener{
         PLAYER_CONTROLS[i][2], PLAYER_CONTROLS[i][3], PLAYER_CONTROLS[i][4], this));
       }
       monsters = new ArrayList<Monster>();
-      monsters.add(new BasicMonster(3, 4, 1, this,1));
-      monsters.add(new BasicMonster(5, 11, 1, this,1));
+      monsters.add(new BasicMonster(3, 4,  this,1));
+      monsters.add(new BasicMonster(5, 11, this,1));
+
+      if(monstNum == 3){
+          monsters.add(new BasicMonster(7, 11, this,1));
+      }
+
       bombs = new ArrayList<Bomb>();
     }
 
     // Setup board fields
     private void loadLevel(){
+       Random random = new Random();
       try (BufferedReader reader = new BufferedReader(new FileReader("zmb/src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
         String line;
         int y = 0;
@@ -138,9 +259,12 @@ public class GameEngine extends JPanel implements KeyListener{
             for (int i = 0; i < line.length(); i++) {
                 char ch = line.charAt(i);
                 switch (ch) {
-                  case 'B':
+                    case 'B':
+                    boolean isPowerUp = random.nextInt(2) == 1; // Véletlenszám generálása (0 vagy 1)
                     Box box = new Box(x, y, tileSize);
+                    box.setPowerUp(isPowerUp);
                     board[row][col] = box;
+                    System.out.println(isPowerUp);
                     break;
 
                     case 'W':
@@ -183,7 +307,12 @@ public class GameEngine extends JPanel implements KeyListener{
         @Override
         public void actionPerformed(ActionEvent e) {
           bombs.remove(bomb);
-          if(p!= null) p.setPlacedBombs(p.getPlacedBombs()-1);
+          if(p!= null) {
+            p.getBombsOnGround().remove(bomb);
+            System.out.println("Bombák:" + p.bombsOnGround.toString());
+            p.setPlacedBombs(p.getPlacedBombs()-1);
+            System.out.println("BombCount" + p.getPlacedBombs());
+          }
           board[bomb.getY()/tileSize][bomb.getX()/tileSize] = new Floor(bomb.getX(),bomb.getY(), tileSize);
           explosion(bomb.getX()/tileSize, bomb.getY()/tileSize, bomb);
         }
@@ -243,15 +372,34 @@ public class GameEngine extends JPanel implements KeyListener{
   
     // Visual explosion effect and, blwing up objects
     private void explosionEffect(Field field, Bomb bomb) {
+      Random random = new Random();
+      int randomNumber = random.nextInt(3);
       field.setColor(Color.ORANGE);
       field.draw(getGraphics(), field.getX(), field.getY());
       Timer explosionTimer = new Timer(500, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          if (field instanceof Box /*&& field.hasPowerUP()*/) {
-            board[field.getY()/tileSize][field.getX()/tileSize] = new Floor(field.getX(), field.getY(), tileSize);
+        if (field instanceof Box) {
+            Box box = (Box) field;
+            if (box.isPowerUp == true) { 
+              switch (randomNumber) {
+                case 0:
+                board[field.getY() / tileSize][field.getX() / tileSize] = new BombRangeBonus(field.getX(), field.getY(), tileSize);
+                    break;
+                case 1:
+                board[field.getY() / tileSize][field.getX() / tileSize] = new BonusBomb(field.getX(), field.getY(), tileSize);
+                    break;
+                case 2:
+                board[field.getY() / tileSize][field.getX() / tileSize] = new BombDetonator(field.getX(), field.getY(), tileSize);
+                    break;
+                default:
+                    break;
+            }
+            } else { 
+                board[field.getY() / tileSize][field.getX() / tileSize] = new Floor(field.getX(), field.getY(), tileSize);
+            }
             repaint();
-          }
+        }
           if (field instanceof Bomb && (Bomb)field != bomb){
             ((Bomb)field).restartTimer();
           }
@@ -280,30 +428,40 @@ public class GameEngine extends JPanel implements KeyListener{
   @Override
   public void paintComponent(Graphics g){
     super.paintComponent(g);
-    int y = 0;
-    for(int i = 0; i < board.length; i++) {
-      int x = 0;
-      for (int z = 0; z < board[0].length; z++) {
-        Field f = board[i][z];
-          f.draw(g, x, y);
-          x+=tileSize;
+    switch(currentState){
+        case CHARSELECT -> System.out.println();
+        case GAME -> {
+            int y = 0;
+            for(int i = 0; i < board.length; i++) {
+                int x = 0;
+                for (int z = 0; z < board[0].length; z++) {
+                    Field f = board[i][z];
+                    f.draw(g, x, y);
+                    x+=tileSize;
+                }
+                y+=tileSize;
+            }
+            if (this.players != null) {
+                for (Player player : players) {
+                    player.draw(g);
+                }
+            }
+            if (this.monsters != null) {
+                for (Monster monster : monsters) {
+                    monster.draw(g);
+                }
+            }
+            if (this.bombs != null) {
+                for (Bomb bomb : bombs) {
+                    bomb.draw(g, bomb.getX(), bomb.getY());
+                }
+            }
         }
-        y+=tileSize;
-      }
-      if (this.players != null) {
-        for (Player player : players) {
-          player.draw(g);
-        }
-      }
-      if (this.monsters != null) {
-        for (Monster monster : monsters) {
-          monster.draw(g);
-        }
-      }
-      if (this.bombs != null) {
-        for (Bomb bomb : bombs) {
-          bomb.draw(g, bomb.getX(), bomb.getY());
-        }
-      }
+    }
   }
+
+  private enum State{
+        CHARSELECT,GAME;
+    }
 }
+
