@@ -7,6 +7,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class BombDetonator extends PowerUp {
+    BombDetonator(int x, int y, int tilesize){
+        super(x,y,tilesize);
+    }
 
     public BombDetonator(int x, int y, int tileSize) {
         super(x, y, tileSize);
