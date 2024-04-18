@@ -9,7 +9,7 @@ import elte.szofttech.bomberman.model.fields.Wall;
 import elte.szofttech.bomberman.model.monsters.BasicMonster;
 import elte.szofttech.bomberman.model.monsters.Monster;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -22,7 +22,6 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.awt.Graphics;
 import java.awt.event.KeyListener;
 
 
@@ -37,6 +36,7 @@ public class GameEngine extends JPanel implements KeyListener{
                                                     {38, 40, 37, 39, 96},                                                  
                                                     {73, 75, 74, 76, 80}};
     private List<Monster> monsters;
+    private int monstNum;
     private boolean isGameOver;
     private Field[][] board;
     private static final int BOARD_SIZE = 13;
@@ -52,6 +52,7 @@ public class GameEngine extends JPanel implements KeyListener{
     public GameEngine(int playerNum){
       super();
       this.playerNum = playerNum;
+
       this.playerPos = new int[playerNum][2];
       this.currentState = State.CHARSELECT;
       isGameOver = false;
@@ -95,23 +96,99 @@ public class GameEngine extends JPanel implements KeyListener{
 
 
     public void StartCharSelect(){
-        /*
+        this.setLayout(new GridLayout(2,2));
         JPanel playerOnePanel = new JPanel();
-        playerOnePanel.setBackground(Color.blue);
+        playerOnePanel.setSize(this.getWidth() / 2, this.getHeight());
+        playerOnePanel.setBackground(Color.green);
+        ButtonGroup playerGroup = new ButtonGroup();
+        //Declared as an array because of accessibility from action listeners
+        final int[] players = {0};
+        final boolean[] playerChoosed = {false};
+        final boolean[] monsterChoosed = {false};
+
+        JRadioButton twoplayerBTN = new JRadioButton("2");
+        twoplayerBTN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                players[0] = 2;
+                playerChoosed[0] = true;
+            }
+        });
+
+        JRadioButton threeplayerBTN = new JRadioButton("3");
+        threeplayerBTN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                players[0] = 3;
+                playerChoosed[0] = true;
+            }
+        });
+
+        playerGroup.add(twoplayerBTN);
+        playerGroup.add(threeplayerBTN);
+
+        JTextPane text = new JTextPane();
+        text.setText("Players");
+        text.setEnabled(false);
+        playerOnePanel.add(twoplayerBTN);
+        playerOnePanel.add(threeplayerBTN);
+        playerOnePanel.add(text);
+        this.add(playerOnePanel);
 
         JPanel playerTwoPanel = new JPanel();
-        playerTwoPanel.setBackground(Color.red);
-*/
+        playerTwoPanel.setBackground(Color.green);
+        playerTwoPanel.setSize(this.getWidth() / 2, this.getHeight());
+
+        ButtonGroup monsterGroup = new ButtonGroup();
+        JRadioButton twomonsterBTN = new JRadioButton("2");
+        //Declared as an array because of accessibility from action listeners
+        final int[] monsterNumber = {0};
+        twomonsterBTN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                monsterNumber[0] = 2;
+                monsterChoosed[0] = true;
+            }
+        });
+
+        JRadioButton threemonsterBTN = new JRadioButton("3");
+        threemonsterBTN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                monsterNumber[0] = 3;
+                monsterChoosed[0] = true;
+            }
+        });
+
+        monsterGroup.add(twomonsterBTN);
+        monsterGroup.add(threemonsterBTN);
+
+        JTextPane monstertext = new JTextPane();
+        monstertext.setText("Monster");
+        monstertext.setEnabled(false);
+
+        playerTwoPanel.add(twomonsterBTN);
+        playerTwoPanel.add(threemonsterBTN);
+        playerTwoPanel.add(monstertext);
+        this.add(playerTwoPanel);
+
+        JPanel startPanel = new JPanel();
+        startPanel.setSize(this.getWidth(), this.getHeight()/3);
+
         JButton startBTN = new JButton("Start");
+        startBTN.setSize(50,30);
         startBTN.addActionListener((new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                playerNum = players[0];
+                monstNum = monsterNumber[0];
                 loadLevel();
                 setupTimer();
                 SwitchScene();
             }
         }));
-        this.add(startBTN);
+        startPanel.add(startBTN);
+        this.add(startPanel);
     }
     public void SwitchScene(){
         this.removeAll();
@@ -131,6 +208,11 @@ public class GameEngine extends JPanel implements KeyListener{
       monsters = new ArrayList<Monster>();
       monsters.add(new BasicMonster(3, 4,  this,1));
       monsters.add(new BasicMonster(5, 11, this,1));
+
+      if(monstNum == 3){
+          monsters.add(new BasicMonster(7, 11, this,1));
+      }
+
       bombs = new ArrayList<Bomb>();
     }
 
@@ -294,7 +376,7 @@ public class GameEngine extends JPanel implements KeyListener{
   public void paintComponent(Graphics g){
     super.paintComponent(g);
     switch(currentState){
-        case CHARSELECT -> System.out.println("Char select");
+        case CHARSELECT -> System.out.println();
         case GAME -> {
             int y = 0;
             for(int i = 0; i < board.length; i++) {
