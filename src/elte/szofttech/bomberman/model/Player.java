@@ -83,14 +83,14 @@ public class Player extends Entity {
       }
       else if (keyAsInt == this.bombButton){
           if(engine.getBoard()[this.y][this.x].canPlaceBomb() && this.hasDetonator == false){
-            Bomb newBomb = new Bomb(currentX * engine.getTILE_SIZE(), currentY * engine.getTILE_SIZE(), this.bombRadius, 3, engine.getTILE_SIZE());
+            Bomb newBomb = new Bomb(currentX * engine.gettileSize(), currentY * engine.gettileSize(), this.bombRadius, 3, engine.gettileSize());
             this.bombsOnGround.add(newBomb);
             System.out.println("Bombák:" + bombsOnGround.toString());
             engine.detonateBomb(newBomb, this);
           }
           /*else if (engine.getBoard()[this.y][this.x].canPlaceBomb() && this.hasDetonator == true){
             if (this.bombsOnGround.size() < this.bombCapacity){
-                Bomb newBomb = new Bomb(currentX * engine.getTILE_SIZE(), currentY * engine.getTILE_SIZE(), this.bombRadius, 3, engine.getTILE_SIZE());
+                Bomb newBomb = new Bomb(currentX * engine.gettileSize(), currentY * engine.gettileSize(), this.bombRadius, 3, engine.gettileSize());
                 this.bombsOnGround.add(newBomb);
                 System.out.println("Bombák:" + bombsOnGround.toString());
                 engine.detonateBomb(newBomb, this);
@@ -106,7 +106,7 @@ public class Player extends Entity {
       if (engine.getBoard()[currentY][currentX] instanceof PowerUp) {
         PowerUp currentPowerUp = (PowerUp) engine.getBoard()[currentY][currentX];
         powerUpPickup(currentPowerUp);
-        engine.getBoard()[currentY][currentX] = new Floor(currentX * engine.getTILE_SIZE(), currentY * engine.getTILE_SIZE(), engine.getTILE_SIZE());
+        engine.getBoard()[currentY][currentX] = new Floor(currentX * engine.gettileSize(), currentY * engine.gettileSize(), engine.gettileSize());
     }
   }
 
@@ -139,7 +139,7 @@ public class Player extends Entity {
 
 
     public void draw(Graphics g) {
-      int ts = engine.getTILE_SIZE();
+      int ts = engine.gettileSize();
       g.setColor(Color.RED);
       g.fillRect(x * ts, y * ts,ts,ts);      
   }

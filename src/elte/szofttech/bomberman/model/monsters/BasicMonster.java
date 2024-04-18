@@ -64,7 +64,7 @@ public class BasicMonster extends Monster {
     
 
     public void draw(Graphics g) {
-      int ts = engine.getTILE_SIZE();
+      int ts = engine.gettileSize();
       g.setColor(Color.ORANGE);
       g.fillRect(x * ts, y * ts,ts,ts);      
   }
