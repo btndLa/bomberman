@@ -55,12 +55,12 @@ public class GameEngine extends JPanel implements KeyListener{
       this.playerPos = new int[playerNum][2];
       this.currentState = State.CHARSELECT;
       isGameOver = false;
-      //setupTimer();
+    //  setupTimer();
       setFocusable(true);
       addKeyListener(this);
       board = new Field[BOARD_SIZE][BOARD_SIZE];
-      //this.StartCharSelect();
-        StartGame();
+      this.StartCharSelect();
+      //  StartGame();
     }
 
     // Getters
@@ -106,12 +106,20 @@ public class GameEngine extends JPanel implements KeyListener{
         startBTN.addActionListener((new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                loadLevel();
+                setupTimer();
                 SwitchScene();
             }
         }));
+        this.add(startBTN);
     }
     public void SwitchScene(){
-        this.setBackground(Color.magenta);
+        this.removeAll();
+        this.currentState = State.values()[(this.currentState.ordinal() + 1) % State.values().length];
+        if(this.currentState == State.GAME){
+            StartGame();
+        }
+        repaint();
     }
     public void StartGame(){
       players = new ArrayList<Player>();
