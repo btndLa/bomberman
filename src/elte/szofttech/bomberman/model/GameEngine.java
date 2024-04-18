@@ -180,11 +180,13 @@ public class GameEngine extends JPanel implements KeyListener{
         startBTN.addActionListener((new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                playerNum = players[0];
-                monstNum = monsterNumber[0];
-                loadLevel();
-                setupTimer();
-                SwitchScene();
+                if(playerChoosed[0] && monsterChoosed[0]){
+                    playerNum = players[0];
+                    monstNum = monsterNumber[0];
+                    loadLevel();
+                    setupTimer();
+                    SwitchScene();
+                }
             }
         }));
         startPanel.add(startBTN);
