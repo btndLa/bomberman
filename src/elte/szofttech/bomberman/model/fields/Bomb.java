@@ -11,4 +11,5 @@ public class Bomb extends Entity {
         this.radius = radius;
         this.detonateTime = detonateTime;
     }
+    
 }
