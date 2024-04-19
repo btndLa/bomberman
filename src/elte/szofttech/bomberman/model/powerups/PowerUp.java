@@ -19,7 +19,7 @@ public abstract class PowerUp extends Field {
 
     @Override
     public boolean isDestructible() {
-        return false;
+        return true;
     }
 
     @Override
