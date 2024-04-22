@@ -1,4 +1,4 @@
-image: openjdk:23-jdk
+image: openjdk:23-jdk-bookworm
 
 stages:          # List of stages for jobs, and their order of execution
   - build
