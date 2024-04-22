@@ -1,4 +1,4 @@
-image: openjdk:23-jdk-oraclelinux8
+image: openjdk:23-jdk-oracle
 
 stages:          # List of stages for jobs, and their order of execution
   - build
