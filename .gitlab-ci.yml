@@ -1,4 +1,4 @@
-image: ubuntu:latest
+image: ubuntu:22.04
 
 stages:          # List of stages for jobs, and their order of execution
   - build
@@ -8,6 +8,7 @@ stages:          # List of stages for jobs, and their order of execution
 before_script:
   - sudo apt update
   - sudo apt install default-jre
+  - sudo apt install default-jdk
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
