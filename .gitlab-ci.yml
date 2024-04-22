@@ -1,4 +1,4 @@
-image: ubuntu:22.04
+image: openjdk:16
 
 stages:          # List of stages for jobs, and their order of execution
   - build
@@ -7,7 +7,7 @@ stages:          # List of stages for jobs, and their order of execution
 
 before_script:
   - apt-get update -yqq
-  - apt-get install -yqq default-jdk ant
+  - apt-get install -yqq ant
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
