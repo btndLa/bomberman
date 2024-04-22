@@ -7,7 +7,7 @@ stages:          # List of stages for jobs, and their order of execution
 
 before_script:
   - apt-get update -yqq
-  - apt-get install default-jdk ant
+  - apt-get install -yqq default-jdk ant
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
