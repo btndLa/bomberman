@@ -1,4 +1,4 @@
-image: ibmjava:11-jdk
+image: ubuntu:latest
 
 stages:          # List of stages for jobs, and their order of execution
   - build
@@ -6,9 +6,8 @@ stages:          # List of stages for jobs, and their order of execution
   - deploy
 
 before_script:
-  - apt-get update -yqq
-  - apt-get install -yqq ant
-  - apt-get install -yqq openjdk-11-jdk
+  - sudo apt update
+  - sudo apt install default-jre
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
