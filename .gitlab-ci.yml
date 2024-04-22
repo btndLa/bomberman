@@ -1,4 +1,4 @@
-image: openjdk:16
+image: openjdk:16-alpine
 
 stages:          # List of stages for jobs, and their order of execution
   - build
