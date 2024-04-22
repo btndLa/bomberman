@@ -1,4 +1,4 @@
-image: openjdk:12
+image: openjdk:23-ea-oracle
 
 stages:          # List of stages for jobs, and their order of execution
   - build
