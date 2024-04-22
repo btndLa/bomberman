@@ -1,4 +1,4 @@
-image: ibmjava:sdk
+image: ibmjava:11-jdk
 
 stages:          # List of stages for jobs, and their order of execution
   - build
