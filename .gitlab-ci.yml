@@ -8,6 +8,9 @@ stages:          # List of stages for jobs, and their order of execution
 before_script:
   - apt-get update -yqq
   - apt-get install -yqq ant
+  - wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F7.0.0/pmd-dist-7.0.0-bin.zip
+  - unzip pmd-dist-7.0.0-bin.zip
+  - alias pmd="$HOME/pmd-bin-7.0.0/bin/pmd"
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
