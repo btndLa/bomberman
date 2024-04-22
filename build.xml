@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="bomberman"
+          default="main"
+          basedir=".">
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes">
+          <exclude name="elte/szofttech/bomberman/tests/*.java"/>
+          <exclude name="elte/szofttech/bomberman/model/powerups/Ghost.java"/>
+          <exclude name="elte/szofttech/bomberman/model/powerups/Invulnerable.java"/>
+          <exclude name="elte/szofttech/bomberman/model/powerups/Obstacle.java"/>
+          <exclude name="elte/szofttech/bomberman/model/powerups/RollerBlade.java"/>
+        </javac>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/bomberman.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="elte.szofttech.bomberman.model/Main"/>
+            </manifest>
+            <fileset dir="src">
+              <exclude name="elte/szofttech/bomberman/tests/*.java"/>
+              <exclude name="elte/szofttech/bomberman/model/powerups/Ghost.java"/>
+              <exclude name="elte/szofttech/bomberman/model/powerups/Invulnerable.java"/>
+              <exclude name="elte/szofttech/bomberman/model/powerups/Obstacle.java"/>
+              <exclude name="elte/szofttech/bomberman/model/powerups/RollerBlade.java"/>
+            </fileset>
+        </jar>
+    </target>
+    <target name="doc">
+      <tstamp>
+        <format property="timestamp" pattern="d.M.yyyy" locale="en"/>
+      </tstamp>
+      <mkdir dir="doc"/>
+      <javadoc sourcepath="src/elte/szofttech/bomberman" destdir="doc" windowtitle="bomberman">
+        <fileset dir="src" defaultexcludes="yes">
+          <include name="src/elte/szofttech/bomberman/**"/>
+          <exclude name="src/elte/szofttech/bomberman/tests/**"/>
+        </fileset>
+      </javadoc>
+    </target>
+
+    <target name="run">
+        <java jar="build/jar/bomberman.jar" fork="true"/>
+    </target>
+
+    <target name="main" depends="compile,jar,run"/>
+</project>
