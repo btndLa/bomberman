@@ -7,7 +7,7 @@ public class RollerBlade extends PowerUp{
     RollerBlade(int x, int y, int tilesize){
         super(x,y,tilesize);
     }
-    @Override
+    //@Override
     public void apply(Player player) {
 
     }

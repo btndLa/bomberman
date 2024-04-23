@@ -7,7 +7,7 @@ public class Obstacle extends PowerUp{
     Obstacle(int x, int y, int tilesize){
         super(x,y,tilesize);
     }
-    @Override
+    //@Override
     public void apply(Player player) {
 
     }

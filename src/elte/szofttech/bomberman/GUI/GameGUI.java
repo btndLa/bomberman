@@ -1,16 +1,10 @@
 package elte.szofttech.bomberman.GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import elte.szofttech.bomberman.model.GameEngine;
 
@@ -36,13 +30,18 @@ public class GameGUI {
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
         JMenu gameMenu = new JMenu("Game");
-        menuBar.add(gameMenu); 
+        menuBar.add(gameMenu);
 
-        gamePanel = new GamePanel(WINDOW_WIDTH, WINDOW_HEIGTH, engine);
-        gamePanel.setBackground(Color.WHITE);
-        frame.getContentPane().add(gamePanel);
+        //gamePanel = new GamePanel(WINDOW_WIDTH, WINDOW_HEIGTH, engine);
+        StartCharSelect();
+        //gamePanel.setBackground(Color.WHITE);
+        //frame.getContentPane().add(gamePanel);
         //frame.getContentPane().add(gameArea);
         frame.pack();
         frame.setVisible(true);
-}
+    }
+
+    public void StartCharSelect(){
+        frame.getContentPane().add(new CharSelectPanel(WINDOW_WIDTH,WINDOW_HEIGTH,engine));
+    }
 }

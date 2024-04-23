@@ -17,7 +17,7 @@ class PlayerTest {
 
     @BeforeEach
     public void setUp(){
-        engine = new GameEngine(2);
+        engine = new GameEngine(1050,2);
         player = new Player(0,0, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, 1, engine);
     }
 
