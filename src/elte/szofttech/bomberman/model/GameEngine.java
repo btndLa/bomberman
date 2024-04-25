@@ -86,6 +86,8 @@ public class GameEngine extends JPanel implements KeyListener{
     // Getters
     public Field[][] getBoard(){ return this.board;}
     public int gettileSize(){ return tileSize;}
+    public List<Player> getPlayers(){ return players;}
+    public List<Monster> getMonsters(){ return monsters;}
     public void setHUD(HUDPanel hud){ this.hud = hud;}
     // Timer loop resoinsible for moving monsters
     private void setupTimer() {
