@@ -1,6 +1,8 @@
 package elte.szofttech.bomberman.model.monsters;
 
 import elte.szofttech.bomberman.model.GameEngine;
+import elte.szofttech.bomberman.model.Player;
+import elte.szofttech.bomberman.model.fields.Bomb;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -30,25 +32,25 @@ public class BasicMonster extends Monster {
         while (currentX == this.x && currentY==this.y) {
           switch (this.direction) {
             case 1:
-              if (this.y - 1 >= 0 && engine.getBoard()[this.y - 1][this.x].isWalkable()) {
+              if (this.y - 1 >= 0 && (engine.getBoard()[this.y - 1][this.x].isWalkable() || isPlayer(x, y-1) != null)) {
                this.y--;
                moved = true;
               }
               break;
             case 2:
-              if (this.y + 1 < engine.getBoard().length && engine.getBoard()[this.y + 1][this.x].isWalkable()) {
+              if (this.y + 1 < engine.getBoard().length && (engine.getBoard()[this.y + 1][this.x].isWalkable() || isPlayer(x, y+1) != null)) {
                this.y++;
                moved = true;
               }
               break;
             case 3:
-              if (this.x - 1 >= 0 && engine.getBoard()[this.y][this.x - 1].isWalkable()) {
+              if (this.x - 1 >= 0 && (engine.getBoard()[this.y][this.x - 1].isWalkable() || isPlayer(x-1, y) != null)) {
                 this.x--;
                 moved = true;
               }
               break;
             case 4:
-              if (this.x + 1 < engine.getBoard().length && engine.getBoard()[this.y][this.x + 1].isWalkable()) {
+              if (this.x + 1 < engine.getBoard().length && (engine.getBoard()[this.y][this.x + 1].isWalkable() || isPlayer(x+1, y) != null)) {
                 this.x++;
                 moved = true;
               }
@@ -57,11 +59,23 @@ public class BasicMonster extends Monster {
             if(!moved) {
               this.direction = (new Random()).nextInt(1,5);
             }
+            
           }
-    //    engine.getBoard()[currentY][currentX].setWalkable(true);
-    //    engine.getBoard()[this.y][this.x].setWalkable(false);
+        engine.getBoard()[currentY][currentX].setWalkable(true);
+        engine.getBoard()[this.y][this.x].setWalkable(false);
+        Player player = isPlayer(x, y);
+        if (player != null) {
+          player.die();
+        }
     }
     
+    // Checks if a field ha  player on it
+    private Player isPlayer(int x, int y){
+      for (Player player : engine.getPlayers()) {
+        if(player.getX() == x && player.getY() == y && !(engine.getBoard()[y][x] instanceof Bomb)) return player; 
+      }
+      return null;
+    }
 
     public void draw(Graphics g) {
       int ts = engine.gettileSize();
