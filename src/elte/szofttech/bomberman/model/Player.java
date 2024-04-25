@@ -23,6 +23,7 @@ public class Player extends Entity {
     private int right;
     private int bombButton;
     private int bombRadius;
+    private int points;
     private GameEngine engine;
     private int bombCapacity;
     private int placedBombs;
@@ -42,6 +43,7 @@ public class Player extends Entity {
         this.bombCapacity = 1;
         this.bombRadius = 3;
         this.placedBombs = 0;
+        this.points = 0;
         this.isAlive = true;
         this.bombsOnGround = new ArrayList<>();
         this.hasDetonator = false;
@@ -51,6 +53,11 @@ public class Player extends Entity {
 
     public int getX(){return x;}
     public int getY(){return y;}
+    public void setX(int x){this.x = x;}
+    public void setY(int y){this.y = y;}
+    public int getPoints(){return points;}
+    public boolean isAlive(){return isAlive;}
+    public void setAlive(){isAlive = true;}
     public int getBombRadius(){return bombRadius;}
     public int getbombCapacity(){return bombCapacity;}
     public int getPlacedBombs(){return placedBombs;}
@@ -125,7 +132,14 @@ public class Player extends Entity {
     return null;
   }
 
-  public void die(){this.isAlive = false;}
+    public void die(){
+      this.isAlive = false;
+      engine.checkEndGame();
+    }
+
+    public void win(){
+      this.points += 1;
+    }
 
     @Override
     public void onExplosion() {
