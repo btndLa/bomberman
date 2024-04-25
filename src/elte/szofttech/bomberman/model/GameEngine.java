@@ -154,7 +154,7 @@ public class GameEngine extends JPanel implements KeyListener{
       for (int i = 0; i < playerNum; i++) {
         players.add(new Player(playerPos[i][0], playerPos[i][1], PLAYER_CONTROLS[i][0], PLAYER_CONTROLS[i][1],
         PLAYER_CONTROLS[i][2], PLAYER_CONTROLS[i][3], PLAYER_CONTROLS[i][4], this));
-          System.out.println(players.get(i).getX() + " " + players.get(0).getY());
+          //System.out.println(players.get(i).getX() + " " + players.get(0).getY());
       }
       monsters = new ArrayList<Monster>();
       monsters.add(new BasicMonster(3, 4,  this,1));
@@ -190,7 +190,7 @@ public class GameEngine extends JPanel implements KeyListener{
                     Box box = new Box(x, y, tileSize);
                     box.setPowerUp(isPowerUp);
                     board[row][col] = box;
-                    System.out.println(isPowerUp);
+                    //System.out.println(isPowerUp);
                     break;
 
                     case 'W':
