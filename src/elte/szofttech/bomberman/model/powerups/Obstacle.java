@@ -8,7 +8,6 @@ public class Obstacle extends PowerUp{
         super(x,y,tilesize);
     }
     @Override
-    public void apply(Player player) {
-
+    public void applyOnPlayer(Player player){
     }
 }
