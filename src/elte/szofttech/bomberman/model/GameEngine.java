@@ -13,6 +13,7 @@ import elte.szofttech.bomberman.model.powerups.PowerUp;
 import elte.szofttech.bomberman.model.powerups.BombDetonator;
 import elte.szofttech.bomberman.model.powerups.BombRangeBonus;
 import elte.szofttech.bomberman.model.powerups.BonusBomb;
+import elte.szofttech.bomberman.model.powerups.Invulnerable;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -244,7 +245,7 @@ public class GameEngine extends JPanel implements KeyListener{
     // Setup board fields
     private void loadLevel(){
        Random random = new Random();
-      try (BufferedReader reader = new BufferedReader(new FileReader("src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
+      try (BufferedReader reader = new BufferedReader(new FileReader("zmb/src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
         String line;
         int y = 0;
         int row = 0;
@@ -260,7 +261,7 @@ public class GameEngine extends JPanel implements KeyListener{
                 char ch = line.charAt(i);
                 switch (ch) {
                     case 'B':
-                    boolean isPowerUp = random.nextInt(2) == 1; // Véletlenszám generálása (0 vagy 1)
+                    boolean isPowerUp = random.nextInt(3) == 1;
                     Box box = new Box(x, y, tileSize);
                     box.setPowerUp(isPowerUp);
                     board[row][col] = box;
@@ -374,6 +375,7 @@ public class GameEngine extends JPanel implements KeyListener{
     private void explosionEffect(Field field, Bomb bomb) {
       Random random = new Random();
       int randomNumber = random.nextInt(3);
+      int teszt = 3;
       field.setColor(Color.ORANGE);
       field.draw(getGraphics(), field.getX(), field.getY());
       Timer explosionTimer = new Timer(500, new ActionListener() {
@@ -382,7 +384,7 @@ public class GameEngine extends JPanel implements KeyListener{
         if (field instanceof Box) {
             Box box = (Box) field;
             if (box.isPowerUp == true) { 
-              switch (randomNumber) {
+              switch (teszt) {
                 case 0:
                 board[field.getY() / tileSize][field.getX() / tileSize] = new BombRangeBonus(field.getX(), field.getY(), tileSize);
                     break;
@@ -391,6 +393,9 @@ public class GameEngine extends JPanel implements KeyListener{
                     break;
                 case 2:
                 board[field.getY() / tileSize][field.getX() / tileSize] = new BombDetonator(field.getX(), field.getY(), tileSize);
+                    break;
+                case 3:
+                board[field.getY() / tileSize][field.getX() / tileSize] = new Invulnerable(field.getX(), field.getY(), tileSize);
                     break;
                 default:
                     break;
@@ -406,7 +411,7 @@ public class GameEngine extends JPanel implements KeyListener{
             field.setColor(field.getDefaultColor());
             field.draw(getGraphics(), field.getX(), field.getY());
           for (Player player : players) {
-            if(player.getX() == field.getX()/tileSize && player.getY() == field.getY()/tileSize){
+            if(player.getX() == field.getX()/tileSize && player.getY() == field.getY()/tileSize && player.isInvulnerable == false){
               player.die();
             }
           }
@@ -422,8 +427,27 @@ public class GameEngine extends JPanel implements KeyListener{
     });
     explosionTimer.setRepeats(false); 
     explosionTimer.start(); 
-  }  
+  } 
 
+  public void detonateBombsImmediately(List<Bomb> bombs) {
+    List<Bomb> allBombs = new ArrayList<>();
+    for (Bomb bomb : bombs) {
+        allBombs.add(bomb);
+    }
+    for (Bomb bomb : bombs) {
+      Timer detonationTimer = bomb.getTimer();
+      if (detonationTimer != null) {
+          detonationTimer.stop();
+      }
+      bomb.setDetonation(0);
+  }
+  for (Bomb bomb : bombs) {
+      ActionListener[] listeners = bomb.getTimer().getActionListeners();
+      for (ActionListener listener : listeners) {
+          listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+      }
+  }
+}
 
   @Override
   public void paintComponent(Graphics g){

@@ -50,4 +50,7 @@ public class Bomb extends Field {
       g.setColor(color);
       g.fillRect(x, y,this.tileSize, this.tileSize);      
   }
+  public void setDetonation(int detonateTimer) {
+    this.detonateTime = detonateTimer;
+}
 }
