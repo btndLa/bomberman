@@ -134,6 +134,7 @@ public class GameEngine extends JPanel implements KeyListener{
         this.playerNum = playerNum;
         this.monstNum = monstNum;
         loadLevel();
+        SwitchScene();
         StartGame();
         setupTimer();
     }

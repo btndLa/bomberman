@@ -15,7 +15,6 @@ public abstract class Scene extends JPanel {
 
     protected Scene(int width, int heigth, GameEngine engine, GameGUI gui) {
         this.setSize(new Dimension(width,heigth));
-        this.setBackground(Color.yellow);
         this.engine = engine;
         this.gui = gui;
     }
