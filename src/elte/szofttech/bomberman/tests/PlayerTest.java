@@ -17,34 +17,33 @@ class PlayerTest {
 
     @BeforeEach
     public void setUp(){
-        engine = new GameEngine(2);
-        player = new Player(0,0, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, 1, engine);
+        engine = new GameEngine(900,2);
+        engine.StartGame();
+        player = engine.getPlayers().getFirst();
     }
 
     @Test
     public void moveTestValidToTheRight(){
-        player.move(new KeyEvent((new JPanel()),KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_RIGHT));
-        assertEquals(1,player.getX());
+        player.move(new KeyEvent((new JPanel()),KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_D));
+        assertEquals(2,player.getX());
     }
 
     @Test
     public void moveTestOutOfTheBoard(){
-        player.move(new KeyEvent((new JPanel()),KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_LEFT));
-        assertEquals(0, player.getX());
+        player.move(new KeyEvent((new JPanel()),KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_A));
+        assertEquals(1, player.getX());
     }
 
     @Test
     public void moveTestToOccupiedField(){
-        BasicMonster monster = new BasicMonster(0,0, engine,1);
-        monster.move();
-        player.move(new KeyEvent((new JPanel()),KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_RIGHT));
-        assertEquals(0, player.getX());
+        player.move(new KeyEvent((new JPanel()),KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_A));
+        assertEquals(1, player.getX());
     }
 
     @Test
     public void onCollisionTestWithCollision(){
         assertTrue(player.isAlive);
-        BasicMonster monster = new BasicMonster(0,0, engine,1);
+        BasicMonster monster = new BasicMonster(1,3, engine,1);
         player.onCollision(monster);
         assertFalse(player.isAlive);
     }
