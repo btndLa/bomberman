@@ -18,6 +18,7 @@ import elte.szofttech.bomberman.model.GameEngine;
 public class GameGUI {
 
     private JFrame frame;
+    private Scene charSelect;
     private Scene gamePanel;
     private GameEngine engine;
     private static final int WINDOW_WIDTH = 900;
@@ -38,11 +39,22 @@ public class GameGUI {
         JMenu gameMenu = new JMenu("Game");
         menuBar.add(gameMenu); 
 
-        gamePanel = new GamePanel(WINDOW_WIDTH, WINDOW_HEIGTH, engine);
-        gamePanel.setBackground(Color.WHITE);
+        //gamePanel = new GamePanel(WINDOW_WIDTH, WINDOW_HEIGTH, engine, this);
+        charSelect = new CharSelectPanel(WINDOW_WIDTH,WINDOW_HEIGTH,engine, this);
+        //gamePanel.setBackground(Color.WHITE);
+        frame.getContentPane().add(charSelect);
+        //frame.getContentPane().add(gameArea);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public void startGame(){
+        gamePanel = new GamePanel(WINDOW_WIDTH, WINDOW_HEIGTH,engine,this,engine.getPlayers().size());
+        frame.getContentPane().removeAll();
+        frame.setVisible(false);
         frame.getContentPane().add(gamePanel);
         //frame.getContentPane().add(gameArea);
         frame.pack();
         frame.setVisible(true);
-}
+    }
 }
