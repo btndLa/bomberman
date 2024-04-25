@@ -3,27 +3,31 @@ package elte.szofttech.bomberman.model.fields;
 import java.awt.Color;
 import java.awt.Graphics;
 
-// Represents an explodable box
-public class Box extends Field{
-  public boolean isPowerUp;
+public class Obstacles extends Field{
 
-  public Box(int x, int y, int tileSize) {
+  private int x;
+  private int y;
+
+  public Obstacles(int x, int y, int tileSize) {
     super(x, y, tileSize);
-    this.defaultColor = new Color(222, 184, 135);
+    this.x = x;
+    this.y = y;
+    this.defaultColor = Color.DARK_GRAY;
     this.setColor(defaultColor);
-    this.isPowerUp = false;
+    this.setWalkable(false);
 }
-    public void setPowerUp(boolean isPowerUp) { 
-        this.isPowerUp = isPowerUp;
-    }
+  public int getX(){return x;}
+  public int getY(){return y;}
 
     @Override
     public boolean isDestructible() { return true;}
 
     @Override
     public boolean canPlaceBomb() { return false;}
+
     @Override
     public boolean canPlaceObstacle() {return false;}
+
     public void draw(Graphics g, int x, int y) {
       g.setColor(color);
       g.fillRect(x, y,this.tileSize, this.tileSize);      

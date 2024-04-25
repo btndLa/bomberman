@@ -20,6 +20,9 @@ public class Floor extends Field{
 
     @Override
     public boolean canPlaceBomb() {return true;}
+
+    @Override
+    public boolean canPlaceObstacle() {return true;}
     
     public void draw(Graphics g, int x, int y) {
       g.setColor(color);

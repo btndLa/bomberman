@@ -18,19 +18,29 @@ public class Invulnerable extends PowerUp {
 
     @Override
     public void applyOnPlayer(Player player) {
-        player.isInvulnerable = true; // Átállítjuk az isInvulnerable-t true-ra
-        System.out.println("Is Invulnerable after application: " + player.isInvulnerable); // Kiírjuk az értéket
+        player.isInvulnerable = true;
+        System.out.println("Is Invulnerable after application: " + player.isInvulnerable);
         
-        // Indítunk egy időzítőt, ami 8 másodperc múlva visszaállítja az isInvulnerable-t false-ra
         Timer invulnerabilityTimer = new Timer(8000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 player.isInvulnerable = false;
-                System.out.println("Is Invulnerable after timer expiration: " + player.isInvulnerable); // Kiírjuk az értéket
+                player.isExpiring = false;
+                System.out.println("Is Invulnerable after timer expiration: " + player.isInvulnerable);
             }
         });
-        invulnerabilityTimer.setRepeats(false); // Csak egyszer fusson le
+        invulnerabilityTimer.setRepeats(false);
         invulnerabilityTimer.start();
+
+        Timer expiringTimer = new Timer(6000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                player.isExpiring = true;
+                System.out.println("Is Expiring after 6 seconds: " + player.isExpiring);
+            }
+        });
+        expiringTimer.setRepeats(false);
+        expiringTimer.start();
     }
 
     @Override

@@ -6,14 +6,18 @@ import elte.szofttech.bomberman.model.fields.Bomb;
 import elte.szofttech.bomberman.model.fields.Box;
 import elte.szofttech.bomberman.model.fields.Field;
 import elte.szofttech.bomberman.model.fields.Floor;
+import elte.szofttech.bomberman.model.fields.Obstacles;
 import elte.szofttech.bomberman.model.fields.Wall;
 import elte.szofttech.bomberman.model.monsters.BasicMonster;
 import elte.szofttech.bomberman.model.monsters.Monster;
 import elte.szofttech.bomberman.model.powerups.PowerUp;
+import elte.szofttech.bomberman.model.powerups.RollerBlade;
 import elte.szofttech.bomberman.model.powerups.BombDetonator;
 import elte.szofttech.bomberman.model.powerups.BombRangeBonus;
 import elte.szofttech.bomberman.model.powerups.BonusBomb;
+import elte.szofttech.bomberman.model.powerups.Ghost;
 import elte.szofttech.bomberman.model.powerups.Invulnerable;
+import elte.szofttech.bomberman.model.powerups.Obstacle;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -48,9 +52,9 @@ public class GameEngine extends JPanel implements KeyListener{
     private List<Player> players;
     private int[][] playerPos;
     private int playerNum;
-    private static final int[][] PLAYER_CONTROLS = {{87, 83, 65, 68, 81},
-                                                    {38, 40, 37, 39, 96},                                                  
-                                                    {73, 75, 74, 76, 80}};
+    private static final int[][] PLAYER_CONTROLS = {{87, 83, 65, 68, 81, 69},
+                                                    {38, 40, 37, 39, 96, 97},                                                  
+                                                    {73, 75, 74, 76, 85, 79}};
     private List<Monster> monsters;
     private int monstNum;
     private boolean isGameOver;
@@ -64,6 +68,7 @@ public class GameEngine extends JPanel implements KeyListener{
     private int bombDetonation;
     private Timer timer;
     private ArrayList<Bomb> bombs;
+    private ArrayList<Obstacles> obstacles;
     private HUDPanel hud;
     private int timeElapsed;
 
@@ -154,8 +159,7 @@ public class GameEngine extends JPanel implements KeyListener{
       loadLevel();
       for (int i = 0; i < playerNum; i++) {
         players.add(new Player(playerPos[i][0], playerPos[i][1], PLAYER_CONTROLS[i][0], PLAYER_CONTROLS[i][1],
-        PLAYER_CONTROLS[i][2], PLAYER_CONTROLS[i][3], PLAYER_CONTROLS[i][4], this));
-          System.out.println(players.get(i).getX() + " " + players.get(0).getY());
+        PLAYER_CONTROLS[i][2], PLAYER_CONTROLS[i][3], PLAYER_CONTROLS[i][4],PLAYER_CONTROLS[i][5], this));
       }
       monsters = new ArrayList<Monster>();
       monsters.add(new BasicMonster(3, 4,  this,1));
@@ -166,6 +170,7 @@ public class GameEngine extends JPanel implements KeyListener{
       }
 
       bombs = new ArrayList<Bomb>();
+      obstacles = new ArrayList<Obstacles>();
     }
 
     public void newRound(){
@@ -213,11 +218,11 @@ public class GameEngine extends JPanel implements KeyListener{
                 char ch = line.charAt(i);
                 switch (ch) {
                     case 'B':
-                    boolean isPowerUp = random.nextInt(3) == 1;
+                    boolean isPowerUp = random.nextInt(6) == 1;
                     Box box = new Box(x, y, tileSize);
                     box.setPowerUp(isPowerUp);
                     board[row][col] = box;
-                    System.out.println(isPowerUp);
+                    //System.out.println(isPowerUp);
                     break;
 
                     case 'W':
@@ -290,25 +295,25 @@ public class GameEngine extends JPanel implements KeyListener{
             }
             if (y - counter >= 0 && directions[0] && board[y - counter][x].isDestructible()) {
               fields.add(board[y - counter][x]);
-              if (board[y - counter][x] instanceof Box) {
+              if (board[y - counter][x] instanceof Box || board[y - counter][x] instanceof Obstacles) {
                 directions[0] = false;
                 }
             } else { directions[0] = false;}
             if (y + counter < board.length && directions[1] && board[y + counter][x].isDestructible()) {
               fields.add(board[y + counter][x]);
-              if (board[y + counter][x] instanceof Box) {
+              if (board[y + counter][x] instanceof Box || board[y + counter][x] instanceof Obstacles) {
                 directions[1] = false;
                 }
             } else { directions[1] = false;}
             if (x - counter >= 0 && directions[2] && board[y][x - counter].isDestructible()) {
               fields.add(board[y][x - counter]);
-              if (board[y][x - counter] instanceof Box) {
+              if (board[y][x - counter] instanceof Box || board[y][x - counter] instanceof Obstacles) {
                   directions[2] = false;
                 }
             } else {directions[2] = false;}
             if (x + counter < board[0].length && directions[3] && board[y][x + counter].isDestructible()) {
               fields.add(board[y][x + counter]);
-              if (board[y][x + counter] instanceof Box) {
+              if (board[y][x + counter] instanceof Box || board[y][x + counter] instanceof Obstacles) {
                   directions[3] = false;
                 }
             } else {directions[3] = false;}
@@ -326,8 +331,8 @@ public class GameEngine extends JPanel implements KeyListener{
     // Visual explosion effect and, blwing up objects
     private void explosionEffect(Field field, Bomb bomb) {
       Random random = new Random();
-      int randomNumber = random.nextInt(3);
-      int teszt = 3;
+      int randomNumber = random.nextInt(6);
+      int teszt = 6;
       field.setColor(Color.ORANGE);
       field.draw(getGraphics(), field.getX(), field.getY());
       Timer explosionTimer = new Timer(500, new ActionListener() {
@@ -336,7 +341,7 @@ public class GameEngine extends JPanel implements KeyListener{
         if (field instanceof Box) {
             Box box = (Box) field;
             if (box.isPowerUp == true) { 
-              switch (teszt) {
+              switch (randomNumber) {
                 case 0:
                 board[field.getY() / tileSize][field.getX() / tileSize] = new BombRangeBonus(field.getX(), field.getY(), tileSize);
                     break;
@@ -349,6 +354,15 @@ public class GameEngine extends JPanel implements KeyListener{
                 case 3:
                 board[field.getY() / tileSize][field.getX() / tileSize] = new Invulnerable(field.getX(), field.getY(), tileSize);
                     break;
+                case 4:
+                board[field.getY() / tileSize][field.getX() / tileSize] = new Ghost(field.getX(), field.getY(), tileSize);
+                    break;
+                case 5:
+                board[field.getY() / tileSize][field.getX() / tileSize] = new RollerBlade(field.getX(), field.getY(), tileSize);
+                    break;
+                case 6:
+                board[field.getY() / tileSize][field.getX() / tileSize] = new Obstacle(field.getX(), field.getY(), tileSize);
+                    break;
                 default:
                     break;
             }
@@ -356,6 +370,11 @@ public class GameEngine extends JPanel implements KeyListener{
                 board[field.getY() / tileSize][field.getX() / tileSize] = new Floor(field.getX(), field.getY(), tileSize);
             }
             repaint();
+        }
+        if (field instanceof Obstacles) {
+          board[field.getY() / tileSize][field.getX() / tileSize] = new Floor(field.getX(), field.getY(), tileSize);
+          obstacles.remove((Obstacles) field);         
+          repaint();
         }
           if (field instanceof Bomb && (Bomb)field != bomb){
             ((Bomb)field).restartTimer();
@@ -372,7 +391,7 @@ public class GameEngine extends JPanel implements KeyListener{
             Monster monster = monsterIterator.next();
             if (monster.getX() == field.getX() / tileSize && monster.getY() == field.getY() / tileSize) {
               field.setWalkable(true);
-              monsterIterator.remove(); // Remove the monster from the list
+              monsterIterator.remove();
               }
           }
         }
@@ -443,6 +462,16 @@ public class GameEngine extends JPanel implements KeyListener{
   }
 }
 
+  public void placeObstacle(Obstacles obstacle, Player p){
+    if(p != null){
+      if(p.getPlacedObstacles()<= 0){return; }
+      p.setObstacleCapacity((p.getPlacedObstacles()-1));
+    } 
+      obstacles.add(obstacle);
+      repaint();
+      board[obstacle.getY()/tileSize][obstacle.getX()/tileSize] = obstacle;
+  }
+
   @Override
   public void paintComponent(Graphics g){
     super.paintComponent(g);
@@ -474,6 +503,11 @@ public class GameEngine extends JPanel implements KeyListener{
                     bomb.draw(g, bomb.getX(), bomb.getY());
                 }
             }
+            if (this.obstacles != null) {
+              for (Obstacles obstacle : obstacles) {
+                obstacle.draw(g, obstacle.getX(), obstacle.getY());
+              }
+          }
         }
     }
   }

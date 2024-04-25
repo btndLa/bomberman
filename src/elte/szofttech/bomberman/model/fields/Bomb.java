@@ -32,6 +32,9 @@ public class Bomb extends Field {
 
     @Override
     public boolean canPlaceBomb() { return false; }
+
+    @Override
+    public boolean canPlaceObstacle() {return false;}
     
     public Bomb(int x, int y, int radius, int detonateTime, int tileSize) {
         super(x,y, tileSize);
