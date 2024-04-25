@@ -62,22 +62,22 @@ public class Player extends Entity {
       int currentY = this.y;
       int keyAsInt = key.getKeyCode();
       if(keyAsInt == this.up){
-          if(this.y - 1 >= 0 && engine.getBoard()[this.y - 1][this.x].isWalkable()){
+          if(this.y - 1 >= 0 && (engine.getBoard()[this.y - 1][this.x].isWalkable() || isMonster(x, y-1) != null)){
               this.y -= 1;
           }
       }
       else if(keyAsInt == this.down){
-          if(this.y + 1 < engine.getBoard().length && engine.getBoard()[this.y + 1][this.x].isWalkable()){
+          if(this.y + 1 < engine.getBoard().length && (engine.getBoard()[this.y + 1][this.x].isWalkable() || isMonster(x, y+1) != null)){
               this.y += 1;
           }
       }
       else if(keyAsInt == this.left){
-          if(this.x - 1 >= 0 && engine.getBoard()[this.y][this.x - 1].isWalkable()){
+          if(this.x - 1 >= 0 && (engine.getBoard()[this.y][this.x - 1].isWalkable() || isMonster(x-1, y) != null)){
               this.x -= 1;
           }
       }
       else if(keyAsInt == this.right){
-          if(this.x + 1 < engine.getBoard()[0].length && engine.getBoard()[this.y][this.x + 1].isWalkable()){
+          if(this.x + 1 < engine.getBoard()[0].length && (engine.getBoard()[this.y][this.x + 1].isWalkable() || isMonster(x+1, y) != null)){
             this.x += 1;
           }
       }
@@ -108,6 +108,16 @@ public class Player extends Entity {
         powerUpPickup(currentPowerUp);
         engine.getBoard()[currentY][currentX] = new Floor(currentX * engine.gettileSize(), currentY * engine.gettileSize(), engine.gettileSize());
     }
+    Monster monster = isMonster(x, y);
+    if (monster != null) this.die();
+  }
+
+  // Checks if a field ha  player on it
+  private Monster isMonster(int x, int y){
+    for (Monster monster : engine.getMonsters()) {
+      if(monster.getX() == x && monster.getY() == y && !(engine.getBoard()[y][x] instanceof Bomb)) return monster; 
+    }
+    return null;
   }
 
   public void die(){this.isAlive = false;}
