@@ -20,6 +20,7 @@ public abstract class Field {
     public void setColor(Color color){this.color = color;}
     public abstract boolean isDestructible();
     public abstract boolean canPlaceBomb();
+    public abstract boolean canPlaceObstacle();
     public void setWalkable(boolean w){this.Walkable = w;}
     public boolean isWalkable(){return this.Walkable;}
 

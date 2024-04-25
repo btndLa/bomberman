@@ -1,6 +1,5 @@
 package elte.szofttech.bomberman.model.powerups;
 
-import elte.szofttech.bomberman.model.GameEngine;
 import elte.szofttech.bomberman.model.Player;
 
 import java.awt.Color;
