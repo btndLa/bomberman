@@ -468,7 +468,6 @@ public class GameEngine extends JPanel implements KeyListener{
       timer.start();
       timer.setRepeats(false);
     }
-    if (alive == 0){ this.endGame(); }
   }
 
   public void endGame(){
@@ -487,7 +486,7 @@ public class GameEngine extends JPanel implements KeyListener{
     if (player != null) {
       player.win();
       hud.updatePlayerPoints(players.indexOf(player), player.getPoints());
-      message = "Player " + Integer.toString(players.indexOf(player)) +" wins!";
+      message = "Player " + Integer.toString(players.indexOf(player) + 1) +" wins!";
     }else{
       message = "Draw!";
     }
