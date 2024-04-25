@@ -11,7 +11,7 @@ public class BasicMonster extends Monster {
 
     public BasicMonster(int x, int y, GameEngine engine, int direction) {
         super(x, y, engine,direction);
-        engine.getBoard()[this.y][this.x].setWalkable(false);
+    //    engine.getBoard()[this.y][this.x].setWalkable(false);
     }
     public int getSpeed(){return this.speed;}
 
@@ -58,8 +58,8 @@ public class BasicMonster extends Monster {
               this.direction = (new Random()).nextInt(1,5);
             }
           }
-        engine.getBoard()[currentY][currentX].setWalkable(true);
-        engine.getBoard()[this.y][this.x].setWalkable(false);
+    //    engine.getBoard()[currentY][currentX].setWalkable(true);
+    //    engine.getBoard()[this.y][this.x].setWalkable(false);
     }
     
 

@@ -119,6 +119,8 @@ public class Player extends Entity {
 
     @Override
     public void onCollision(Entity e) {
+        System.out.println("m: " + e.x + " " + e.y);
+        System.out.println("p: " + this.x + " " + this.y);
         if(e.x == this.x && e.y == this.y && e instanceof Monster){
             this.isAlive = false;
         }

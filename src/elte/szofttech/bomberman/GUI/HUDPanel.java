@@ -25,8 +25,8 @@ public class HUDPanel extends Scene {
   private JLabel[] playerPointsLabels;
   private JPanel[] playerPowerupPanels;
   
-  public HUDPanel(int width, int heigth, GameEngine engine){
-    super(width, heigth, engine);
+  public HUDPanel(int width, int heigth, GameEngine engine, GameGUI gui){
+    super(width, heigth, engine, gui);
     setPreferredSize(new Dimension(width, heigth));
     setLayout(new BorderLayout());
     setBackground(Color.WHITE);
