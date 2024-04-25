@@ -25,7 +25,7 @@ public class HUDPanel extends Scene {
   private JLabel[] playerPointsLabels;
   private JPanel[] playerPowerupPanels;
   
-  public HUDPanel(int width, int heigth, GameEngine engine, GameGUI gui){
+  public HUDPanel(int width, int heigth, GameEngine engine, GameGUI gui, int playerNumber){
     super(width, heigth, engine, gui);
     setPreferredSize(new Dimension(width, heigth));
     setLayout(new BorderLayout());
@@ -48,7 +48,7 @@ public class HUDPanel extends Scene {
     playerLabels = new JLabel[3];
     playerPointsLabels = new JLabel[3];
     playerPowerupPanels = new JPanel[3];
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < playerNumber; i++) {
         playerLabels[i] = new JLabel("Player " + (i + 1));
         playerPointsLabels[i] = new JLabel("0");
         playerPowerupPanels[i] = new JPanel();
