@@ -17,6 +17,8 @@ public class Wall extends Field{
 
     @Override
     public boolean canPlaceBomb() { return false;}
+    @Override
+    public boolean canPlaceObstacle() {return false;}
     public void draw(Graphics g, int x, int y) {
       g.setColor(color);
       g.fillRect(x, y,this.tileSize, this.tileSize);      

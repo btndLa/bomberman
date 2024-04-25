@@ -30,6 +30,9 @@ public abstract class PowerUp extends Field {
     public void applyOnPlayer(Player player){
 
     }
+
+    @Override
+    public boolean canPlaceObstacle() {return false;}
     
 
     @Override
