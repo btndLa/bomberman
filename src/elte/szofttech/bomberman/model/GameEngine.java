@@ -29,6 +29,7 @@ import java.util.Random;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
@@ -243,6 +244,32 @@ public class GameEngine extends JPanel implements KeyListener{
       bombs = new ArrayList<Bomb>();
     }
 
+    public void newRound(){
+      loadLevel();
+      monsters = new ArrayList<Monster>();
+      monsters.add(new BasicMonster(3, 4,  this,1));
+      monsters.add(new BasicMonster(5, 11, this,1));
+      if(monstNum == 3){
+          monsters.add(new BasicMonster(7, 11, this,1));
+      }
+
+      bombs = new ArrayList<Bomb>();
+      setupPlayers();
+      setupTimer();
+      timeElapsed = 0;
+      hud.updateTime("00:00");
+      repaint();
+    }
+
+    private void setupPlayers(){
+      for (int i = 0; i < playerNum; i++) {
+        players.get(i).setX(playerPos[i][0]);
+        players.get(i).setY(playerPos[i][1]);
+        players.get(i).setAlive();
+      }
+    }
+  
+
     // Setup board fields
     private void loadLevel(){
        Random random = new Random();
@@ -424,8 +451,45 @@ public class GameEngine extends JPanel implements KeyListener{
     });
     explosionTimer.setRepeats(false); 
     explosionTimer.start(); 
-  }  
+  } 
 
+  public void checkEndGame(){
+    int alive = 0;
+    for (Player player : players) {
+      if (player.isAlive()) alive+= 1;
+    }
+    if (alive == 1){ 
+      Timer timer = new Timer(3000, new ActionListener() { 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          endGame();
+        }
+      });
+      timer.start();
+      timer.setRepeats(false);
+    }
+    if (alive == 0){ this.endGame(); }
+  }
+
+  public void endGame(){
+    this.timer.stop();
+    for (Player player : players) {
+      if (player.isAlive()) {
+        announceWinner(player);
+        return;
+      }
+    }
+    announceWinner(null);
+  }
+
+  public void announceWinner(Player player){
+    player.win();
+    hud.updatePlayerPoints(players.indexOf(player), player.getPoints());
+    Object[] options = { "New round!" };
+    int optionChosen = JOptionPane.showOptionDialog(null, "Player " + Integer.toString(players.indexOf(player)) +" wins!", "Game Over",
+    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+    if (optionChosen == 0) newRound();
+  }
 
   @Override
   public void paintComponent(Graphics g){

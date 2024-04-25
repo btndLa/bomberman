@@ -50,19 +50,20 @@ public class HUDPanel extends Scene {
     playerPowerupPanels = new JPanel[3];
     for (int i = 0; i < 3; i++) {
         playerLabels[i] = new JLabel("Player " + (i + 1));
-        playerPointsLabels[i] = new JLabel("0");
+        playerPointsLabels[i] = new JLabel("Points: 0");
         playerPowerupPanels[i] = new JPanel();
-        playerPowerupPanels[i].setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
+        playerPowerupPanels[i].setLayout(new BoxLayout(playerPowerupPanels[i], BoxLayout.X_AXIS));
         playerPowerupPanels[i].setPreferredSize(new Dimension(width/4, 50)); // Adjust size as needed
 
         // Add player components to player panel
         JPanel playerInfoPanel = new JPanel();
         playerInfoPanel.setLayout(new BorderLayout());
         playerInfoPanel.setBorder(new EmptyBorder(0, 30, 0, 0));
-        playerInfoPanel.add(playerLabels[i], BorderLayout.CENTER);
-        playerInfoPanel.add(playerPointsLabels[i], BorderLayout.EAST);
+        playerInfoPanel.add(playerLabels[i], BorderLayout.WEST);
+        playerInfoPanel.add(playerPointsLabels[i], BorderLayout.CENTER);
         playerInfoPanel.add(playerPowerupPanels[i], BorderLayout.SOUTH);
         playerPanel.add(playerInfoPanel);
+        playerLabels[i].setBorder(new EmptyBorder(0, 0, 0, 15));
     }
   }
 
