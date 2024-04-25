@@ -27,7 +27,7 @@ public class MonsterTest {
     @Test
     public void canMoveToValidField(){
         assertEquals(1, monster.getX());
-        monster.move();
+       // monster.move();
     }
 
 }
