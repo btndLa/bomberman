@@ -111,9 +111,9 @@ public class CharSelectPanel extends Scene {
     //    playerOnePanel.setBackground(Color.green);
         ButtonGroup playerGroup = new ButtonGroup();
         //Declared as an array because of accessibility from action listeners
-        final int[] players = {0};
-        final boolean[] playerChoosed = {false};
-        final boolean[] monsterChoosed = {false};
+        final int[] players = {2};
+        final boolean[] playerChoosed = {true};
+        final boolean[] monsterChoosed = {true};
 
         JRadioButton twoplayerBTN = new JRadioButton("2");
         twoplayerBTN.addActionListener(new ActionListener() {
@@ -123,18 +123,20 @@ public class CharSelectPanel extends Scene {
                 playerChoosed[0] = true;
             }
         });
-
+        
+        
         JRadioButton threeplayerBTN = new JRadioButton("3");
         threeplayerBTN.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                players[0] = 3;
-                playerChoosed[0] = true;
-            }
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            players[0] = 3;
+            playerChoosed[0] = true;
+          }
         });
-
+        
         playerGroup.add(twoplayerBTN);
         playerGroup.add(threeplayerBTN);
+        twoplayerBTN.setSelected(true);
 
         JLabel text = new JLabel("Players");
 
@@ -151,7 +153,7 @@ public class CharSelectPanel extends Scene {
         ButtonGroup monsterGroup = new ButtonGroup();
         JRadioButton twomonsterBTN = new JRadioButton("2");
         //Declared as an array because of accessibility from action listeners
-        final int[] monsterNumber = {0};
+        final int[] monsterNumber = {2};
         twomonsterBTN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -159,18 +161,19 @@ public class CharSelectPanel extends Scene {
                 monsterChoosed[0] = true;
             }
         });
-
+        
         JRadioButton threemonsterBTN = new JRadioButton("3");
         threemonsterBTN.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                monsterNumber[0] = 3;
-                monsterChoosed[0] = true;
-            }
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            monsterNumber[0] = 3;
+            monsterChoosed[0] = true;
+          }
         });
-
+        
         monsterGroup.add(twomonsterBTN);
         monsterGroup.add(threemonsterBTN);
+        twomonsterBTN.setSelected(true);
 
         JLabel monstertext = new JLabel("Monsters");
 

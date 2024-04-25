@@ -419,7 +419,7 @@ public class GameEngine extends JPanel implements KeyListener{
       message = "Draw!";
     }
     Object[] options = { "New round!" };
-    int optionChosen = JOptionPane.showOptionDialog(null, message, "Game Over",
+    int optionChosen = JOptionPane.showOptionDialog(this.getParent(), message, "Game Over",
     JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
     if (optionChosen == 0) newRound();
   }
