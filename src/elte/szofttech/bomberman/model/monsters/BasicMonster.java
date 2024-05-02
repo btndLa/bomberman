@@ -57,7 +57,7 @@ public class BasicMonster extends Monster {
               break;
             }
             if(!moved) {
-              this.direction = (new Random()).nextInt(1,5);
+              this.direction = (new Random()).nextInt(5) + 1;
             }
             
           }
