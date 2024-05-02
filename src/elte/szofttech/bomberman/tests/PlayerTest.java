@@ -19,7 +19,7 @@ class PlayerTest {
     public void setUp(){
         engine = new GameEngine(900,2);
         engine.StartGame();
-        player = engine.getPlayers().getFirst();
+        player = engine.getPlayers().get(0);
     }
 
     @Test
