@@ -2,6 +2,7 @@
 <project name="bomberman"
           default="main"
           basedir=".">
+    <property file="build.properties" />
 
     <target name="clean">
         <delete dir="build"/>
@@ -9,8 +10,10 @@
 
     <target name="compile">
         <mkdir dir="build/classes"/>
-        <javac srcdir="src" destdir="build/classes">
-          <exclude name="elte/szofttech/bomberman/tests/*.java"/>
+        <javac srcdir="src" destdir="build/classes" encoding="${javac.encoding}" includeantruntime="false">
+          <classpath location="lib/junit-4.13.2.jar"/>
+          <classpath location="lib/hamcrest-core-1.3.jar"/>
+          <classpath location="lib/junit-platform-console-standalone-1.11.0-M1.jar"/>
           <exclude name="elte/szofttech/bomberman/model/powerups/Ghost.java"/>
           <exclude name="elte/szofttech/bomberman/model/powerups/Invulnerable.java"/>
           <exclude name="elte/szofttech/bomberman/model/powerups/Obstacle.java"/>
@@ -33,15 +36,35 @@
             </fileset>
         </jar>
     </target>
+
+    <target name="test">
+      <mkdir dir="report"/>
+      <junit printsummary="yes" haltonfailure="no">
+        <classpath location="lib/junit-4.13.2.jar"/>
+        <classpath location="lib/hamcrest-core-1.3.jar"/>
+        <classpath location="build/classes/elte/szofttech/bomberman"/>
+        <formatter type="xml"/>
+        <formatter type="plain"/>
+        <batchtest fork="yes" todir="report">
+          <fileset dir="src/elte/szofttech/bomberman/tests">
+            <include name="**.*Test.java"/>
+          </fileset>
+        </batchtest>
+      </junit>
+
+    </target>
+
     <target name="doc">
       <tstamp>
         <format property="timestamp" pattern="d.M.yyyy" locale="en"/>
       </tstamp>
       <mkdir dir="doc"/>
-      <javadoc sourcepath="src/elte/szofttech/bomberman" destdir="doc" windowtitle="bomberman">
+      <javadoc destdir="doc" windowtitle="bomberman"
+      encoding="${javac.encoding}">
         <fileset dir="src" defaultexcludes="yes">
-          <include name="src/elte/szofttech/bomberman/**"/>
-          <exclude name="src/elte/szofttech/bomberman/tests/**"/>
+          <include name="elte/szofttech/bomberman/**"/>
+          <exclude name="elte/szofttech/bomberman/tests/*.java"/>
+          <exclude name="elte/szofttech/bomberman/assets/**"/>
         </fileset>
       </javadoc>
     </target>

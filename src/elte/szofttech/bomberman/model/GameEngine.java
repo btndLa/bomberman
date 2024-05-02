@@ -218,7 +218,7 @@ public class GameEngine extends JPanel implements KeyListener{
                 char ch = line.charAt(i);
                 switch (ch) {
                     case 'B':
-                    boolean isPowerUp = random.nextInt(6) == 1;
+                    boolean isPowerUp = random.nextInt(3) == 1;
                     Box box = new Box(x, y, tileSize);
                     box.setPowerUp(isPowerUp);
                     board[row][col] = box;
