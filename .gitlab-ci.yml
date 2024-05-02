@@ -21,6 +21,6 @@ build:       # This job runs in the build stage, which runs first.
 test:   # This job also runs in the test stage.
   stage: test    # It can run at the same time as unit-test-job (in parallel).
   script:
-    -mvn test
+    - mvn test
 
 
