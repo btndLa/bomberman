@@ -27,7 +27,7 @@ public class GameGUI {
     public GameGUI() {
         frame = new JFrame("Bomberman");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        engine = new GameEngine(WINDOW_WIDTH, 3);
+        engine = new GameEngine(WINDOW_WIDTH, 3, "src/elte/szofttech/bomberman/assets/levels/level1.txt");
         
         // Set frame dimensions and other properties
         frame.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGTH));

@@ -57,6 +57,7 @@ public class GameEngine extends JPanel implements KeyListener{
                                                     {73, 75, 74, 76, 85, 79}};
     private List<Monster> monsters;
     private int monstNum;
+    private String mapName;
     private boolean isGameOver;
     private Field[][] board;
     private int boardWidth;
@@ -72,13 +73,13 @@ public class GameEngine extends JPanel implements KeyListener{
     private HUDPanel hud;
     private int timeElapsed;
 
-    public GameEngine(int width, int playerNum){
+    public GameEngine(int width, int playerNum, String mapName){
       super();
       this.hud = null;
       this.boardWidth = width;
       this.tileSize = width/BOARD_SIZE;
       this.playerNum = playerNum;
-
+      this.mapName = mapName;
       this.playerPos = new int[playerNum][2];
       this.currentState = State.CHARSELECT;
       isGameOver = false;
@@ -96,9 +97,10 @@ public class GameEngine extends JPanel implements KeyListener{
     public List<Player> getPlayers() {
         return players;
     }
-
+    public ArrayList<Obstacles> getObstacles(){return obstacles;}
     public int gettileSize(){ return tileSize;}
     public List<Monster> getMonsters(){ return monsters;}
+    public List<Bomb> getBombs(){ return bombs;}
     public void setHUD(HUDPanel hud){ this.hud = hud;}
     // Timer loop resoinsible for moving monsters
     private void setupTimer() {
@@ -202,7 +204,7 @@ public class GameEngine extends JPanel implements KeyListener{
     // Setup board fields
     private void loadLevel(){
        Random random = new Random();
-      try (BufferedReader reader = new BufferedReader(new FileReader("src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
+      try (BufferedReader reader = new BufferedReader(new FileReader(mapName))) {
         String line;
         int y = 0;
         int row = 0;
@@ -279,6 +281,8 @@ public class GameEngine extends JPanel implements KeyListener{
       detonationTimer.setRepeats(false);
       detonationTimer.start();
     }
+
+
     // Spread explosion in all directions and apply explosion effect
     private void explosion(int x, int y, Bomb bomb) {
       Queue<Field> fields = new LinkedList<>();

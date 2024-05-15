@@ -73,6 +73,7 @@ public class Player extends Entity {
     public void setY(int y){this.y = y;}
     public int getPoints(){return points;}
     public boolean isAlive(){return isAlive;}
+    public boolean isInvulnerable(){return isInvulnerable;}
     public void setAlive(){isAlive = true;}
     public int getBombRadius(){return bombRadius;}
     public int getbombCapacity(){return bombCapacity;}
@@ -134,7 +135,7 @@ public class Player extends Entity {
           if(engine.getBoard()[this.y][this.x].canPlaceBomb() && this.hasDetonator == false){
             Bomb newBomb = new Bomb(currentX * engine.gettileSize(), currentY * engine.gettileSize(), this.bombRadius, 3, engine.gettileSize());
             if(this.bombsOnGround.size() < this.bombCapacity){
-                this.bombsOnGround.add(newBomb);
+              addBomb(newBomb);
             }
             System.out.println("Bombák:" + bombsOnGround.toString());
             engine.detonateBomb(newBomb, this);
@@ -186,8 +187,10 @@ public class Player extends Entity {
   }
 
     public void die(){
-      this.isAlive = false;
-      engine.checkEndGame();
+      if (!isInvulnerable) {
+        this.isAlive = false;
+        engine.checkEndGame();
+      }
     }
 
     public void win(){
@@ -196,12 +199,17 @@ public class Player extends Entity {
 
     @Override
     public void onExplosion() {
+      if(!this.isInvulnerable){
         this.isAlive = false;
+      }
+    }
+    public void addBomb(Bomb bomb){
+      this.bombsOnGround.add(bomb);
     }
 
     @Override
     public void onCollision(Entity e) {
-        if(e.x == this.x && e.y == this.y && e instanceof Monster){
+        if(e.x == this.x && e.y == this.y && e instanceof Monster && !this.isInvulnerable){
             this.isAlive = false;
         }
     }
