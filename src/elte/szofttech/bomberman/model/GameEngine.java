@@ -249,7 +249,7 @@ public class GameEngine extends JPanel implements KeyListener{
       };
 
       for (int i = 0; i < 2; i++) {
-          int monsterType = random.nextInt(4) + 1;
+          int monsterType = 4;//random.nextInt(4) + 1;
           int x = positions[i][0];
           int y = positions[i][1];
 
@@ -293,7 +293,7 @@ public class GameEngine extends JPanel implements KeyListener{
   
     private void loadLevel(){
        Random random = new Random();
-      try (BufferedReader reader = new BufferedReader(new FileReader("src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
+      try (BufferedReader reader = new BufferedReader(new FileReader("zmb/src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
         String line;
         int y = 0;
         int row = 0;
@@ -423,7 +423,7 @@ public class GameEngine extends JPanel implements KeyListener{
     private void explosionEffect(Field field, Bomb bomb) {
       Random random = new Random();
       int randomNumber = random.nextInt(6);
-      int teszt = 6;
+      int teszt = 5;
       field.setColor(Color.ORANGE);
       field.draw(getGraphics(), field.getX(), field.getY());
       Timer explosionTimer = new Timer(500, new ActionListener() {
@@ -432,7 +432,7 @@ public class GameEngine extends JPanel implements KeyListener{
         if (field instanceof Box) {
             Box box = (Box) field;
             if (box.isPowerUp == true) { 
-              switch (randomNumber) {
+              switch (teszt) {
                 case 0:
                 board[field.getY() / tileSize][field.getX() / tileSize] = new BombRangeBonus(field.getX(), field.getY(), tileSize);
                     break;
