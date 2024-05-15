@@ -9,7 +9,10 @@ import elte.szofttech.bomberman.model.fields.Floor;
 import elte.szofttech.bomberman.model.fields.Obstacles;
 import elte.szofttech.bomberman.model.fields.Wall;
 import elte.szofttech.bomberman.model.monsters.BasicMonster;
+import elte.szofttech.bomberman.model.monsters.GhostMonster;
+import elte.szofttech.bomberman.model.monsters.Hunter;
 import elte.szofttech.bomberman.model.monsters.Monster;
+import elte.szofttech.bomberman.model.monsters.Zombie;
 import elte.szofttech.bomberman.model.powerups.PowerUp;
 import elte.szofttech.bomberman.model.powerups.RollerBlade;
 import elte.szofttech.bomberman.model.powerups.BombDetonator;
@@ -67,6 +70,10 @@ public class GameEngine extends JPanel implements KeyListener{
     private int bombRadius;
     private int bombDetonation;
     private Timer timer;
+    private Timer basicMonsterTimer;
+    private Timer ghostMonsterTimer;
+    private Timer HunterTimer;
+    private Timer ZombieTimer;
     private ArrayList<Bomb> bombs;
     private ArrayList<Obstacles> obstacles;
     private HUDPanel hud;
@@ -102,24 +109,70 @@ public class GameEngine extends JPanel implements KeyListener{
     public void setHUD(HUDPanel hud){ this.hud = hud;}
     // Timer loop resoinsible for moving monsters
     private void setupTimer() {
-      timer = new Timer(1000, new ActionListener() { 
+      basicMonsterTimer = new Timer(1000, new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+              for (Monster monster : monsters) {
+                  if (monster instanceof BasicMonster) {
+                      monster.move();
+                      for (Player player : players) {
+                          player.onCollision(monster);
+                      }
+                  }
+              }
+              repaint();
+          }
+      });
+      basicMonsterTimer.start();
+
+      ghostMonsterTimer = new Timer(2000, new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+              for (Monster monster : monsters) {
+                  if (monster instanceof GhostMonster) {
+                      monster.move();
+                      for (Player player : players) {
+                          player.onCollision(monster);
+                      }
+                  }
+              }
+              repaint();
+          }
+      });
+      ghostMonsterTimer.start();
+
+      HunterTimer = new Timer(500, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          timeElapsed+=1;
-          int minutes = timeElapsed / 60;
-          int seconds = timeElapsed % 60;
-          hud.updateTime(String.format("%02d:%02d", minutes, seconds));
-          for (Monster monster : monsters) {
-            monster.move();
-            for(Player player : players){
-                player.onCollision(monster);
+            for (Monster monster : monsters) {
+                if (monster instanceof Hunter) {
+                    monster.move();
+                    for (Player player : players) {
+                        player.onCollision(monster);
+                    }
+                }
             }
-          }
-          repaint();
+            repaint();
         }
     });
-    timer.start(); 
-    }
+    HunterTimer.start();
+
+    ZombieTimer= new Timer(500, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+          for (Monster monster : monsters) {
+              if (monster instanceof Zombie) {
+                  monster.move();
+                  for (Player player : players) {
+                      player.onCollision(monster);
+                  }
+              }
+          }
+          repaint();
+      }
+  });
+  ZombieTimer.start();
+  }
 
     // Player movement listener
     public void keyPressed(KeyEvent e) {
@@ -161,26 +214,15 @@ public class GameEngine extends JPanel implements KeyListener{
         players.add(new Player(playerPos[i][0], playerPos[i][1], PLAYER_CONTROLS[i][0], PLAYER_CONTROLS[i][1],
         PLAYER_CONTROLS[i][2], PLAYER_CONTROLS[i][3], PLAYER_CONTROLS[i][4],PLAYER_CONTROLS[i][5], this));
       }
-      monsters = new ArrayList<Monster>();
-      monsters.add(new BasicMonster(3, 4,  this,1));
-      monsters.add(new BasicMonster(5, 11, this,1));
 
-      if(monstNum == 3){
-          monsters.add(new BasicMonster(7, 11, this,1));
-      }
-
+      initializeMonsters(monstNum);
       bombs = new ArrayList<Bomb>();
       obstacles = new ArrayList<Obstacles>();
     }
 
     public void newRound(){
       loadLevel();
-      monsters = new ArrayList<Monster>();
-      monsters.add(new BasicMonster(3, 4,  this,1));
-      monsters.add(new BasicMonster(5, 11, this,1));
-      if(monstNum == 3){
-          monsters.add(new BasicMonster(7, 11, this,1));
-      }
+      initializeMonsters(monstNum);
 
       bombs = new ArrayList<Bomb>();
       setupPlayers();
@@ -197,12 +239,61 @@ public class GameEngine extends JPanel implements KeyListener{
         players.get(i).setAlive();
       }
     }
-  
+    private void initializeMonsters(int monstNum) {
+      Random random = new Random();
+      monsters = new ArrayList<Monster>();
 
-    // Setup board fields
+      int[][] positions = {
+          {3, 4},
+          {5, 11}
+      };
+
+      for (int i = 0; i < 2; i++) {
+          int monsterType = random.nextInt(4) + 1;
+          int x = positions[i][0];
+          int y = positions[i][1];
+
+          switch (monsterType) {
+              case 1:
+                  monsters.add(new BasicMonster(x, y, this, 1));
+                  break;
+              case 2:
+                  monsters.add(new GhostMonster(x, y, this, 1));
+                  break;
+              case 3:
+                  monsters.add(new Hunter(x, y, this, 1));
+                  break;
+              case 4:
+                  monsters.add(new Zombie(x, y, this, 1));
+                  break;
+          }
+      }
+
+      if (monstNum == 3) {
+          int x = 7;
+          int y = 11;
+          int monsterType = random.nextInt(4) + 1;
+
+          switch (monsterType) {
+              case 1:
+                  monsters.add(new BasicMonster(x, y, this, 1));
+                  break;
+              case 2:
+                  monsters.add(new GhostMonster(x, y, this, 1));
+                  break;
+              case 3:
+                  monsters.add(new Hunter(x, y, this, 1));
+                  break;
+              case 4:
+                  monsters.add(new Zombie(x, y, this, 1));
+                  break;
+          }
+      }
+  }
+  
     private void loadLevel(){
        Random random = new Random();
-      try (BufferedReader reader = new BufferedReader(new FileReader("src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
+      try (BufferedReader reader = new BufferedReader(new FileReader("zmb/src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
         String line;
         int y = 0;
         int row = 0;
