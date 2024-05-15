@@ -293,7 +293,7 @@ public class GameEngine extends JPanel implements KeyListener{
   
     private void loadLevel(){
        Random random = new Random();
-      try (BufferedReader reader = new BufferedReader(new FileReader("zmb/src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
+      try (BufferedReader reader = new BufferedReader(new FileReader("src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
         String line;
         int y = 0;
         int row = 0;
