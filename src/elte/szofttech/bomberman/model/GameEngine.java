@@ -9,6 +9,7 @@ import elte.szofttech.bomberman.model.fields.Floor;
 import elte.szofttech.bomberman.model.fields.Obstacles;
 import elte.szofttech.bomberman.model.fields.Wall;
 import elte.szofttech.bomberman.model.monsters.BasicMonster;
+import elte.szofttech.bomberman.model.monsters.Hunter;
 import elte.szofttech.bomberman.model.monsters.Monster;
 import elte.szofttech.bomberman.model.powerups.PowerUp;
 import elte.szofttech.bomberman.model.powerups.RollerBlade;
@@ -72,6 +73,8 @@ public class GameEngine extends JPanel implements KeyListener{
     private HUDPanel hud;
     private int timeElapsed;
 
+    private int level;
+
     public GameEngine(int width, int playerNum){
       super();
       this.hud = null;
@@ -110,7 +113,7 @@ public class GameEngine extends JPanel implements KeyListener{
           int seconds = timeElapsed % 60;
           hud.updateTime(String.format("%02d:%02d", minutes, seconds));
           for (Monster monster : monsters) {
-            monster.move();
+              monster.move();
             for(Player player : players){
                 player.onCollision(monster);
             }
@@ -138,9 +141,10 @@ public class GameEngine extends JPanel implements KeyListener{
 
     }
 
-    public void finishedCharSelect(int playerNum, int monstNum){
+    public void finishedCharSelect(int playerNum, int monstNum, int level){
         this.playerNum = playerNum;
         this.monstNum = monstNum;
+        this.level = level;
         loadLevel();
         SwitchScene();
         StartGame();
@@ -162,8 +166,8 @@ public class GameEngine extends JPanel implements KeyListener{
         PLAYER_CONTROLS[i][2], PLAYER_CONTROLS[i][3], PLAYER_CONTROLS[i][4],PLAYER_CONTROLS[i][5], this));
       }
       monsters = new ArrayList<Monster>();
-      monsters.add(new BasicMonster(3, 4,  this,1));
-      monsters.add(new BasicMonster(5, 11, this,1));
+      monsters.add(new BasicMonster(10, 3,  this,1));
+      monsters.add(new BasicMonster(10, 5, this,1));
 
       if(monstNum == 3){
           monsters.add(new BasicMonster(7, 11, this,1));
@@ -176,8 +180,8 @@ public class GameEngine extends JPanel implements KeyListener{
     public void newRound(){
       loadLevel();
       monsters = new ArrayList<Monster>();
-      monsters.add(new BasicMonster(3, 4,  this,1));
-      monsters.add(new BasicMonster(5, 11, this,1));
+      monsters.add(new Hunter(3, 4,  this,1));
+      monsters.add(new Hunter(5, 11, this,1));
       if(monstNum == 3){
           monsters.add(new BasicMonster(7, 11, this,1));
       }
@@ -202,7 +206,17 @@ public class GameEngine extends JPanel implements KeyListener{
     // Setup board fields
     private void loadLevel(){
        Random random = new Random();
-      try (BufferedReader reader = new BufferedReader(new FileReader("src/elte/szofttech/bomberman/assets/levels/level1.txt"))) {
+       String filePath = "";
+
+       switch (level){
+           case 1 -> filePath = "src/elte/szofttech/bomberman/assets/levels/level1.txt";
+           case 2 -> filePath = "src/elte/szofttech/bomberman/assets/levels/level2.txt";
+           case 3 -> filePath = "src/elte/szofttech/bomberman/assets/levels/level3.txt";
+           case 4 -> filePath = "src/elte/szofttech/bomberman/assets/levels/testInput1.txt";
+           default -> filePath = "";
+       }
+
+      try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
         String line;
         int y = 0;
         int row = 0;
@@ -238,6 +252,7 @@ public class GameEngine extends JPanel implements KeyListener{
                   default:
                     break;
                   }
+                System.out.println("New field coordinates: " + y/tileSize + " " + x/tileSize);
                   x+=tileSize;
                   col+=1;
               }
