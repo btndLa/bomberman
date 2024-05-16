@@ -14,14 +14,14 @@ import java.awt.event.KeyEvent;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PlayerTest {
+class PlayerTest {
     private Player player;
     private GameEngine engine;
 
     @BeforeEach
     public void setUp(){
         engine = new GameEngine(900,2);
-        engine.finishedCharSelect(2, 2, 4);
+        engine.finishedCharSelect(2, 2, 4,1);
         player = engine.getPlayers().get(0);
     }
     @Test

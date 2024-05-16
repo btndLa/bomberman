@@ -187,10 +187,11 @@ public class GameEngine extends JPanel implements KeyListener{
       }
   }
 
-    public void finishedCharSelect(int playerNum, int monstNum, int level){
+    public void finishedCharSelect(int playerNum, int monstNum, int level, int limit){
         this.playerNum = playerNum;
         this.monstNum = monstNum;
         this.level = level;
+        this.limit = limit;
         loadLevel();
         SwitchScene();
         StartGame();
@@ -492,15 +493,18 @@ public class GameEngine extends JPanel implements KeyListener{
       message = "Draw!";
     }
     Object[] options = { "New round!" };
-    int rounds = 0;
+    boolean endGame = false;
     for(Player p : players){
-        rounds += p.getPoints();
+        if(p.getPoints() >= limit){
+            JOptionPane.showMessageDialog(this, "Player " + Integer.toString(players.indexOf(player) + 1) + " won the game!");
+            endGame = true;
+        }
     }
-
-      int optionChosen = JOptionPane.showOptionDialog(this.getParent(), message, "Game Over",
-              JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-      if (optionChosen == 0) newRound();
-
+    if(!endGame){
+        int optionChosen = JOptionPane.showOptionDialog(this.getParent(), message, "Game Over",
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        if (optionChosen == 0) newRound();
+    }
   }
   public void detonateBombsImmediately(List<Bomb> bombs) {
     List<Bomb> allBombs = new ArrayList<>();

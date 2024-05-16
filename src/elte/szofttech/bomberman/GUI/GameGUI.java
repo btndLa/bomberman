@@ -27,7 +27,6 @@ public class GameGUI {
     public GameGUI() {
         frame = new JFrame("Bomberman");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        engine = new GameEngine(WINDOW_WIDTH, 3);
         
         // Set frame dimensions and other properties
         frame.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGTH));
@@ -37,6 +36,11 @@ public class GameGUI {
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
         JMenu gameMenu = new JMenu("Game");
+        JMenuItem newGame = new JMenuItem("New Game");
+        newGame.addActionListener(e -> {
+            this.startCharSelect();
+        });
+        gameMenu.add(newGame);
         menuBar.add(gameMenu); 
 
         //gamePanel = new GamePanel(WINDOW_WIDTH, WINDOW_HEIGHT, engine, this);
@@ -50,7 +54,9 @@ public class GameGUI {
     public void startCharSelect(){
         frame.setVisible(false);
         frame.getContentPane().removeAll();
+        engine = new GameEngine(WINDOW_WIDTH, 3);
         charSelect = new CharSelectPanel(WINDOW_WIDTH,WINDOW_HEIGTH,engine, this);
+        gamePanel = null;
         //gamePanel.setBackground(Color.WHITE);
         frame.getContentPane().add(charSelect);
         frame.pack();
