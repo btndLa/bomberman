@@ -14,7 +14,7 @@ public class Ghost extends PowerUp {
     public Ghost(int x, int y, int tileSize) {
         super(x, y, tileSize);
         try {
-          this.image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/Detonator.png"));
+          this.image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/Ghostpowerup.png"));
         } catch (Exception e) {}
         this.defaultColor = Color.ORANGE;
         this.setColor(defaultColor);
