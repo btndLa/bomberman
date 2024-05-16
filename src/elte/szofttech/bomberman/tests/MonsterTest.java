@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class MonsterTest {
-/*
+
     Hunter monster;
     Hunter monsterInCorner;
     Player player;
@@ -22,7 +22,7 @@ public class MonsterTest {
     @BeforeEach
     public void setUp(){
         engine = new GameEngine(1000,2);
-        engine.finishedCharSelect(2,2,1);
+        engine.finishedCharSelect(2,2,1,1);
         player = engine.getPlayers().get(0);
         monster = new Hunter(1,3,engine,1);
         monsterInCorner = new Hunter(2,1,engine,1);
@@ -93,5 +93,5 @@ public void testMoveRight() {
       player.onCollision(monster);
       assertTrue(player.isAlive());
     }
-*/
+
 }

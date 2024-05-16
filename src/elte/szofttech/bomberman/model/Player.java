@@ -23,8 +23,12 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Represents the player entity in the Bomberman game.
+ */
 public class Player extends Entity {
-    //Control key codes
+
+    // Control key codes
     private Image image;
     private int up;
     private int down;
@@ -47,6 +51,19 @@ public class Player extends Entity {
     public int obstacleCapacity;
         
 
+    /**
+     * Constructs a player with the specified coordinates, control key codes, and game engine.
+     *
+     * @param x      the x-coordinate of the player
+     * @param y      the y-coordinate of the player
+     * @param up     the key code for moving up
+     * @param down   the key code for moving down
+     * @param left   the key code for moving left
+     * @param right  the key code for moving right
+     * @param bombButton      the key code for placing bombs
+     * @param obstacleButton  the key code for placing obstacles
+     * @param engine the game engine
+     */
     public Player(int x, int y, int up, int down, int left, int right, int bombButton, int obstacleButton, GameEngine engine) {
         super(x, y);
         this.up = up;
@@ -66,10 +83,13 @@ public class Player extends Entity {
         this.isInvulnerable = false;
         this.isGhost = false;
         this.isExpiring = false;
-        this.isRollerBlade=false;
+        this.isRollerBlade = false;
         this.obstacleCapacity = 0;
         engine.getBoard()[this.y][this.x].setWalkable(false);
     }
+
+    // Getter and setter methods
+
 
     public int getX(){return x;}
     public int getY(){return y;}
@@ -89,7 +109,11 @@ public class Player extends Entity {
     public void setBombRadius(int n) {this.bombRadius = n;}
     public void setBombCapacity(int n){this.bombCapacity = n;}
     public void setObstacleCapacity(int n){this.obstacleCapacity = n;}
-
+    /**
+     * Moves the player based on the specified key event.
+     *
+     * @param key the key event
+     */
     public void move(KeyEvent key){
       if (!this.isAlive) {return;}
       int currentX = this.x;
@@ -183,42 +207,69 @@ public class Player extends Entity {
 
   }
 
-  // Checks if a field ha  player on it
+    /**
+     * Checks if a field has a monster on it.
+     *
+     * @param x the x-coordinate of the field
+     * @param y the y-coordinate of the field
+     * @return the monster if found, null otherwise
+     */
   private Monster isMonster(int x, int y){
     for (Monster monster : engine.getMonsters()) {
       if(monster.getX() == x && monster.getY() == y && !(engine.getBoard()[y][x] instanceof Bomb)) return monster; 
     }
     return null;
   }
-
+    /**
+     * Makes the player die if not invulnerable.
+     */
     public void die(){
       if (!isInvulnerable) {
         this.isAlive = false;
         engine.checkEndGame();
       }
     }
-
+    /**
+     * Increases the points earned by the player.
+     */
     public void win(){
       this.points += 1;
     }
 
+    /**
+     * Handles the player's response to an explosion.
+     */
     @Override
     public void onExplosion() {
       if(!this.isInvulnerable){
         this.isAlive = false;
       }
     }
+    /**
+     * Adds a bomb to the list of bombs on the ground.
+     *
+     * @param bomb the bomb to be added
+     */
     public void addBomb(Bomb bomb){
       this.bombsOnGround.add(bomb);
     }
 
+    /**
+     * Handles the player's collision with another entity.
+     *
+     * @param e the entity collided with
+     */
     @Override
     public void onCollision(Entity e) {
         if(e.x == this.x && e.y == this.y && e instanceof Monster && !this.isInvulnerable){
             this.isAlive = false;
         }
     }
-    
+      /**
+     * Handles the pickup of a power-up by the player.
+     *
+     * @param e the power-up picked up
+     */
     public void powerUpPickup(PowerUp e) {
             if (e instanceof BombRangeBonus) {
                 ((BombRangeBonus) e).applyOnPlayer(this);
@@ -244,7 +295,11 @@ public class Player extends Entity {
             }         
         }
 
-
+      /**
+     * Draws the player on the game board.
+     *
+     * @param g the graphics object
+     */
         public void draw(Graphics g) {
             int ts = engine.gettileSize();
             if (this.up == 87){

@@ -11,20 +11,40 @@ import java.awt.Image;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
+/**
+ * Represents a hunter monster in the Bomberman game.
+ * The hunter monster moves towards the nearest player and occasionally changes direction randomly.
+ * It inherits from the Monster class.
+ */
 public class Hunter extends Monster {
 
     private Image image;
+
+    /**
+     * Constructs a Hunter object with the specified parameters.
+     * @param x The initial x-coordinate of the hunter monster.
+     * @param y The initial y-coordinate of the hunter monster.
+     * @param engine The game engine associated with the hunter monster.
+     * @param direction The initial direction of the hunter monster.
+     */
     public Hunter(int x, int y, GameEngine engine, int direction) {
         super(x, y, engine, direction);
         try {
-          image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/Hunter.png"));
+            image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/Hunter.png"));
         } catch (Exception e) {}
     }
 
+    /**
+     * Gets the speed of the hunter monster.
+     * @return The speed of the hunter monster.
+     */
     public int getSpeed() {
         return this.speed;
     }
 
+    /**
+     * Moves the hunter monster towards the nearest player or changes direction randomly.
+     */
     @Override
     public void move() {
         int currentX = this.x;
@@ -83,6 +103,10 @@ public class Hunter extends Monster {
         }
     }
 
+    /**
+     * Finds the nearest player to the hunter monster.
+     * @return The nearest player if found, otherwise null.
+     */
     private Player findNearestPlayer() {
         Player nearestPlayer = null;
         int minDistance = Integer.MAX_VALUE;
@@ -100,6 +124,11 @@ public class Hunter extends Monster {
         return nearestPlayer;
     }
 
+    /**
+     * Determines the best direction towards the specified player.
+     * @param player The player to move towards.
+     * @return The direction to move towards the player.
+     */
     private int getBestDirectionTowards(Player player) {
         int playerX = player.getX();
         int playerY = player.getY();

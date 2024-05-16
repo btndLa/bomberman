@@ -79,7 +79,12 @@ public class GameEngine extends JPanel implements KeyListener{
 
     private int level;
     private int limit;
-
+ /**
+     * Constructs a new GameEngine with the specified width and number of players.
+     *
+     * @param width     the width of the game board
+     * @param playerNum the number of players in the game
+     */
     public GameEngine(int width, int playerNum){
       super();
       this.hud = null;
@@ -186,7 +191,14 @@ public class GameEngine extends JPanel implements KeyListener{
           }
       }
   }
-
+    /**
+     * Initializes the game with the specified number of players and monsters.
+     *
+     * @param playerNum the number of players in the game
+     * @param monstNum  the number of monsters in the game
+     * @param level     the level of the game
+     * @param limit     the point limit for the game
+     */
     public void finishedCharSelect(int playerNum, int monstNum, int level, int limit){
         this.playerNum = playerNum;
         this.monstNum = monstNum;
@@ -197,6 +209,9 @@ public class GameEngine extends JPanel implements KeyListener{
         StartGame();
         setupTimer();
     }
+    /**
+     * Switches the current scene of the game.
+     */
     public void SwitchScene(){
         this.removeAll();
         this.currentState = State.values()[(this.currentState.ordinal() + 1) % State.values().length];
@@ -205,6 +220,9 @@ public class GameEngine extends JPanel implements KeyListener{
         }
         repaint();
     }
+    /**
+     * Starts a new game.
+     */
     public void StartGame(){
       players = new ArrayList<Player>();
       loadLevel();
@@ -218,7 +236,9 @@ public class GameEngine extends JPanel implements KeyListener{
       bombs = new ArrayList<Bomb>();
       obstacles = new ArrayList<Obstacles>();
     }
-
+    /**
+     * Starts a new round of the game.
+     */
     public void newRound(){
       loadLevel();
       monsters = new ArrayList<Monster>();
@@ -231,7 +251,9 @@ public class GameEngine extends JPanel implements KeyListener{
       hud.updateTime("00:00");
       repaint();
     }
-
+    /**
+     * Starts a new round of the game.
+     */
     private void setupPlayers(){
       for (int i = 0; i < playerNum; i++) {
         players.get(i).setX(playerPos[i][0]);
@@ -239,9 +261,10 @@ public class GameEngine extends JPanel implements KeyListener{
         players.get(i).setAlive();
       }
     }
-  
 
-    // Setup board fields
+    /**
+     * Loads the level configuration for the game.
+     */
     private void loadLevel(){
        Random random = new Random();
        String filePath = "";
@@ -301,8 +324,12 @@ public class GameEngine extends JPanel implements KeyListener{
           e.printStackTrace();
       }
     }
-
-    // Handle placement and detonation of bomb
+    /**
+     * Detonates a bomb in the game.
+     *
+     * @param bomb the bomb to detonate
+     * @param p    the player who placed the bomb
+     */
     public void detonateBomb(Bomb bomb, Player p){
       int delay;
       delay = p == null ? 0 : bomb.getDetonation()*1000; // If player is null, the bomb is blown up by another bomb
@@ -333,8 +360,13 @@ public class GameEngine extends JPanel implements KeyListener{
       detonationTimer.start();
     }
 
-
-    // Spread explosion in all directions and apply explosion effect
+   /**
+     * Spreads explosion in all directions and applies explosion effect.
+     *
+     * @param x    the x-coordinate of the explosion
+     * @param y    the y-coordinate of the explosion
+     * @param bomb the bomb causing the explosion
+     */
     private void explosion(int x, int y, Bomb bomb) {
       Queue<Field> fields = new LinkedList<>();
       fields.add(board[y][x]);
@@ -382,8 +414,12 @@ public class GameEngine extends JPanel implements KeyListener{
       explosionTimer.start();
   }
   
-  
-    // Visual explosion effect and, blwing up objects
+   /**
+     * Visual explosion effect and blowing up objects.
+     *
+     * @param field the field affected by the explosion
+     * @param bomb  the bomb causing the explosion
+     */
     private void explosionEffect(Field field, Bomb bomb) {
       Random random = new Random();
       int randomNumber = random.nextInt(6);
@@ -454,7 +490,9 @@ public class GameEngine extends JPanel implements KeyListener{
     explosionTimer.setRepeats(false); 
     explosionTimer.start(); 
   } 
-
+  /**
+     * Checks the end game conditions and handles the end of the game.
+     */
   public void checkEndGame(){
     int alive = 0;
     for (Player player : players) {
@@ -471,7 +509,9 @@ public class GameEngine extends JPanel implements KeyListener{
       timer.setRepeats(false);
     }
   }
-
+    /**
+     * Ends the game and announces the winner or a draw.
+     */
   public void endGame(){
     this.timer.stop();
     for (Player player : players) {
@@ -483,6 +523,11 @@ public class GameEngine extends JPanel implements KeyListener{
     announceWinner(null);
   }
 
+    /**
+     * Announces the winner of the game.
+     *
+     * @param player the winning player, or null for a draw
+     */
   public void announceWinner(Player player){
     String message;
     if (player != null) {
@@ -506,6 +551,11 @@ public class GameEngine extends JPanel implements KeyListener{
         if (optionChosen == 0) newRound();
     }
   }
+      /**
+     * Detonates all bombs immediately.
+     *
+     * @param bombs the list of bombs to detonate
+     */
   public void detonateBombsImmediately(List<Bomb> bombs) {
     List<Bomb> allBombs = new ArrayList<>();
     for (Bomb bomb : bombs) {
@@ -525,6 +575,12 @@ public class GameEngine extends JPanel implements KeyListener{
       }
   }
 }
+    /**
+     * Places an obstacle on the game board.
+     *
+     * @param obstacle the obstacle to place
+     * @param p        the player placing the obstacle
+     */
 
   public void placeObstacle(Obstacles obstacle, Player p){
     if(p != null){
