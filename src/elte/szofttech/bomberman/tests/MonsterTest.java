@@ -3,6 +3,7 @@ package elte.szofttech.bomberman.tests;
 import elte.szofttech.bomberman.model.GameEngine;
 import elte.szofttech.bomberman.model.Player;
 import elte.szofttech.bomberman.model.monsters.BasicMonster;
+import elte.szofttech.bomberman.model.monsters.Hunter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,17 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class MonsterTest {
 
-    Player player;
-    BasicMonster monster;
-    BasicMonster monsterInCorner;
+    Hunter monster;
     GameEngine engine;
     @BeforeEach
     public void setUp(){
-        engine = new GameEngine(1000,3, "src/elte/szofttech/bomberman/assets/levels/level1.txt");
-        monster = new BasicMonster(1,3,engine,1);
-        monsterInCorner = new BasicMonster(2,1,engine,1);
-        engine.StartGame();   
-        player = engine.getPlayers().get(0);
+        engine = new GameEngine(1000,1000);
+        monster = new Hunter(1,3,engine,1);
     }
     @Test
     public void testConstructor(){

@@ -9,195 +9,108 @@ import java.awt.event.ActionListener;
 
 public class CharSelectPanel extends Scene {
     CharSelectPanel(int width, int height, GameEngine engine, GameGUI gui){
-        super(width,height,engine, gui);/*
-        this.setLayout(new GridLayout(2,2));
-        JPanel playerOnePanel = new JPanel();
-        playerOnePanel.setSize(this.getWidth() / 2, this.getHeight());
-        playerOnePanel.setBackground(Color.green);
+        super(width, height, engine, gui);
+
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));  // Use BoxLayout for vertical stacking
+
+        // Player Selection Panel
+        JPanel playerPanel = new JPanel();
+        playerPanel.setLayout(new FlowLayout());
+
+        JLabel playerText = new JLabel("Players");
         ButtonGroup playerGroup = new ButtonGroup();
-        //Declared as an array because of accessibility from action listeners
-        final int[] players = {0};
-        final boolean[] playerChoosed = {false};
-        final boolean[] monsterChoosed = {false};
-
-        JRadioButton twoplayerBTN = new JRadioButton("2");
-        twoplayerBTN.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                players[0] = 2;
-                playerChoosed[0] = true;
-            }
-        });
-
-        JRadioButton threeplayerBTN = new JRadioButton("3");
-        threeplayerBTN.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                players[0] = 3;
-                playerChoosed[0] = true;
-            }
-        });
-
-        playerGroup.add(twoplayerBTN);
-        playerGroup.add(threeplayerBTN);
-
-        JTextPane text = new JTextPane();
-        text.setText("Players");
-        text.setEnabled(false);
-        playerOnePanel.add(twoplayerBTN);
-        playerOnePanel.add(threeplayerBTN);
-        playerOnePanel.add(text);
-        this.add(playerOnePanel);
-
-        JPanel playerTwoPanel = new JPanel();
-        playerTwoPanel.setBackground(Color.green);
-        playerTwoPanel.setSize(this.getWidth() / 2, this.getHeight());
-
-        ButtonGroup monsterGroup = new ButtonGroup();
-        JRadioButton twomonsterBTN = new JRadioButton("2");
-        //Declared as an array because of accessibility from action listeners
-        final int[] monsterNumber = {0};
-        twomonsterBTN.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                monsterNumber[0] = 2;
-                monsterChoosed[0] = true;
-            }
-        });
-
-        JRadioButton threemonsterBTN = new JRadioButton("3");
-        threemonsterBTN.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                monsterNumber[0] = 3;
-                monsterChoosed[0] = true;
-            }
-        });
-
-        monsterGroup.add(twomonsterBTN);
-        monsterGroup.add(threemonsterBTN);
-
-        JTextPane monstertext = new JTextPane();
-        monstertext.setText("Monster");
-        monstertext.setEnabled(false);
-
-        playerTwoPanel.add(twomonsterBTN);
-        playerTwoPanel.add(threemonsterBTN);
-        playerTwoPanel.add(monstertext);
-        this.add(playerTwoPanel);
-
-        JPanel startPanel = new JPanel();
-        startPanel.setSize(this.getWidth(), this.getHeight()/3);
-
-        JButton startBTN = new JButton("Start");
-        startBTN.setSize(50,30);
-        startBTN.addActionListener((new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(playerChoosed[0] && monsterChoosed[0]){
-                    engine.finishedCharSelect(players[0], monsterNumber[0]);
-                    gui.startGame();
-                }
-            }
-        }));
-        startPanel.add(startBTN);
-        this.add(startPanel);
-        */
-
-
-        this.setLayout(new BorderLayout());
-        JPanel playerOnePanel = new JPanel();
-        playerOnePanel.setSize(this.getWidth() / 2, this.getHeight());
-    //    playerOnePanel.setBackground(Color.green);
-        ButtonGroup playerGroup = new ButtonGroup();
-        //Declared as an array because of accessibility from action listeners
         final int[] players = {2};
         final boolean[] playerChoosed = {true};
-        final boolean[] monsterChoosed = {true};
 
-        JRadioButton twoplayerBTN = new JRadioButton("2");
-        twoplayerBTN.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                players[0] = 2;
-                playerChoosed[0] = true;
-            }
+        JRadioButton twoPlayerBtn = new JRadioButton("2");
+        twoPlayerBtn.addActionListener(e -> {
+            players[0] = 2;
+            playerChoosed[0] = true;
         });
-        
-        
-        JRadioButton threeplayerBTN = new JRadioButton("3");
-        threeplayerBTN.addActionListener(new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
+        JRadioButton threePlayerBtn = new JRadioButton("3");
+        threePlayerBtn.addActionListener(e -> {
             players[0] = 3;
             playerChoosed[0] = true;
-          }
         });
-        
-        playerGroup.add(twoplayerBTN);
-        playerGroup.add(threeplayerBTN);
-        twoplayerBTN.setSelected(true);
 
-        JLabel text = new JLabel("Players");
+        playerGroup.add(twoPlayerBtn);
+        playerGroup.add(threePlayerBtn);
+        twoPlayerBtn.setSelected(true);
 
-        playerOnePanel.add(text);
-        playerOnePanel.add(twoplayerBTN);
-        playerOnePanel.add(threeplayerBTN);
+        playerPanel.add(playerText);
+        playerPanel.add(twoPlayerBtn);
+        playerPanel.add(threePlayerBtn);
 
-        this.add(playerOnePanel,BorderLayout.WEST);
+        // Monster Selection Panel (Similar Structure)
+        JPanel monsterPanel = new JPanel();
+        monsterPanel.setLayout(new FlowLayout());
 
-        JPanel playerTwoPanel = new JPanel();
-    //    playerTwoPanel.setBackground(Color.green);
-        playerTwoPanel.setSize(this.getWidth() / 2, this.getHeight());
-
+        JLabel monsterText = new JLabel("Monsters");
         ButtonGroup monsterGroup = new ButtonGroup();
-        JRadioButton twomonsterBTN = new JRadioButton("2");
-        //Declared as an array because of accessibility from action listeners
         final int[] monsterNumber = {2};
-        twomonsterBTN.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                monsterNumber[0] = 2;
-                monsterChoosed[0] = true;
-            }
+        final boolean[] monsterChoosed = {true};
+
+        JRadioButton twoMonsterBtn = new JRadioButton("2");
+        twoMonsterBtn.addActionListener(e -> {
+            monsterNumber[0] = 2;
+            monsterChoosed[0] = true;
         });
-        
-        JRadioButton threemonsterBTN = new JRadioButton("3");
-        threemonsterBTN.addActionListener(new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
+        JRadioButton threeMonsterBtn = new JRadioButton("3");
+        threeMonsterBtn.addActionListener(e -> {
             monsterNumber[0] = 3;
             monsterChoosed[0] = true;
-          }
         });
-        
-        monsterGroup.add(twomonsterBTN);
-        monsterGroup.add(threemonsterBTN);
-        twomonsterBTN.setSelected(true);
 
-        JLabel monstertext = new JLabel("Monsters");
+        monsterGroup.add(twoMonsterBtn);
+        monsterGroup.add(threeMonsterBtn);
+        twoMonsterBtn.setSelected(true);
 
-        playerTwoPanel.add(monstertext);
-        playerTwoPanel.add(twomonsterBTN);
-        playerTwoPanel.add(threemonsterBTN);
+        monsterPanel.add(monsterText);
+        monsterPanel.add(twoMonsterBtn);
+        monsterPanel.add(threeMonsterBtn);
 
-        this.add(playerTwoPanel,BorderLayout.EAST);
+        // Map Selection Panel
+        JPanel mapPanel = new JPanel();
+        mapPanel.setLayout(new FlowLayout());
 
+        JLabel mapLabel = new JLabel("Select Map");
+        ButtonGroup maps = new ButtonGroup();
+        int[] level = {1};
+
+        JRadioButton map1 = new JRadioButton("Map 1", true);
+        map1.addActionListener(e -> level[0] = 1);
+        JRadioButton map2 = new JRadioButton("Map 2", false);
+        map2.addActionListener(e -> level[0] = 2);
+        JRadioButton map3 = new JRadioButton("Map 3", false);
+        map3.addActionListener(e -> level[0] = 3);
+
+        maps.add(map1);
+        maps.add(map2);
+        maps.add(map3);
+
+        mapPanel.add(mapLabel);
+        mapPanel.add(map1);
+        mapPanel.add(map2);
+        mapPanel.add(map3);
+
+        // Start Button Panel
         JPanel startPanel = new JPanel();
-        startPanel.setSize(this.getWidth(), this.getHeight()/3);
-
-        JButton startBTN = new JButton("Start");
-        startBTN.setSize(50,30);
-        startBTN.addActionListener((new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(playerChoosed[0] && monsterChoosed[0]){
-                    engine.finishedCharSelect(players[0], monsterNumber[0]);
-                    gui.startGame();
-                }
+        JButton startBtn = new JButton("Start");
+        startBtn.setSize(50, 30);
+      //  startPanel.setLayout(new BoxLayout(startPanel, BoxLayout.Y_AXIS));
+        startBtn.addActionListener(e -> {
+            if (playerChoosed[0] && monsterChoosed[0]) {
+                engine.finishedCharSelect(players[0], monsterNumber[0], level[0]);
+                gui.startGame();
             }
-        }));
-        startPanel.add(startBTN, BorderLayout.CENTER);
+        });
+        startPanel.add(startBtn);
+
+        // Add Panels to Main Panel (this)
+        this.add(playerPanel);
+        this.add(monsterPanel);
+        this.add(mapPanel);
         this.add(startPanel);
     }
+
 }
