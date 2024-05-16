@@ -424,7 +424,7 @@ public class GameEngine extends JPanel implements KeyListener{
       Timer timer = new Timer(3000, new ActionListener() { 
         @Override
         public void actionPerformed(ActionEvent e) {
-          endGame();
+            endGame();
         }
       });
       timer.start();
