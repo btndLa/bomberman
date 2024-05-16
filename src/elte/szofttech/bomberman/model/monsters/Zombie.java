@@ -11,14 +11,22 @@ import java.awt.Image;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
-
 /**
- * Az elozohöz hasonló szörny, azonban útelágazásnál válthasson irányt a leírt heurisztika
- * alapján. Bizonyos eséllyel hozzon hibás döntést és válasszon rossz utat.
+ * Represents a zombie monster in the Bomberman game.
+ * Similar to the GhostMonster, but can change direction at junctions based on a described heuristic.
+ * May make wrong decisions and choose the wrong path with a certain chance.
  */
 public class Zombie extends Monster {
-    
+
     private Image image;
+
+    /**
+     * Constructs a Zombie object with the specified parameters.
+     * @param x The initial x-coordinate of the zombie.
+     * @param y The initial y-coordinate of the zombie.
+     * @param engine The game engine associated with the zombie.
+     * @param direction The initial direction of the zombie.
+     */
     public Zombie(int x, int y, GameEngine engine, int direction) {
         super(x, y, engine, direction);
         try {
@@ -26,6 +34,10 @@ public class Zombie extends Monster {
         } catch (Exception e) {}
     }
 
+    /**
+     * Gets the speed of the zombie.
+     * @return The speed of the zombie.
+     */
     public int getSpeed() {
         return this.speed;
     }
@@ -164,6 +176,10 @@ public class Zombie extends Monster {
         return null;
     }
 
+    /**
+     * Draws the zombie on the screen.
+     * @param g The Graphics object used for drawing.
+     */
     public void draw(Graphics g) {
       int ts = engine.gettileSize();
       g.drawImage(image, x * ts, y * ts, ts, ts, null);

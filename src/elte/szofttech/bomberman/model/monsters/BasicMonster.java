@@ -144,7 +144,7 @@ public class BasicMonster extends Monster {
      * @param g the graphics context
      */
     public void draw(Graphics g) {
-        int ts = engine.getTileSize();
+        int ts = engine.gettileSize();
         g.drawImage(image, x * ts, y * ts, ts, ts, null);
     }
 }

@@ -95,11 +95,11 @@ public class CharSelectPanel extends Scene {
             map1Icon = new ImageIcon(map1Image.getScaledInstance(50,50,50));
             map1IconSelected = new ImageIcon(map1Image.getScaledInstance(75,75,50));
 
-            map2Image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/level1.png"));
+            map2Image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/level2.png"));
             map2Icon = new ImageIcon(map2Image.getScaledInstance(50,50,50));
             map2IconSelected = new ImageIcon(map2Image.getScaledInstance(75,75,50));
 
-            map3Image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/level1.png"));
+            map3Image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/level3.png"));
             map3Icon = new ImageIcon(map3Image.getScaledInstance(50,50,50));
             map3IconSelected = new ImageIcon(map3Image.getScaledInstance(75,75,50));
         } catch (IOException e) {

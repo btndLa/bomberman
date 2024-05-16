@@ -4,8 +4,6 @@ import elte.szofttech.bomberman.model.GameEngine;
 import elte.szofttech.bomberman.model.Player;
 import elte.szofttech.bomberman.model.fields.Bomb;
 import elte.szofttech.bomberman.model.fields.Floor;
-import elte.szofttech.bomberman.model.fields.Field;
-import elte.szofttech.bomberman.model.Entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,10 +11,21 @@ import java.awt.Image;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
-// Represents the ghost monster, which always moves through obstacles but doesn't step off the board
+/**
+ * Represents the ghost monster, which always moves through obstacles but doesn't step off the board.
+ * It inherits from the Monster class.
+ */
 public class GhostMonster extends Monster {
     
     private Image image;
+
+    /**
+     * Constructs a GhostMonster object with the specified parameters.
+     * @param x The x-coordinate of the monster.
+     * @param y The y-coordinate of the monster.
+     * @param engine The game engine associated with the monster.
+     * @param direction The initial direction of the monster.
+     */
     public GhostMonster(int x, int y, GameEngine engine, int direction) {
         super(x, y, engine, direction);
         try {
@@ -24,16 +33,16 @@ public class GhostMonster extends Monster {
         } catch (Exception e) {}
     }
 
+    /**
+     * Gets the speed of the ghost monster.
+     * @return The speed of the ghost monster.
+     */
     public int getSpeed() {
         return this.speed;
     }
 
     /**
-     * Move the monster based on its direction
-     * 1 -> up
-     * 2 -> down
-     * 3 -> left
-     * 4 -> right
+     * Moves the ghost monster based on its direction.
      */
     @Override
     public void move() {
@@ -91,6 +100,12 @@ public class GhostMonster extends Monster {
         }
     }
 
+    /**
+     * Checks if a player is present at the specified coordinates.
+     * @param x The x-coordinate to check.
+     * @param y The y-coordinate to check.
+     * @return The player object if present, otherwise null.
+     */
     private Player isPlayer(int x, int y) {
         for (Player player : engine.getPlayers()) {
             if (player.getX() == x && player.getY() == y && !(engine.getBoard()[y][x] instanceof Bomb)) return player;
@@ -98,6 +113,12 @@ public class GhostMonster extends Monster {
         return null;
     }
 
+    /**
+     * Checks if there is an obstacle at the specified coordinates.
+     * @param x The x-coordinate to check.
+     * @param y The y-coordinate to check.
+     * @return True if there is an obstacle, otherwise false.
+     */
     private boolean isObstacle(int x, int y) {
         // Check for bomb
         if (engine.getBoard()[y][x] instanceof Bomb) {
@@ -106,6 +127,10 @@ public class GhostMonster extends Monster {
         return false;
     }
 
+    /**
+     * Draws the ghost monster on the game board.
+     * @param g The Graphics object used for drawing.
+     */
     @Override
     public void draw(Graphics g) {
       int ts = engine.gettileSize();
