@@ -2,10 +2,12 @@ package elte.szofttech.bomberman.GUI;
 
 import elte.szofttech.bomberman.model.GameEngine;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class CharSelectPanel extends Scene {
     CharSelectPanel(int width, int height, GameEngine engine, GameGUI gui){
@@ -77,12 +79,60 @@ public class CharSelectPanel extends Scene {
         ButtonGroup maps = new ButtonGroup();
         int[] level = {1};
 
-        JRadioButton map1 = new JRadioButton("Map 1", true);
-        map1.addActionListener(e -> level[0] = 1);
-        JRadioButton map2 = new JRadioButton("Map 2", false);
-        map2.addActionListener(e -> level[0] = 2);
-        JRadioButton map3 = new JRadioButton("Map 3", false);
-        map3.addActionListener(e -> level[0] = 3);
+        Image map1Image;
+        ImageIcon map1Icon;
+        ImageIcon map1IconSelected;
+
+        Image map2Image;
+        ImageIcon map2Icon;
+        ImageIcon map2IconSelected;
+
+        Image map3Image;
+        ImageIcon map3Icon;
+        ImageIcon map3IconSelected;
+        try {
+            map1Image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/level1.png"));
+            map1Icon = new ImageIcon(map1Image.getScaledInstance(50,50,50));
+            map1IconSelected = new ImageIcon(map1Image.getScaledInstance(75,75,50));
+
+            map2Image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/level2.png"));
+            map2Icon = new ImageIcon(map2Image.getScaledInstance(50,50,50));
+            map2IconSelected = new ImageIcon(map2Image.getScaledInstance(75,75,50));
+
+            map3Image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/level3.png"));
+            map3Icon = new ImageIcon(map3Image.getScaledInstance(50,50,50));
+            map3IconSelected = new ImageIcon(map3Image.getScaledInstance(75,75,50));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        JRadioButton map1 = new JRadioButton("", map1Icon,true);
+        JRadioButton map2 = new JRadioButton("", map2Icon, false);
+        JRadioButton map3 = new JRadioButton("", map3Icon, false);
+        map1.addActionListener(e -> {
+            level[0] = 1;
+            if (map1.isSelected()){
+                map1.setIcon(map1IconSelected);
+                map2.setIcon(map2Icon);
+                map3.setIcon(map3Icon);
+            }
+        });
+        map2.addActionListener(e -> {
+            level[0] = 2;
+            if(map2.isSelected()){
+                map1.setIcon(map1Icon);
+                map2.setIcon(map2IconSelected);
+                map3.setIcon(map3Icon);
+            }
+        });
+        map3.addActionListener(e -> {
+            level[0] = 3;
+            if(map3.isSelected()){
+                map1.setIcon(map1Icon);
+                map2.setIcon(map2Icon);
+                map3.setIcon(map3IconSelected);
+            }
+        });
 
         maps.add(map1);
         maps.add(map2);
@@ -92,6 +142,20 @@ public class CharSelectPanel extends Scene {
         mapPanel.add(map1);
         mapPanel.add(map2);
         mapPanel.add(map3);
+
+        final int[] limit = {1};
+        JPanel limitPanel = new JPanel();
+        JRadioButton limitOne = new JRadioButton("One round", true);
+        limitOne.addActionListener(e -> limit[0] = 1);
+        JRadioButton limitTwo = new JRadioButton("Two rounds", false);
+        limitTwo.addActionListener(e -> limit[0] = 2);
+
+        ButtonGroup limits = new ButtonGroup();
+        limits.add(limitOne);
+        limits.add(limitTwo);
+
+        limitPanel.add(limitOne);
+        limitPanel.add(limitTwo);
 
         // Start Button Panel
         JPanel startPanel = new JPanel();
@@ -110,6 +174,7 @@ public class CharSelectPanel extends Scene {
         this.add(playerPanel);
         this.add(monsterPanel);
         this.add(mapPanel);
+        this.add(limitPanel);
         this.add(startPanel);
     }
 

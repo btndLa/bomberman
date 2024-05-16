@@ -39,11 +39,20 @@ public class GameGUI {
         JMenu gameMenu = new JMenu("Game");
         menuBar.add(gameMenu); 
 
-        //gamePanel = new GamePanel(WINDOW_WIDTH, WINDOW_HEIGTH, engine, this);
+        //gamePanel = new GamePanel(WINDOW_WIDTH, WINDOW_HEIGHT, engine, this);
+        startCharSelect();
+
+        //frame.getContentPane().add(gameArea);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public void startCharSelect(){
+        frame.setVisible(false);
+        frame.getContentPane().removeAll();
         charSelect = new CharSelectPanel(WINDOW_WIDTH,WINDOW_HEIGTH,engine, this);
         //gamePanel.setBackground(Color.WHITE);
         frame.getContentPane().add(charSelect);
-        //frame.getContentPane().add(gameArea);
         frame.pack();
         frame.setVisible(true);
     }

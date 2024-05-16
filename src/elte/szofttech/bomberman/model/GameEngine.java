@@ -1,5 +1,6 @@
 package elte.szofttech.bomberman.model;
 
+import elte.szofttech.bomberman.GUI.CharSelectPanel;
 import elte.szofttech.bomberman.GUI.GameGUI;
 import elte.szofttech.bomberman.GUI.HUDPanel;
 import elte.szofttech.bomberman.model.fields.Bomb;
@@ -77,6 +78,7 @@ public class GameEngine extends JPanel implements KeyListener{
     private int timeElapsed;
 
     private int level;
+    private int limit;
 
     public GameEngine(int width, int playerNum){
       super();
@@ -490,9 +492,15 @@ public class GameEngine extends JPanel implements KeyListener{
       message = "Draw!";
     }
     Object[] options = { "New round!" };
-    int optionChosen = JOptionPane.showOptionDialog(this.getParent(), message, "Game Over",
-    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-    if (optionChosen == 0) newRound();
+    int rounds = 0;
+    for(Player p : players){
+        rounds += p.getPoints();
+    }
+
+      int optionChosen = JOptionPane.showOptionDialog(this.getParent(), message, "Game Over",
+              JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+      if (optionChosen == 0) newRound();
+
   }
   public void detonateBombsImmediately(List<Bomb> bombs) {
     List<Bomb> allBombs = new ArrayList<>();
