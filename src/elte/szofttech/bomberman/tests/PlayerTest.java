@@ -11,14 +11,14 @@ import java.awt.event.KeyEvent;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PlayerTest {
+public class PlayerTest {
     private Player player;
     private GameEngine engine;
 
     @BeforeEach
     public void setUp(){
         engine = new GameEngine(900,2);
-        engine.StartGame();
+        engine.finishedCharSelect(2, 2, 4);
         player = engine.getPlayers().get(0);
     }
 
