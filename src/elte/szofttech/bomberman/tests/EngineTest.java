@@ -14,7 +14,7 @@ public class EngineTest {
     @BeforeEach
     public void setUp() {
         engine = new GameEngine(600, 2);
-        engine.finishedCharSelect(2, 2,1);
+        engine.finishedCharSelect(2, 2,1,1);
         engine.StartGame();
     }
 

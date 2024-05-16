@@ -164,7 +164,7 @@ public class CharSelectPanel extends Scene {
       //  startPanel.setLayout(new BoxLayout(startPanel, BoxLayout.Y_AXIS));
         startBtn.addActionListener(e -> {
             if (playerChoosed[0] && monsterChoosed[0]) {
-                engine.finishedCharSelect(players[0], monsterNumber[0], level[0]);
+                engine.finishedCharSelect(players[0], monsterNumber[0], level[0], limit[0]);
                 gui.startGame();
             }
         });
