@@ -1,5 +1,6 @@
 package elte.szofttech.bomberman.model;
 
+import elte.szofttech.bomberman.GUI.CharSelectPanel;
 import elte.szofttech.bomberman.GUI.GameGUI;
 import elte.szofttech.bomberman.GUI.HUDPanel;
 import elte.szofttech.bomberman.model.fields.Bomb;
@@ -77,6 +78,7 @@ public class GameEngine extends JPanel implements KeyListener{
     private int timeElapsed;
 
     private int level;
+    private int limit;
 
     public GameEngine(int width, int playerNum){
       super();
@@ -185,10 +187,11 @@ public class GameEngine extends JPanel implements KeyListener{
       }
   }
 
-    public void finishedCharSelect(int playerNum, int monstNum, int level){
+    public void finishedCharSelect(int playerNum, int monstNum, int level, int limit){
         this.playerNum = playerNum;
         this.monstNum = monstNum;
         this.level = level;
+        this.limit = limit;
         loadLevel();
         SwitchScene();
         StartGame();
@@ -490,9 +493,18 @@ public class GameEngine extends JPanel implements KeyListener{
       message = "Draw!";
     }
     Object[] options = { "New round!" };
-    int optionChosen = JOptionPane.showOptionDialog(this.getParent(), message, "Game Over",
-    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-    if (optionChosen == 0) newRound();
+    boolean endGame = false;
+    for(Player p : players){
+        if(p.getPoints() >= limit){
+            JOptionPane.showMessageDialog(this, "Player " + Integer.toString(players.indexOf(player) + 1) + " won the game!");
+            endGame = true;
+        }
+    }
+    if(!endGame){
+        int optionChosen = JOptionPane.showOptionDialog(this.getParent(), message, "Game Over",
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        if (optionChosen == 0) newRound();
+    }
   }
   public void detonateBombsImmediately(List<Bomb> bombs) {
     List<Bomb> allBombs = new ArrayList<>();

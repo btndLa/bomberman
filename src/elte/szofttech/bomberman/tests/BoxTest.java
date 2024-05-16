@@ -20,7 +20,7 @@ public class BoxTest {
   @BeforeEach
   public void setUp(){
     engine = new GameEngine(600,2);
-    engine.finishedCharSelect(2,2,4);   
+    engine.finishedCharSelect(2,2,4,1);
     box = (Box)engine.getBoard()[2][1]; 
   }
   @Test
