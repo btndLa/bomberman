@@ -384,7 +384,7 @@ public class GameEngine extends JPanel implements KeyListener{
     private void explosionEffect(Field field, Bomb bomb) {
       Random random = new Random();
       int randomNumber = random.nextInt(6);
-      int teszt = 6;
+      int teszt = 2;
       field.setColor(Color.ORANGE);
       field.draw(getGraphics(), field.getX(), field.getY());
       Timer explosionTimer = new Timer(500, new ActionListener() {

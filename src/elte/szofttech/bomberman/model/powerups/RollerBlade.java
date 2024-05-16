@@ -7,12 +7,16 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 public class RollerBlade extends PowerUp {
 
     public RollerBlade(int x, int y, int tileSize) {
         super(x, y, tileSize);
+        try {
+          this.image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/Rollerblade.png"));
+        } catch (Exception e) {}
         this.defaultColor = Color.BLACK; // Alapértelmezett szín beállítása
         this.setColor(defaultColor);
     }
@@ -43,19 +47,4 @@ public class RollerBlade extends PowerUp {
         expiringTimer.start();
     }
 
-    @Override
-    public void draw(Graphics g, int x, int y) {
-        super.draw(g, x, y);
-            g.setColor(Color.BLACK);
-            int iconSize = tileSize / 2;
-            int iconX = x + (tileSize - iconSize) / 2;
-            int iconY = y + (tileSize - iconSize) / 2;
-            g.fillOval(iconX, iconY, iconSize, iconSize);
-            g.setColor(Color.ORANGE);
-            int crossSize = iconSize / 2;
-            int crossX = iconX + (iconSize - crossSize) / 2;
-            int crossY = iconY + (iconSize - crossSize) / 2;
-            g.fillRect(crossX, crossY, crossSize, crossSize);
-
-    }
 }
