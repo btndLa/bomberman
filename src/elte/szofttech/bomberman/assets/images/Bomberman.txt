@@ -1,0 +1,71 @@
+    private void initializeMonsters(int monstNum) {
+        Random random = new Random();
+        monsters = new ArrayList<Monster>();
+
+        // Fixed positions for the first two monsters
+        int[][] positions = {
+            {3, 4},
+            {5, 11}
+        };
+
+        // Add the first two random monsters at fixed positions
+        for (int i = 0; i < 2; i++) {
+            int monsterType = random.nextInt(4) + 1; // Generates a random number between 1 and 4
+            int x = positions[i][0];
+            int y = positions[i][1];
+
+            switch (monsterType) {
+                case 1:
+                    monsters.add(new BasicMonster(x, y, this, 1));
+                    break;
+                case 2:
+                    monsters.add(new GhostMonster(x, y, this, 1));
+                    break;
+                case 3:
+                    monsters.add(new Hunter(x, y, this, 1));
+                    break;
+                case 4:
+                    monsters.add(new Zombie(x, y, this, 1));
+                    break;
+            }
+        }
+
+        // Add additional random monster at fixed position if monstNum is 3
+        if (monstNum == 3) {
+            int x = 7;
+            int y = 11;
+            int monsterType = random.nextInt(4) + 1; // Generates a random number between 1 and 4
+
+            switch (monsterType) {
+                case 1:
+                    monsters.add(new BasicMonster(x, y, this, 1));
+                    break;
+                case 2:
+                    monsters.add(new GhostMonster(x, y, this, 1));
+                    break;
+                case 3:
+                    monsters.add(new Hunter(x, y, this, 1));
+                    break;
+                case 4:
+                    monsters.add(new Zombie(x, y, this, 1));
+                    break;
+            }
+        }
+    }
+
+
+Ezt a részt szedd ki a startgameből is meg amikor újraindul a game
+
+      monsters = new ArrayList<Monster>();
+      monsters.add(new BasicMonster(3, 4,  this,1));
+      monsters.add(new BasicMonster(5, 11, this,1));
+
+      if(monstNum == 3){
+          monsters.add(new BasicMonster(7, 11, this,1));
+      }
+
+ és rakd be helyette ezt
+
+        initializeMonsters(monstNum);
+
+

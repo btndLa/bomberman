@@ -7,12 +7,18 @@ import elte.szofttech.bomberman.model.fields.Floor;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.util.Random;
+import javax.imageio.ImageIO;
 
 public class Hunter extends Monster {
 
+    private Image image;
     public Hunter(int x, int y, GameEngine engine, int direction) {
         super(x, y, engine, direction);
+        try {
+          image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/Hunter.png"));
+        } catch (Exception e) {}
     }
 
     public int getSpeed() {
@@ -140,8 +146,7 @@ public class Hunter extends Monster {
     }
 
     public void draw(Graphics g) {
-        int ts = engine.gettileSize();
-        g.setColor(Color.BLACK);
-        g.fillRect(x * ts, y * ts, ts, ts);
+      int ts = engine.gettileSize();
+      g.drawImage(image, x * ts, y * ts, ts, ts, null);
     }
 }

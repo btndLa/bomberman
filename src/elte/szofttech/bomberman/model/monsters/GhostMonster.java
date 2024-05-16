@@ -9,13 +9,19 @@ import elte.szofttech.bomberman.model.Entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.util.Random;
+import javax.imageio.ImageIO;
 
 // Represents the ghost monster, which always moves through obstacles but doesn't step off the board
 public class GhostMonster extends Monster {
-
+    
+    private Image image;
     public GhostMonster(int x, int y, GameEngine engine, int direction) {
         super(x, y, engine, direction);
+        try {
+          image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/Ghost.png"));
+        } catch (Exception e) {}
     }
 
     public int getSpeed() {
@@ -102,8 +108,7 @@ public class GhostMonster extends Monster {
 
     @Override
     public void draw(Graphics g) {
-        int ts = engine.gettileSize();
-        g.setColor(Color.MAGENTA);
-        g.fillRect(x * ts, y * ts, ts, ts);
+      int ts = engine.gettileSize();
+      g.drawImage(image, x * ts, y * ts, ts, ts, null);
     }
 }
