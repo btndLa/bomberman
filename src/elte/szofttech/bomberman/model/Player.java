@@ -16,12 +16,16 @@ import elte.szofttech.bomberman.model.powerups.RollerBlade;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 public class Player extends Entity {
     //Control key codes
+    private Image image;
     private int up;
     private int down;
     private int left;
@@ -243,9 +247,21 @@ public class Player extends Entity {
 
         public void draw(Graphics g) {
             int ts = engine.gettileSize();
-            g.setColor(Color.RED);
-            g.fillRect(x * ts, y * ts, ts, ts);
-            
+            if (this.up == 87){
+              try {
+                image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/Bomber1.png"));
+              } catch (Exception e) {}
+            }else if(this.up == 38 ){
+              try {
+                image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/Bomber2.png"));
+              } catch (Exception e) {}
+            }else{
+              try {
+                image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/Bomber3.png"));
+              } catch (Exception e) {}
+            }
+            g.drawImage(image, x * ts, y * ts, ts, ts, null);
+            g.setColor(Color.WHITE);
             if (isInvulnerable) {
                 if (isExpiring) {
                     g.setColor(Color.BLACK);
@@ -269,7 +285,7 @@ public class Player extends Entity {
             int indicatorSize = ts / 2;
             int indicatorX = x * ts + (ts - indicatorSize) / 2;
             int indicatorY = y * ts + (ts - indicatorSize) / 2;
-            g.fillOval(indicatorX, indicatorY, indicatorSize, indicatorSize);
+            if(g.getColor() != Color.WHITE) g.fillOval(indicatorX, indicatorY, indicatorSize, indicatorSize);
         }
   
 

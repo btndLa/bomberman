@@ -7,11 +7,19 @@ import elte.szofttech.bomberman.model.fields.Bomb;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
+import java.awt.Image;
+import javax.imageio.ImageIO;
+
 
 public class BasicMonster extends Monster {
 
+
+    private Image image;
     public BasicMonster(int x, int y, GameEngine engine, int direction) {
         super(x, y, engine,direction);
+        try {
+          image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/Basic-Monster.png"));
+        } catch (Exception e) {}
     }
     public int getSpeed(){return this.speed;}
 
@@ -77,9 +85,6 @@ public class BasicMonster extends Monster {
 
     public void draw(Graphics g) {
       int ts = engine.gettileSize();
-      g.setColor(Color.ORANGE);
-      g.fillRect(x * ts, y * ts,ts,ts);      
-  }
-
-
+      g.drawImage(image, x * ts, y * ts, ts, ts, null);
+    }
 }
