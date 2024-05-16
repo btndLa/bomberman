@@ -3,7 +3,7 @@ package elte.szofttech.bomberman.tests;
 import elte.szofttech.bomberman.model.GameEngine;
 import elte.szofttech.bomberman.model.GameEngine.State;
 import elte.szofttech.bomberman.model.Player;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
