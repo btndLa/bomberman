@@ -9,6 +9,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
+
+/**
+ * Az előzőhöz hasonló szörny, azonban útelágazásnál válthasson irányt a leírt heurisztika
+ * alapján. Bizonyos eséllyel hozzon hibás döntést és válasszon rossz utat.
+ */
 public class Zombie extends Monster {
 
     public Zombie(int x, int y, GameEngine engine, int direction) {

@@ -2,6 +2,7 @@ package elte.szofttech.bomberman.tests;
 
 import elte.szofttech.bomberman.model.GameEngine;
 import elte.szofttech.bomberman.model.monsters.BasicMonster;
+import elte.szofttech.bomberman.model.monsters.Hunter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MonsterTest {
 
-    BasicMonster monster;
+    Hunter monster;
     GameEngine engine;
     @BeforeEach
     public void setUp(){
         engine = new GameEngine(1000,1000);
-        monster = new BasicMonster(1,3,engine,1);
+        monster = new Hunter(1,3,engine,1);
     }
 
     @Test
