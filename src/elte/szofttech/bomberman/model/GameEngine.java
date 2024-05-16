@@ -166,8 +166,8 @@ public class GameEngine extends JPanel implements KeyListener{
         PLAYER_CONTROLS[i][2], PLAYER_CONTROLS[i][3], PLAYER_CONTROLS[i][4],PLAYER_CONTROLS[i][5], this));
       }
       monsters = new ArrayList<Monster>();
-      monsters.add(new BasicMonster(10, 3,  this,1));
-      monsters.add(new BasicMonster(10, 5, this,1));
+      monsters.add(new BasicMonster(3, 4,  this,1));
+      monsters.add(new BasicMonster(5, 11, this,1));
 
       if(monstNum == 3){
           monsters.add(new BasicMonster(7, 11, this,1));
