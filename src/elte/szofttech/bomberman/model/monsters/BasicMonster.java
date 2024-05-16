@@ -8,12 +8,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
-// Represents the basic monster, going into random directions
 public class BasicMonster extends Monster {
 
     public BasicMonster(int x, int y, GameEngine engine, int direction) {
         super(x, y, engine,direction);
-    //    engine.getBoard()[this.y][this.x].setWalkable(false);
     }
     public int getSpeed(){return this.speed;}
 
@@ -66,10 +64,10 @@ public class BasicMonster extends Monster {
         Player player = isPlayer(x, y);
         if (player != null) {
           player.die();
+          //Sengine.getPlayers().remove(player);
         }
     }
     
-    // Checks if a field ha  player on it
     private Player isPlayer(int x, int y){
       for (Player player : engine.getPlayers()) {
         if(player.getX() == x && player.getY() == y && !(engine.getBoard()[y][x] instanceof Bomb)) return player; 

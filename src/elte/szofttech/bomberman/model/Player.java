@@ -63,7 +63,7 @@ public class Player extends Entity {
         this.isGhost = false;
         this.isExpiring = false;
         this.isRollerBlade=false;
-        this.obstacleCapacity = 3;
+        this.obstacleCapacity = 0;
         engine.getBoard()[this.y][this.x].setWalkable(false);
     }
 
