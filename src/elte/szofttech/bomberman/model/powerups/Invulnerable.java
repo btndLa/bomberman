@@ -6,12 +6,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 public class Invulnerable extends PowerUp {
     public Invulnerable(int x, int y, int tileSize) {
         super(x, y, tileSize);
+        try {
+          this.image = ImageIO.read(getClass().getResource("/elte/szofttech/bomberman/assets/images/Invulnerable.png"));
+        } catch (Exception e) {}
         this.defaultColor = Color.BLUE;
         this.setColor(defaultColor);
     }
@@ -43,13 +46,5 @@ public class Invulnerable extends PowerUp {
         expiringTimer.start();
     }
 
-    @Override
-    public void draw(Graphics g, int x, int y) {
-        super.draw(g, x, y);
-        g.setColor(Color.CYAN);
-        int iconSize = tileSize / 2;
-        int iconX = x + (tileSize - iconSize) / 2;
-        int iconY = y + (tileSize - iconSize) / 2;
-        g.fillOval(iconX, iconY, iconSize, iconSize);
-    }
+
 }
