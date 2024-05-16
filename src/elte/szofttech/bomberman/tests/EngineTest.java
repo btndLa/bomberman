@@ -1,6 +1,7 @@
 package elte.szofttech.bomberman.tests;
 
 import elte.szofttech.bomberman.model.GameEngine;
+import elte.szofttech.bomberman.model.GameEngine.State;
 import elte.szofttech.bomberman.model.Player;
 import static org.junit.Assert.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,8 @@ public class EngineTest {
 
     @BeforeEach
     public void setUp() {
-        engine = new GameEngine(600, 2, "src/elte/szofttech/bomberman/assets/levels/testMap.txt");
+        engine = new GameEngine(600, 2);
+        engine.finishedCharSelect(2, 2,1);
         engine.StartGame();
     }
 
@@ -23,9 +25,13 @@ public class EngineTest {
         assertEquals(13, engine.getBoard().length);
     }
     @Test
-    public void testGameStateTransition() {
-        engine.finishedCharSelect(2, 2);
-        assertEquals(engine.State.GAME, engine.getCurrentState());
+    public void testGameState() {
+        assertEquals(State.GAME, engine.getState());
+    }
+    @Test
+    public void testCharSelectState() {
+        engine = new GameEngine(600, 2);
+        assertEquals(State.CHARSELECT, engine.getState());
     }
     
 }

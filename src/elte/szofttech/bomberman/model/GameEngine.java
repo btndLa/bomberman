@@ -10,6 +10,8 @@ import elte.szofttech.bomberman.model.fields.Obstacles;
 import elte.szofttech.bomberman.model.fields.Wall;
 import elte.szofttech.bomberman.model.monsters.BasicMonster;
 import elte.szofttech.bomberman.model.monsters.Hunter;
+import elte.szofttech.bomberman.model.monsters.GhostMonster;
+import elte.szofttech.bomberman.model.monsters.Zombie;
 import elte.szofttech.bomberman.model.monsters.Monster;
 import elte.szofttech.bomberman.model.powerups.PowerUp;
 import elte.szofttech.bomberman.model.powerups.RollerBlade;
@@ -85,20 +87,15 @@ public class GameEngine extends JPanel implements KeyListener{
       this.playerPos = new int[playerNum][2];
       this.currentState = State.CHARSELECT;
       isGameOver = false;
-    //  setupTimer();
       setFocusable(true);
       addKeyListener(this);
       board = new Field[BOARD_SIZE][BOARD_SIZE];
-      this.StartCharSelect();
-      //  StartGame();
     }
 
     // Getters
     public Field[][] getBoard(){ return this.board;}
-
-    public List<Player> getPlayers() {
-        return players;
-    }
+    public State getState(){return currentState;}
+    public List<Player> getPlayers() { return players;}
     public ArrayList<Obstacles> getObstacles(){return obstacles;}
     public int gettileSize(){ return tileSize;}
     public List<Monster> getMonsters(){ return monsters;}
@@ -138,9 +135,55 @@ public class GameEngine extends JPanel implements KeyListener{
     public void keyTyped(KeyEvent e) {}
 
 
-    public void StartCharSelect(){
+    private void initializeMonsters(int monstNum) {
+      Random random = new Random();
+      monsters = new ArrayList<Monster>();
+      int[][] positions = {
+          {3, 4},
+          {5, 11}
+      };
 
-    }
+      for (int i = 0; i < 2; i++) {
+          int monsterType = random.nextInt(4) + 1; // Generates a random number between 1 and 4
+          int x = positions[i][0];
+          int y = positions[i][1];
+
+          switch (monsterType) {
+              case 1:
+                  monsters.add(new BasicMonster(x, y, this, 1));
+                  break;
+              case 2:
+                  monsters.add(new GhostMonster(x, y, this, 1));
+                  break;
+              case 3:
+                  monsters.add(new Hunter(x, y, this, 1));
+                  break;
+              case 4:
+                  monsters.add(new Zombie(x, y, this, 1));
+                  break;
+          }
+      }
+      if (monstNum == 3) {
+          int x = 7;
+          int y = 11;
+          int monsterType = random.nextInt(4) + 1; // Generates a random number between 1 and 4
+
+          switch (monsterType) {
+              case 1:
+                  monsters.add(new BasicMonster(x, y, this, 1));
+                  break;
+              case 2:
+                  monsters.add(new GhostMonster(x, y, this, 1));
+                  break;
+              case 3:
+                  monsters.add(new Hunter(x, y, this, 1));
+                  break;
+              case 4:
+                  monsters.add(new Zombie(x, y, this, 1));
+                  break;
+          }
+      }
+  }
 
     public void finishedCharSelect(int playerNum, int monstNum, int level){
         this.playerNum = playerNum;
@@ -167,12 +210,7 @@ public class GameEngine extends JPanel implements KeyListener{
         PLAYER_CONTROLS[i][2], PLAYER_CONTROLS[i][3], PLAYER_CONTROLS[i][4],PLAYER_CONTROLS[i][5], this));
       }
       monsters = new ArrayList<Monster>();
-      monsters.add(new BasicMonster(3, 4,  this,1));
-      monsters.add(new BasicMonster(5, 11, this,1));
-
-      if(monstNum == 3){
-          monsters.add(new BasicMonster(7, 11, this,1));
-      }
+      initializeMonsters(monstNum);
 
       bombs = new ArrayList<Bomb>();
       obstacles = new ArrayList<Obstacles>();
@@ -181,11 +219,7 @@ public class GameEngine extends JPanel implements KeyListener{
     public void newRound(){
       loadLevel();
       monsters = new ArrayList<Monster>();
-      monsters.add(new Hunter(3, 4,  this,1));
-      monsters.add(new Hunter(5, 11, this,1));
-      if(monstNum == 3){
-          monsters.add(new BasicMonster(7, 11, this,1));
-      }
+      initializeMonsters(monstNum);
 
       bombs = new ArrayList<Bomb>();
       setupPlayers();
@@ -213,7 +247,7 @@ public class GameEngine extends JPanel implements KeyListener{
            case 1 -> filePath = "src/elte/szofttech/bomberman/assets/levels/level1.txt";
            case 2 -> filePath = "src/elte/szofttech/bomberman/assets/levels/level2.txt";
            case 3 -> filePath = "src/elte/szofttech/bomberman/assets/levels/level3.txt";
-           case 4 -> filePath = "src/elte/szofttech/bomberman/assets/levels/testInput1.txt";
+           case 4 -> filePath = "src/elte/szofttech/bomberman/assets/levels/testMap.txt";
            default -> filePath = "";
        }
 
@@ -530,7 +564,7 @@ public class GameEngine extends JPanel implements KeyListener{
     }
   }
 
-  private enum State{
+  public enum State{
         CHARSELECT,GAME;
     }
 }

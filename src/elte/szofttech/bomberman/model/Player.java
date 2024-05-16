@@ -74,6 +74,7 @@ public class Player extends Entity {
     public int getPoints(){return points;}
     public boolean isAlive(){return isAlive;}
     public boolean isInvulnerable(){return isInvulnerable;}
+    public boolean isRollerBlade(){return isRollerBlade;}
     public void setAlive(){isAlive = true;}
     public int getBombRadius(){return bombRadius;}
     public int getbombCapacity(){return bombCapacity;}

@@ -16,11 +16,16 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class MonsterTest {
 
     Hunter monster;
+    Hunter monsterInCorner;
+    Player player;
     GameEngine engine;
     @BeforeEach
     public void setUp(){
-        engine = new GameEngine(1000,1000);
+        engine = new GameEngine(1000,2);
+        engine.finishedCharSelect(2,2,1);
+        player = engine.getPlayers().get(0);
         monster = new Hunter(1,3,engine,1);
+        monsterInCorner = new Hunter(2,1,engine,1);
     }
     @Test
     public void testConstructor(){
@@ -29,7 +34,7 @@ public class MonsterTest {
     }
     @Test
 public void testMoveUp() {
-    monster = new BasicMonster(2, 2, engine, 1);
+    monster = new Hunter(2, 2, engine, 1);
     monster.move();
     assertEquals(1, monster.getY());
     assertEquals(2, monster.getX());
@@ -37,7 +42,7 @@ public void testMoveUp() {
 
 @Test
 public void testMoveDown() {
-    monster = new BasicMonster(2, 2, engine, 2);
+    monster = new Hunter(2, 2, engine, 2);
     monster.move();
     assertEquals(3, monster.getY());
     assertEquals(2, monster.getX());
@@ -45,7 +50,7 @@ public void testMoveDown() {
 
 @Test
 public void testMoveLeft() {
-    monster = new BasicMonster(2, 2, engine, 3);
+    monster = new Hunter(2, 2, engine, 3);
     monster.move();
     assertEquals(1, monster.getX());
     assertEquals(2, monster.getY());
@@ -53,7 +58,7 @@ public void testMoveLeft() {
 
 @Test
 public void testMoveRight() {
-    monster = new BasicMonster(2, 2, engine, 4);
+    monster = new Hunter(2, 2, engine, 4);
     monster.move();
     assertEquals(3, monster.getX());
     assertEquals(2, monster.getY());
@@ -70,20 +75,20 @@ public void testMoveRight() {
     }
     @Test
     public void cantMoveToThroughBox(){
-        monsterInCorner = new BasicMonster(2,1,engine,3);
+        monsterInCorner = new Hunter(2,1,engine,3);
         monsterInCorner.move();
         assertNotEquals(1, monsterInCorner.getX());
     }
     @Test
     public void movingToPlayerEliminatesPlayer(){
-      monster = new BasicMonster(2,3,engine,3);
+      monster = new Hunter(2,3,engine,3);
       monster.move();
       assertEquals(1, monster.getX());
       assertFalse(player.isAlive());
     }
     @Test
     public void notMovingToPlayerDoesntEliminatePlayer(){
-      monster = new BasicMonster(3,3,engine,3);
+      monster = new Hunter(3,3,engine,3);
       monster.move();
       player.onCollision(monster);
       assertTrue(player.isAlive());

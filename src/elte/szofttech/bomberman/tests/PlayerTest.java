@@ -140,6 +140,12 @@ public class PlayerTest {
       player.move(new KeyEvent((new JPanel()),KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.VK_S,'S'));
       assertEquals(2, player.getY());
     }
+    @Test
+    public void testPickupOfRollerBlade() {
+      RollerBlade r = new RollerBlade(1, 3, 1);
+      player.powerUpPickup(r);
+      assertTrue(player.isRollerBlade());
+    }
     // Collision Tests
     @Test
     public void onCollisionTestWithCollision(){

@@ -19,9 +19,9 @@ public class BoxTest {
   Box box;
   @BeforeEach
   public void setUp(){
-      engine = new GameEngine(900,2,"src/elte/szofttech/bomberman/assets/levels/testMap.txt");
-      engine.StartGame();   
-      box = (Box)engine.getBoard()[2][1]; 
+    engine = new GameEngine(600,2);
+    engine.finishedCharSelect(2,2,4);   
+    box = (Box)engine.getBoard()[2][1]; 
   }
   @Test
   public void testConstructor() {
