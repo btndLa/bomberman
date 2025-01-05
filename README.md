@@ -28,3 +28,6 @@ is). Egy játékos veszt (és ezáltal ellenfele győz), ha felrobban, vagy ha e
 - **Jobbra** - L  
 - **Bomba** - U  
 - **Akadály** - O  
+
+### Nyilatkozat
+Ez a projekt egy egyetemi kurzus keretében készült. A munka minden jogát fenntartjuk, és kizárólag bemutatási célokra került megosztásra. Újrafelhasználása vagy terjesztése kizárólag engedéllyel lehetséges.
